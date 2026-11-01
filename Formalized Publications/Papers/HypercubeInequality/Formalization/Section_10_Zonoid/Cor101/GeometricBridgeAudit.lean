@@ -1,0 +1,12 @@
+import Section_10_Zonoid.Cor101.LimitAssembly
+import Section_10_Zonoid.Cor101.DeterminantCoordinates
+#print axioms Cor101.fullVolume_continuous
+#print axioms Cor101.lineVolume_eq_volume_linearImage
+#print axioms Cor101.planeVolume_eq_volume_linearImage
+#print axioms Cor101.lineVolume_continuous
+#print axioms Cor101.planeVolume_continuous
+#print axioms Cor101.isClosed_projectionInequality
+#print axioms Cor101.zonoid_projection_of_zonotope
+#print axioms Cor101.zonotope_projection_of_generators
+#print axioms Cor101.fullDeterminantSum_eq_coordinates
+#print axioms Cor101.planarDeterminantSum_eq_coordinates

@@ -1,0 +1,9 @@
+import Section_10_Zonoid.Hypercube.OwnRowIndependence
+
+#print axioms Hypercube.OwnRowIndependence.iid_own_row_factorization
+#print axioms Hypercube.OwnRowIndependence.binary_mean_eq_success_probability
+#print axioms Hypercube.OwnRowIndependence.binary_centered_abs_mean
+#print axioms Hypercube.OwnRowIndependence.cofactor_own_height_factorization
+#print axioms Hypercube.OwnRowIndependence.crude_binary_gate
+#print axioms Hypercube.OwnRowIndependence.cofactor_own_centered_height_mean
+#print axioms Hypercube.OwnRowIndependence.finite_projected_crude_binary_gate

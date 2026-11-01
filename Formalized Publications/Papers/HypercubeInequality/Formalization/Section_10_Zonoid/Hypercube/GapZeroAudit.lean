@@ -1,0 +1,7 @@
+import Section_10_Zonoid.Hypercube.GapZero
+
+#print axioms Hypercube.GapZero.coordinateGap_zero_implies_ae_constant
+#print axioms Hypercube.GapZero.affineDet_zero_of_constant_coordinate
+#print axioms Hypercube.GapZero.simplexVolume_zero_of_constant_coordinate
+#print axioms Hypercube.GapZero.expectedSimplexVolume_zero_of_ae_constant_coordinate
+#print axioms Hypercube.GapZero.expectedSimplexVolume_zero_of_coordinateGap_zero

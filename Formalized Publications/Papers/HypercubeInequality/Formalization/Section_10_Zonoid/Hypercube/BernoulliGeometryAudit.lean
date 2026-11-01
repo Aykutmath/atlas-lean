@@ -1,0 +1,6 @@
+import Section_10_Zonoid.Hypercube.BernoulliGeometry
+
+#print axioms Hypercube.Bernoulli.subsetAffineDet_integral
+#print axioms Hypercube.Bernoulli.subsetAffineDet_abs_integral
+#print axioms Hypercube.Bernoulli.finite_support_bound_of_cocycle
+#print axioms Hypercube.Bernoulli.finite_support_geometric_bound

@@ -1,0 +1,5 @@
+import Section_10_Zonoid.Hypercube.FiniteProjectedHeight
+
+#print axioms Hypercube.FiniteProjectedHeight.projected_coordinate_integrable_of_finite_law
+#print axioms Hypercube.FiniteProjectedHeight.firstMoments_of_finite_projected_law
+#print axioms Hypercube.FiniteProjectedHeight.finite_projected_law_height_cost_chain

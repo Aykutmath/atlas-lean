@@ -1,0 +1,20 @@
+import Section_10_Zonoid.Hypercube.Thresholds
+
+#print axioms Hypercube.Thresholds.centeredThreshold_integral
+#print axioms Hypercube.Thresholds.finite_layer_cake
+#print axioms Hypercube.Thresholds.threshold_bound
+#print axioms Hypercube.Thresholds.threshold_difference_abs_integral
+#print axioms Hypercube.Thresholds.finite_gini
+#print axioms Hypercube.Thresholds.tailProbability_eq_mass
+#print axioms Hypercube.Thresholds.iid_threshold_disagreement
+#print axioms Hypercube.Thresholds.gini
+#print axioms Hypercube.Thresholds.tailVariance_integrable
+#print axioms Hypercube.Thresholds.tailProbability_map
+#print axioms Hypercube.Thresholds.gini_random_variable
+#print axioms Hypercube.Thresholds.lift_levelwise_gate
+#print axioms Hypercube.Thresholds.coefficient_centeredThreshold_integrable
+#print axioms Hypercube.Thresholds.joint_threshold_integrable
+#print axioms Hypercube.Thresholds.coefficient_height_sum_integrable
+#print axioms Hypercube.Thresholds.lift_levelwise_gate_of_product_moments
+#print axioms Hypercube.Thresholds.thresholdCost_lipschitz_coefficients
+#print axioms Hypercube.Thresholds.lift_thresholdCost_levelwise_gate

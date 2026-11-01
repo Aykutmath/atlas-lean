@@ -1,0 +1,8 @@
+import Section_10_Zonoid.Hypercube.Geometry.AffineVolume
+
+#print axioms Hypercube.Geometry.simplexHull_transport
+#print axioms Hypercube.Geometry.volume_translation_image
+#print axioms Hypercube.Geometry.simplexVolume_edgeMatrix
+#print axioms Hypercube.Geometry.simplex_volume_factorial
+#print axioms Hypercube.Geometry.signedSimplex_integral_factorial
+#print axioms Hypercube.Geometry.signedSimplex_abs_integral_factorial

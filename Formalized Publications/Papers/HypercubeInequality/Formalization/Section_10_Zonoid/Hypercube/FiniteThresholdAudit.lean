@@ -1,0 +1,7 @@
+import Section_10_Zonoid.Hypercube.FiniteThreshold
+
+#print axioms Hypercube.FiniteThreshold.finite_projection_labels
+#print axioms Hypercube.FiniteThreshold.thresholdBit_real
+#print axioms Hypercube.FiniteThreshold.finite_labels_levelwise_gate
+#print axioms Hypercube.FiniteThreshold.finite_projection_levelwise_gate
+#print axioms Hypercube.FiniteThreshold.finite_projection_thresholdCost_gate

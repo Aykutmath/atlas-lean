@@ -1,0 +1,7 @@
+import Section_10_Zonoid.Cor101.VolumeContinuity
+#print axioms Cor101.mem_convexBody_of_closedBall_subset
+#print axioms Cor101.eventually_mem_convexBody_of_mem_interior
+#print axioms Cor101.eventually_notMem_convexBody_of_notMem
+#print axioms Cor101.continuous_measure_convexBody
+#print axioms Cor101.continuous_volume_convexBody
+#print axioms Cor101.fullVolume_continuous

@@ -1,0 +1,8 @@
+import Section_10_Zonoid.Cor101.LineVolume
+#print axioms Cor101.commonLineProjection_zonotopeBody
+#print axioms Cor101.scalar_parallelepiped_nonnegative
+#print axioms Cor101.lineVolume_zonotopeBody_nonnegative
+#print axioms Cor101.lineVolume_zonotopeBody_nonnegative_toReal
+#print axioms Cor101.scalar_parallelepiped_interval
+#print axioms Cor101.lineVolume_zonotopeBody
+#print axioms Cor101.lineVolume_zonotopeBody_toReal

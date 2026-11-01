@@ -1,0 +1,5 @@
+import Section_10_Zonoid.Cor101.PlaneVolume
+#print axioms Cor101.coordinatePlaneProjection_eq_embedding
+#print axioms Cor101.coordinatePlaneProjection_zonotopeBody
+#print axioms Cor101.planeVolume_zonotopeBody_eq_fullVolume
+#print axioms Cor101.planeVolume_zonotopeBody_toReal_eq_fullVolume
