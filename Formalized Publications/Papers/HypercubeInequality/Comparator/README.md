@@ -139,7 +139,10 @@ From-source `lake comparator` needs a Lake project wiring
 (this package carries Atlas top-level pins instead). Run
 [reproduce.sh](reproduce.sh) with the source project root and a
 scratch dir; on Linux+bwrap it executes the full chain and reports
-every step's real exit code, elsewhere it prints the exact
-comparator command for a Linux host. Re-exports from these sources
-with the same toolchain and pins must reproduce the
+every step's real exit code. A compilation, export, or comparison
+failure stops the script immediately with a nonzero exit; a platform
+without Linux+bwrap prints the exact command and exits 2, not a passing
+verdict. Driver error handling is tested separately with stub executables:
+`python3 test_reproduce.py` (this driver test is not a Lean proof check).
+Re-exports from these sources with the same toolchain and pins must reproduce
 `challenge.ndjson` / `solution.ndjson` bytes above.

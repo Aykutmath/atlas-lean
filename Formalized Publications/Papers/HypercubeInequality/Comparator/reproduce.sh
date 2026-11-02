@@ -19,20 +19,25 @@
 #      exact command to run on a Linux host (macOS cannot run the
 #      comparator without --inadvisably-no-sandbox, which is never used).
 #
-# Exit code: 0 only if every executed step succeeded (on non-Linux the
-# comparator step is skipped and reported, exit 0 still requires the
-# build/export steps to succeed).
-set -u
-PROJ="$1"
+# Exit code: 0 only if compilation, both exports, and the real comparator
+# all succeeded. A missing tool/platform returns 2, never a passing verdict.
+set -eu
+[ "$#" -eq 2 ] || {
+  echo "usage: reproduce.sh <source-project-root> <work-dir>" >&2; exit 2; }
+PROJ="$(cd "$1" && pwd)" || exit 2
 WORK="$2"
-CHALLENGE_LEAN="$(dirname "$0")/hypercube_inequality_comparator.lean"
-CONFIG="$(dirname "$0")/hypercube_inequality_comparator.json"
+SCRIPT_DIR="$(CDPATH= cd "$(dirname "$0")" && pwd)" || exit 2
+CHALLENGE_LEAN="$SCRIPT_DIR/hypercube_inequality_comparator.lean"
+CONFIG="$SCRIPT_DIR/hypercube_inequality_comparator.json"
 
-command -v lean lake leanexport >/dev/null 2>&1 || {
-  echo "need lean, lake, leanexport on PATH (Lean 4.35.0 toolchain)"; exit 2; }
+for tool in lean lake leanexport shasum; do
+  command -v "$tool" >/dev/null 2>&1 || {
+    echo "missing tool: $tool (use the Lean 4.35.0 toolchain)" >&2; exit 2; }
+done
 [ -f "$CHALLENGE_LEAN" ] || { echo "challenge not found: $CHALLENGE_LEAN"; exit 2; }
 [ -f "$CONFIG" ] || { echo "config not found: $CONFIG"; exit 2; }
 mkdir -p "$WORK"
+WORK="$(cd "$WORK" && pwd)" || exit 2
 
 # Full workspace search path from the project, minus the project's own
 # build dir (challenge independence: Mathlib-only search path).
@@ -70,4 +75,6 @@ else
   echo "  lake comparator --config $CONFIG \\"
   echo "    --challenge-from-export $WORK/challenge.ndjson \\"
   echo "    --solution-from-export $WORK/solution.ndjson"
+  echo "Comparator was NOT run; no passing verification verdict." >&2
+  exit 2
 fi
