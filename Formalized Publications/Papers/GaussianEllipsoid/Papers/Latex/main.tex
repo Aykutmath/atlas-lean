@@ -1,0 +1,5082 @@
+\documentclass[11pt]{article}
+% \usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage{booktabs}
+\usepackage{amssymb, amsmath, amsthm}
+\usepackage{mathtools}
+\usepackage[colorlinks=true, linkcolor=blue, citecolor=blue, urlcolor=blue]{hyperref}
+
+
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage{verbatim}
+\usepackage[nameinlink,capitalise]{cleveref}
+\usepackage{setspace}
+
+
+
+
+
+
+
+
+%%%--------
+%%%-- Custom Packages
+%%%--------
+\usepackage{flexart}
+\input{stylelibrary}
+\newcommand{\Muse}{with {\itshape Muse Spark}}
+
+
+%% Commands
+%%%_____________________________________
+
+
+\numberwithin{equation}{section}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+
+%%%%%%%%%%%%%%
+
+
+%%% Macros
+%%%_____________________________________
+
+
+\newcommand{\R}{\mathbb R}
+\newcommand{\E}{\mathbb E}
+\newcommand{\Pp}{\mathbb P}
+\newcommand{\1}{\boldsymbol 1}
+\newcommand{\cA}{\mathcal A}
+\newcommand{\cB}{\mathcal B}
+\newcommand{\cF}{\mathcal F}
+\newcommand{\cQ}{\mathcal Q}
+\newcommand{\cT}{\mathcal T}
+\newcommand{\PiZero}{\Pi_n}
+\newcommand{\Sym}{\operatorname{Sym}}
+\newcommand{\Tr}{\operatorname{Tr}}
+\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\rank}{\operatorname{rank}}
+\newcommand{\diag}{\operatorname{diag}}
+\newcommand{\res}{\operatorname{res}}
+\newcommand{\rvec}{\res}
+\newcommand{\rentry}[1]{\res_{#1}}
+\newcommand{\op}{\operatorname{op}}
+\newcommand{\Frob}{F}
+\newcommand{\whp}{\text{with high probability }}
+%%%%%%%%%%%%%%%%%%
+
+
+
+%%%%%%%%%%%%%%%%%%%
+%%% ---- Flexart Options
+%%%%%%%%%%%%%%%%%%%
+
+
+
+
+
+\title[Strict Threshold for Gaussian Ellipsoid Fitting]{The Strict Threshold for Gaussian Ellipsoid Fitting}
+
+
+\primaryauthors{
+\MakeUppercase{Aykut Arslan}
+\\
+\Muse
+}
+
+\newcommand{\secondaryAuthorsLabel}{Mathematical review by}
+
+\secondaryauthors{
+\MakeUppercase{Babak Modami} 
+\and
+\MakeUppercase{Alexander Roitershtein}
+\and
+\MakeUppercase{Mark Sepanski}
+\and
+\MakeUppercase{Grigory Sokolov}
+}
+
+\flexset{
+authorwidth      = 0.7\textwidth,
+abovesecondary   = 0.3em,
+secondarylabel   = {\secondaryAuthorsLabel},
+partrulelength   = 0.75\textwidth,
+}
+
+\subjclass[2020]{60B20, 52A20, 90C22}
+
+
+
+\flexabstract{%
+Let $x_1,\ldots,x_n$ be independent $N(0,I_d)$ vectors.
+We study whether there exists a positive semidefinite matrix $S$
+such that $x_i^T S x_i=d$ for every $1\le i\le n.$ 
+We prove a sharp threshold at $n\sim d^2/4$. 
+\par
+If $\limsup_{d\to\infty}\frac{n(d)}{d^2}<\frac14,$
+then with probability tending to one such an $S$ exists, 
+with $S$ in fact positive definite. 
+\par
+If $\liminf_{d\to\infty}\frac{n(d)}{d^2}>\frac14,$
+then with probability tending to one no such $S$ exists. 
+We make no claim when $n(d)/d^2\to1/4$.
+}
+
+
+
+
+
+
+
+
+
+
+
+
+\begin{document}
+
+
+\maketitle
+
+\vspace{-0.5em}
+
+
+\setcounter{tocdepth}{1} 
+\tableofcontents
+
+
+\vspace{2em}
+
+%%%%%%%%%%%%%
+%%%%%%%%%%%%%
+%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%
+\section{Introduction and statement of the main result} 
+%%%%%%%%%%%%%%%%%%%%
+
+\begin{humanblock}
+
+
+We consider the following problem. Given $n$ random points in $\R^d$, when do they lie on the boundary of an ellipsoid? For small $n$ and a standard Gaussian setting such an event has a high likelihood, while for sufficiently large $n$ it is unlikely to occur. The main regime of interest is therefore near the phase transition, which turns out to be $n\asymp d^2$ \cite{BandeiraMaillard2025, MaillardKunisky2024, SaundersonParriloWillsky2013}.
+
+We study the random setting in which
+\[
+  x_1,\ldots,x_n\sim N(0,I_d)
+\]
+are independent. Since $\|x_i\|_2^2$ is typically close to $d$, the sphere already gives an approximate fit. The question is whether it can be deformed into a centered ellipsoid so that all of the points lie exactly on its boundary.
+
+Saunderson, Parrilo, and Willsky \cite{SaundersonParriloWillsky2013} conjectured that this problem has a sharp transition at $n=d^2/4$. More precisely, for every fixed $\varepsilon>0$, they predicted feasibility of such an ellipsoid with high probability when
+\[
+  n\le\left(\frac14-\varepsilon\right)d^2,
+\]
+and infeasibility with high probability when
+\[
+  n\ge\left(\frac14+\varepsilon\right)d^2.
+\]
+
+The value $1/4$ comes from the geometry of the positive semidefinite cone. One way to measure the size of this cone is to take a random Gaussian symmetric matrix, project it onto the cone, and compute the expected squared size of that projection. For $d\times d$ matrices, this quantity is $d(d+1)/4$, making $1/4$ the natural candidate for the asymptotic threshold.
+
+% The constant $1/4$ reflects the statistical dimension of the positive semidefinite cone, which is asymptotically $d^2/4$. The ellipsoid-fitting problem arose in minimum trace factor analysis and vector discrepancy, and related formulations have also appeared in independent component analysis and sum-of-squares.
+
+
+
+Earlier work established feasibility in increasingly large ranges of $n$, eventually reaching $n\le cd^2$ for a
+sufficiently small constant $c>0$. Maillard and Kunisky \cite{MaillardKunisky2024} predicted the sharp transition at $1/4$ using the non-rigorous replica method of statistical physics. Bandeira and Maillard \cite{BandeiraMaillard2025} later proved the $1/4$ threshold for an approximate version of the ellipsoid-fitting problem. The corresponding exact fitting problem remained open.
+
+
+
+
+
+
+We prove the exact threshold with fixed margin. No assertion is made for the critical case when $n/d^2\to1/4$.
+
+\begin{theorem}[Strict-threshold theorem]\label{thm:main}
+  Let $n=n(d)$ be any sequence of positive
+  integers. For each $d$, let
+  $x_1,\ldots,x_n$ be independent
+  $N(0,I_d)$ vectors and define
+  \[
+    \cF_d=\{S\succeq0:S^\top = S \text{~and~}
+    x_i^TSx_i=d\text{ for all }1\le i\le n\}.
+  \]
+  Then, the following statements hold.
+  \begin{enumerate}[label=\textup{(\roman*)}]
+    \item If $\limsup_{d\to\infty}n/d^2<1/4$,
+    then
+    \[
+      \Pp\bigl(\text{there exists }S\succ0
+      \text{ with }x_i^TSx_i=d \text{ for every }
+      i\bigr)\longrightarrow1.
+    \]
+    \item If $\liminf_{d\to\infty}n/d^2>1/4$,
+    then $\Pp(\cF_d\ne\varnothing)\to0$.
+  \end{enumerate}
+  
+\end{theorem}
+\end{humanblock}
+
+
+\section*{Concurrent work}
+
+\begin{humanblock}
+While completing this work, we became aware of the concurrent work of Misiakiewicz and Wen \cite{MisiakiewiczWen2026}, posted on August 10, 2026. 
+
+  
+The two works prove the same sharp threshold, but use different proof architectures. Misiakiewicz and Wen build directly on the Gaussian-equivalence framework of Bandeira--Maillard. Below the threshold, they use a head--tail decomposition of the dual vector, with exact treatment of the sparse head and Gaussian comparison for the low-influence tail. Above the threshold, they combine a low-rank/diffuse decomposition with conditional Gaussianization and a projected Gordon escape argument.
+
+
+Our proof follows a different route. Below the threshold, we begin with the approximate fitting result of Bandeira--Maillard and perturb it to an exact fit using a spectrally constrained robust-loss construction, a sparse/diffuse decomposition of the coefficient vector, and a dyadic multiscale estimate. Above the threshold, we also use Gordon's Gaussian min--max theorem, but in a different role. We first establish the Gaussian margin and then transfer it to centered
+rank-one measurements through a leave-one-row Gibbs interpolation, in the spirit of rigorous cavity methods
+\cite{AizenmanSimsStarr2003, Talagrand2011}. A Grassmann-net conditioning argument and a finite large-eigenvalue decomposition then extend the diffuse estimate to the full positive semidefinite cone.
+ 
+\end{humanblock}
+
+
+\section*{Statement on AI Use}
+
+\begin{humanblock}
+
+Meta AI played a substantial collaborative role in the research leading
+to this manuscript. The proof was developed through many rounds of
+human-directed interaction rather than a single autonomous AI run.
+Meta AI proposed proof strategies, derived intermediate lemmas and
+calculations, explored alternative approaches, produced candidate
+arguments, responded to mathematical objections, and revised or
+replaced arguments when gaps were identified. Many proposed arguments
+did not survive further checking and were rejected, substantially
+changed, or replaced.
+
+To make this process transparent, the manuscript uses 
+{
+\bfseries\sffamily \color{aicolor!70}AI
+}
+to mark material primarily generated by Meta AI and 
+{
+\bfseries\sffamily \color{humancolor!70}Human
+}
+to mark material primarily authored by human researchers. These labels describe the provenance of the written material, not the level of mathematical verification.
+
+Review and collaboration with other mathematicians were essential throughout this process. The author discussed the developing proof with reviewers and collaborators, shared drafts for examination, received mathematical objections and suggestions, and used this feedback to identify parts of the argument requiring further work. In several cases, this feedback led to new rounds of mathematical analysis, clarification, and revision.
+
+The author selected the problem, set the research goals, decided
+which proof directions to pursue or abandon, evaluated competing
+arguments, and determined which parts of the proof required further
+investigation. Meta AI outputs were not accepted simply because it described an argument as correct or complete. AI-generated
+claims of correctness were treated as research suggestions rather
+than mathematical verification.
+
+Meta AI also contributed to the preparation and revision of the mathematical exposition. The discovery, derivation, criticism, organization, and writing of parts of this manuscript emerged from a collaborative process involving Meta AI, the author, and reviewers. Because these contributions were closely intertwined throughout the project, no numerical percentages of contribution are assigned.
+
+The author takes responsibility for all mathematical claims in this
+manuscript. The final arguments are presented on the basis of the
+author's judgment together with extensive human review and
+collaboration. AI-generated arguments or assessments of correctness
+are not treated as substitutes for mathematical verification.
+
+\end{humanblock}
+
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%
+\section{Overview and notation}
+\label{deterministic-framework}
+%%%%%%%%%%%%%%%%%%%%
+\begin{humanblock}
+    
+% We work with the notation introduced above.
+% The main asymptotic is $d\to\infty$ with
+% $n=n(d)$. All other parameters are regarded as
+% fixed before $d\to\infty$. In the sequel we will
+% introduce a fixed gap to $1/4$, clipping levels,
+% net radii, and the diffuse cap $\tau$, among
+% others. Constants may depend on these auxiliary
+% parameters but not on $d$ or $n$; their values
+% are specified when first used.
+
+
+For $k\ge1$, let $\Sym_k$ denote the space of real symmetric $k\times k$ matrices, equipped with the Frobenius inner product
+\[
+  \langle A,B\rangle=\Tr(AB).
+\]
+Let $\|A\|_F$, $\|A\|_{op}$, and $\|A\|_*$ denote the
+Frobenius, operator, and nuclear norms, respectively, with
+\[
+  \|A\|_*=\sup_{\|W\|_{op}\le1}\langle W,A\rangle,
+\]
+and write $A\succeq0$ when $A$ is positive semidefinite.
+Let $\1_n$ denote the all-ones vector and
+\[
+  \PiZero=I_n-\frac1n\1_n\1_n^T
+\]
+the centering projector. Let $\supp$ denote support, $h=\lfloor d/2\rfloor$, and let $O_{\Pp}$ and $o_{\Pp}$  denote the usual probabilistic Landau symbols \cite{vaart}. Let $N(T,\varepsilon B)$ denote covering numbers and $w(T)$ Gaussian width \cite{Vershynin2018}.
+
+Let $G$ be a centered Gaussian random matrix in $\Sym_p$ such that
+\[
+  \E\langle G,A\rangle\langle G,B\rangle
+  =\langle A,B\rangle
+  =\Tr(AB)
+\]
+for all $A,B\in\Sym_p$, and let
+\[
+  \mathcal P_p=\{D\in\Sym_p:D\succeq0,\|D\|_F=1\}.
+\]
+
+
+
+
+For $A\in\Sym_d$, let
+\[
+  \cA_d(A)_i=x_i^TAx_i,\qquad
+  \cQ_d(A)_i=\frac{x_i^TAx_i-\Tr A}{\sqrt2}.
+\]
+For $S\in\Sym_d$, let
+\[
+  \rentry{i}(S)=\frac{x_i^TSx_i-d}{\sqrt d},\qquad
+  \cT_d(S)=\frac1{\sqrt d}\PiZero\cA_d(S).
+\]
+For $y\perp\1_n$, let
+\[
+  \cT_d^*y=\frac1{\sqrt d}\sum_iy_ix_ix_i^T
+  =\frac1{\sqrt d}\sum_iy_i(x_ix_i^T-I_d).
+\]
+
+
+For each $i$, let $a_i,b_i\in\mathbb R^h$ denote the first and last $h$ coordinate blocks of $x_i$. The vectors are mutually independent and each has distribution $N(0,I_h)$. If $d$ is odd, the middle coordinate is discarded. Let
+\[
+  \cB y=\frac1{\sqrt d}\sum_iy_ia_ib_i^T.
+\]
+
+We next briefly outline our proof strategy. Let $S\succeq0$, $S\neq0$, and suppose
+$\PiZero\cQ_d(S)=0$. Then $x_i^TSx_i=c$ is
+independent of $i$. If in addition $n\ge d$ and
+$\sum_ix_ix_i^T\succ0$, then $c>0$ and
+$(d/c)S\in\cF_d$. When $n\ge d$, Gaussian vectors
+span $\R^d$ a.s., so $\sum_ix_ix_i^T\succ0$ a.s.
+Thus above $1/4$, after discarding finitely many
+$d$, it suffices to show the centered kernel has
+no nonzero PSD matrix.
+
+% The following terminology is defined formally
+% later; we give a brief guide.
+
+% \begin{description}
+%   \item[Huber selector] Minimizer of
+%     $(1/n)\sum_i\phi_{\rm Hub}(\rentry{i}(S))
+%     +R_d(S)$ over $\lambda_-I\preceq S\preceq
+%     \lambda_+I$, where $R_d=\tau_d\|S-I\|_F^2/(2d)$,
+%     $\tau_d=d^{-2}$,
+%     \cref{the-huber-selector-and-its-residual-energy}.
+%   \item[Large/small] For a coefficient vector $y$,
+%     $y_i^{\rm large}=y_i\mathbf1_{\{|y_i|>t\}}$ and
+%     $y_i^{\rm small}=y_i\mathbf1_{\{|y_i|\le t\}}$.
+%   \item[Cap/flat] $v$ is flat if
+%     $\sqrt d\|v\|_\infty\le\theta\|v\|_2$, i.e.\@
+%     no coordinate dominates.
+%   \item[Dyadic record] For $u$, let
+%     $B_t=\{i:2^{-t-1}\lambda_{\max}<|u_i|
+%     \le2^{-t}\lambda_{\max}\}$; select next record
+%     when $|B_{t_{r+1}}|\ge q|B_{t_r}|$, $q>1$.
+%   \item[Effective support] $R(u)
+%     =\|u\|_1^2/\|u\|_2^2$.
+%   \item[Diffuse] $D\succeq0$ with $\|D\|_F=1$ and
+%     $\|D\|_{op}\le\tau$.
+%   \item[Peeling] $S=H+R$ with $HR=0$,
+%     $\rank(H)\le K$, either $\|R\|_F\le\delta$ or
+%     $R/\|R\|_F$ diffuse, $K=O_{\tau,\delta}(1)$.
+%   \item[Cavity Gibbs] Log-sum-exp over diffuse
+%     after deleting row $j$, independent of row $j$
+%     given others,
+%     \cref{a-common-leave-one-row-cavity-law}.
+%   \item[Nuisance] $L\subset\R^n$ with
+%     $\dim L=O_K(1)$, spanned by $\1_n$ and residual
+%     trace plus leading eigenspace, deterministic
+%     after conditioning.
+% \end{description}
+
+For the lower bound, fix $\alpha_0$ with
+$\limsup n/d^2<\alpha_0<1/4$ and enlarge to
+$n=\lfloor\alpha_0d^2\rfloor$ by adding
+independent $N(0,I_d)$ vectors; a fit for the
+larger sample induces one for the smaller. For
+the upper bound, fix $1/4<\alpha_1<\liminf n/d^2$
+and keep the first $\lfloor\alpha_1d^2\rfloor$
+points; they remain i.i.d.\ and
+$\cF_{n_2}\subseteq\cF_{n_1}$ for $n_1\le n_2$, so
+infeasibility for $\lfloor\alpha_1d^2\rfloor$
+points implies that for $n$ points. Hence
+$n=\Theta(d^2)$ suffices. Below $1/4$, we start
+from the approximate fit in
+\cref{the-published-approximate-comparator} and
+upgrade it with the Huber selector to
+$o_{\Pp}(d)$ $\ell_2$ and $O_{\Pp}(\sqrt{\log d})$
+$\ell_\infty$ residuals; we prove
+$\|\cT_d^*y\|_*$ large via determinant small-ball
+for flat and dyadic multiscale for sparse, mixed
+by thresholding, and duality gives $o_{\Pp}(1)$
+correction $S_d^*+H\succ0$.
+
+Above $1/4$, let $\mathcal P_p=\{D\succeq0:\|D\|_F=1\}$ with
+Gaussian width $w(\mathcal P_p)^2\le p(p+1)/4$,
+so $(w/p)^2\to1/4$. Let $A:\Sym_p\to\R^r$, $(AD)_j=\langle G_j,D\rangle$, where
+$G_1,\ldots,G_r$ are independent centered Gaussian random matrices in $\Sym_p$ with the covariance specified above, and $r\ge(1/4+\varepsilon)p^2$. Then Gordon's
+escape-through-a-mesh \cite{Gordon1988} gives
+$\inf_{D\in\mathcal P_p}\|AD\|_2\ge\gamma p$
+with high probability. The free energy $F_X$ in
+\cref{deterministic-nets-and-free-energy-inequalities}
+stabilizes at positive level; row-deleted
+interpolation in
+\cref{a-common-leave-one-row-cavity-law} transfers
+this Gaussian bound to rank-one rows
+$Z_i=(w_iw_i^\top-I_p)/\sqrt2$ for
+$\|D\|_{op}\le\tau$, and peeling
+$S=H+R$, $\rank(H)\le K$, in
+\cref{fixed-rank-peeling-and-unsat-above-one-quarter}
+covers the full PSD cone via fixed-rank and
+diffuse cases.
+\end{humanblock}
+
+
+
+% %%%%%%%%%%%%%%%%%%%% -Part-
+% \part{Feasibility below the
+%   threshold}\label{part-feasibility-below-the-threshold}
+% %%%%%%%%%%%%%%%%%%%%
+
+
+%%%%%%%%%%%%%%%%%%%% 
+\section{Previous work: Approximate-fitting
+theorem}\label{the-published-approximate-comparator}
+%%%%%%%%%%%%%%%%%%%%
+\begin{humanblock}
+
+    
+
+
+We use the groundbreaking approximate-fitting
+theorem of Bandeira and Maillard
+\cite[Theorem 1.4]{BandeiraMaillard2025}  which asserts that if
+$\limsup n/d^2<1/4$, then there are constants
+\[
+  0<\lambda_-\le\lambda_+<\infty
+\]
+such that, for every $1\le r<4/3$ and $n=n(d)$,
+\[
+  \min_{\lambda_-I\preceq S\preceq\lambda_+I}
+  \frac1n\sum_{i=1}^n
+  \left|\sqrt d\left(\frac{x_i^TSx_i}{d}-1\right)
+  \right|^r\xrightarrow{\Pp}0 \text{ as $d \to\infty$.}
+\]
+The residual inside the absolute value is exactly
+$\rentry{i}(S)$. Taking $r=1$ gives a measurable
+approximate solution $\widetilde S_d$ in the fixed
+spectral interval
+\[
+  \mathcal S_d=
+  \{S:\lambda_-I\preceq S\preceq\lambda_+I\}
+\]
+such that
+\[
+  \frac1n\sum_i|\rentry{i}(\widetilde S_d)|
+  \xrightarrow{\Pp}0.
+\]
+The comparator may depend on the full sample. It
+is used only in pathwise objective comparisons,
+so no independence is required.
+
+\end{humanblock}
+
+%%%%%%%%%%%%%%%%%%%%
+\section{A convex robust-loss estimator and its
+residual bounds}\label{the-huber-selector-and-its-residual-energy}
+%%%%%%%%%%%%%%%%%%%%
+
+\begin{aiblock}  
+
+Let
+\[
+  \phi_{\rm Hub}(t)=
+  \begin{cases}
+    t^2/2,&|t|\le1,\\
+    |t|-1/2,&|t|>1,
+  \end{cases}
+\]
+and let
+\[
+  R_d(S)=\frac{\tau_d}{2d}\|S-I\|_F^2,
+  \ \tau_d=d^{-2}.
+\]
+Define the unique selector
+\[
+  S_d^*=\operatorname*{argmin}_{S\in\mathcal S_d}
+  \left\{\frac1n\sum_i\phi_{\rm Hub}(\rentry{i}(S))
+  +R_d(S)\right\}.
+\]
+For all sufficiently large $d$, one has $n\geq2$. For such
+$d$ and each $1\leq j\leq n$, define the deleted selector
+\[
+  S_d^{(-j)}=\operatorname*{argmin}_{S\in\mathcal S_d}
+  \left\{\frac1{n-1}\sum_{i\ne j}
+  \phi_{\rm Hub}(\rentry{i}(S))+R_d(S)\right\}.
+\]
+Compactness gives existence, ridge gives
+uniqueness and measurability. In particular
+$S_d^{(-j)}$ is independent of $x_j$.
+
+\begin{proposition}
+\label{main-proposition-3-1}
+  If $n/d^2\to\alpha_0$ for fixed
+  $0<\alpha_0<1/4$, then
+  \[
+    \frac1n\sum_i\rentry{i}(S_d^*)^2
+    \xrightarrow{\Pp}0,
+  \]
+  \[
+    \|\PiZero\rvec(S_d^*)\|_2=o_{\Pp}(d),
+  \]
+  and
+  \[
+    \|\PiZero\rvec(S_d^*)\|_\infty
+    =O_{\Pp}(\sqrt{\log d}).
+  \]
+\end{proposition}
+
+\begin{proof}
+  Put
+  \[
+    H_d(S)=\frac1n\sum_i\phi_{\rm Hub}(\rentry{i}(S)).
+  \]
+  Since $\phi_{\rm Hub}(t)\le|t|$ and
+  $R_d(\widetilde S_d)$ is $O(d^{-2})$, optimality
+  gives $H_d(S_d^*)\xrightarrow{\Pp}0$.
+  Set $a_j=\rentry{j}(S_d^*)$,
+  $b_j=\rentry{j}(S_d^{(-j)})$. Write
+  $G_{-j}(S)=\frac1n\sum_{i\ne j}\phi_{\rm Hub}(\rentry{i}(S))+\frac{n-1}{n}R_d(S)$.
+  The deleted selector minimizes $G_{-j}$. Comparing
+  the two exact optimality inequalities gives
+  $\phi_{\rm Hub}(a_j)+R_d(S_d^*)\le\phi_{\rm Hub}(b_j)+R_d(S_d^{(-j)})$.
+  Let
+  $b_0=\max\{|\lambda_--1|,|\lambda_+-1|\}$,
+  $\epsilon_d=\frac{b_0^2\tau_d}{2}$.
+  Then $\phi_{\rm Hub}(a_j)\le\phi_{\rm Hub}(b_j)+\epsilon_d$.
+  Comparison of
+  $G_{-j}$ minimizers gives
+  $|a_j|\le|b_j|+e_d$. Put
+  $e_d=\phi_{\rm Hub}^{-1}(\epsilon_d)$. For all
+  sufficiently large $d$, one has $b_0/d\leq1$, and
+  hence
+  \[
+    e_d=\frac{b_0}{d}.
+  \]
+
+  For $M\ge2e_d$,
+  \[
+    \frac1n\sum_j a_j^2\mathbf1_{\{|a_j|>M\}}
+    \le\frac2n\sum_j b_j^2\mathbf1_{\{|b_j|>M/2\}}+2e_d^2.
+  \]
+  We next prove uniform integrability of the
+  deleted residuals. Put
+  \[
+    \widehat\Sigma_{-j}=\frac1{n-1}\sum_{i\ne j}x_ix_i^T,
+    \quad C_d=\max_j\|\widehat\Sigma_{-j}-I\|_{op}.
+  \]
+  Deleted optimality against $\widetilde S_d$ gives,
+  simultaneously for every $j$,
+  \[
+    \frac1{n-1}\sum_{i\ne j}\phi_{\rm Hub}(\rentry{i}(S_d^{(-j)}))
+    +R_d(S_d^{(-j)})
+    \le\frac{n}{n-1}H_d(\widetilde S_d)+R_d(\widetilde S_d)=:r_d.
+  \]
+  The right side does not depend on $j$ and satisfies
+  $r_d\xrightarrow{\Pp}0$. Using
+  \[
+    |t|\le\sqrt{2\phi_{\rm Hub}(t)}+2\phi_{\rm Hub}(t),
+  \]
+  and Jensen gives, uniformly in $j$,
+  \[
+    \frac1{n-1}\sum_{i\ne j}|\rentry{i}(S_d^{(-j)})|\le a_d,
+  \]
+  where $a_d=\sqrt{2r_d}+2r_d$, so $a_d\xrightarrow{\Pp}0$.
+  Since $0\preceq S_d^{(-j)}\preceq\lambda_+I$,
+  \[
+    \frac1{n-1}\sum_{i\ne j}\rentry{i}(S_d^{(-j)})
+    =\frac{\operatorname{Tr}(S_d^{(-j)}\widehat\Sigma_{-j})-d}{\sqrt d}.
+  \]
+  Therefore
+  \[
+    \max_j\left|\frac{\operatorname{Tr}S_d^{(-j)}}{d}-1\right|
+    \le\lambda_+C_d+\frac{a_d}{\sqrt d}.
+  \]
+  Let $X$ be $n$ by $d$ with rows $x_i^T$. Gaussian
+  singular-value \cite[Thm II.13]{DavidsonSzarek2001}
+  with $t=\sqrt d$ puts every singular value of
+  $X/\sqrt n$ between $1-2\sqrt{d/n}$ and
+  $1+2\sqrt{d/n}$ except $2e^{-d/2}$. Hence
+  $\|n^{-1}X^TX-I\|_{op}=O_{\Pp}(d^{-1/2})$. Chi-square
+  Chernoff and union over $n=O(d^2)$ give
+  $\max_j\|x_j\|_2^2=O_{\Pp}(d)$. Finally,
+  \[
+    \widehat\Sigma_{-j}-I=\frac{n}{n-1}(\widehat\Sigma-I)
+    +\frac{I-x_jx_j^T}{n-1}
+  \]
+  gives $C_d=O_{\Pp}(d^{-1/2})$. Hence
+  \[
+    \mu_j=\frac{\operatorname{Tr}S_d^{(-j)}-d}{\sqrt d}
+  \]
+  satisfies $\max_j|\mu_j|=O_{\Pp}(1)$.
+
+  Conditionally on $x_{-j}$,
+  \[
+    b_j=Z_j+\mu_j,\quad
+    Z_j=\frac{x_j^TS_d^{(-j)}x_j-\operatorname{Tr}S_d^{(-j)}}{\sqrt d}.
+  \]
+  Hanson--Wright \cite[Thm 1.1]{RudelsonVershynin2013}
+  gives $c_{\rm HW}=c_{\rm HW}(\lambda_+)>0$ with
+  \[
+    \Pp(|Z_j|>t\mid x_{-j})\le2\exp[-c_{\rm HW}\min\{t^2,t\sqrt d\}].
+  \]
+  For $S\in\mathcal S_d$, $x\sim N(0,I_d)$ set
+  $Z_S=(x^TSx-\operatorname{Tr}S)/\sqrt d$. For fixed $K$,
+  \[
+    \rho_{\lambda_+,K}(L)=\sup_{S\in\mathcal S_d,|\mu|\le K}
+    \E[(Z_S+\mu)^2\mathbf1_{\{|Z_S+\mu|>L\}}]\to0
+  \]
+  as $L\to\infty$. Let $E_{d,K}=\{\max_j|\mu_j|\le K\}$.
+  Then
+  \[
+    \E\left[1_{E_{d,K}}\frac1n\sum_j b_j^2\mathbf1_{\{|b_j|>L\}}\right]
+    \le\rho_{\lambda_+,K}(L).
+  \]
+  Markov and full-to-deleted comparison give empirical
+  UI of $a_j^2$.
+
+  For fixed $M\ge1$, $t^2\mathbf1_{\{|t|\le M\}}\le2M\phi_{\rm Hub}(t)$,
+  so
+  \[
+    \frac1n\sum_j a_j^2\mathbf1_{\{|a_j|\le M\}}\le2M H_d(S_d^*)\xrightarrow{\Pp}0.
+  \]
+  First choose $K$ with $\Pp(E_{d,K}^c)$ small, then $M$
+  with $\rho_{\lambda_+,K}(M/2)$ small, then $d\to\infty$.
+  This proves $\frac1n\sum_j\rentry{j}(S_d^*)^2\xrightarrow{\Pp}0$.
+  Cauchy--Schwarz and contractivity give
+  \[
+    \frac{\|\PiZero\rvec(S_d^*)\|_2}{d}\le\frac{\sqrt n}{d}
+    \left(\frac1n\sum_i\rentry{i}(S_d^*)^2\right)^{1/2}\xrightarrow{\Pp}0.
+  \]
+  Finally $t=C\sqrt{\log d}$, $n\le d^2$ eventually, union bound
+  \[
+    \Pp(\max_j|Z_j|>C\sqrt{\log d})\le2d^2\exp[-c_{\rm HW}C^2\log d]
+  \]
+  for large $d$. Choosing $C$ large gives
+  $\max_j|Z_j|=O_{\Pp}(\sqrt{\log d})$, hence
+  $\max_j|\rentry{j}(S_d^*)|=O_{\Pp}(\sqrt{\log d})$. Since
+  $\|\PiZero z\|_\infty\le2\|z\|_\infty$, L$\infty$ assertion follows.
+\end{proof}
+\end{aiblock}
+
+
+
+%%%%%%%%%%%%%%%%%%%%
+\section{The arbitrary-center small-ball
+estimate}\label{expert-determinant-module}
+%%%%%%%%%%%%%%%%%%%%
+
+\begin{aiblock}
+
+The next result is the quantitative small-ball
+estimate used on the small-coordinate part of a
+coefficient vector. We prove it here before it is
+used. The matrix center is arbitrary and
+deterministic. Later, after conditioning and
+discretization, this center will represent the
+contribution of the large coordinates.
+
+%%%%%%%%%%%%%%%%%%%%
+\subsection{Capped determinant moments}
+%%%%%%%%%%%%%%%%%%%%
+
+We begin with the negative determinant estimate used
+in the bilinear small-ball argument. The proof
+includes the extremization over all admissible
+coefficient vectors.
+
+\begin{lemma}[Capped simplex extremizer]
+  \label{lem:det-capped-extremizer}
+  Let $N\ge1$, let $0<a<1$, and assume that
+  \[
+    \mathcal W_{N,a}=\left\{w\in[0,a]^N:\sum_{i=1}^Nw_i=1\right\}
+  \]
+  is nonempty. Put
+  \[
+    k=\lfloor a^{-1}\rfloor
+  \]
+  and
+  \[
+    \rho=1-ka.
+  \]
+  Thus $0\le\rho<a$. After adding or deleting zero
+  coordinates, define
+  \[
+    w^*=(a,\ldots,a,\rho,0,\ldots,0),
+  \]
+  where $a$ occurs $k$ times and the coordinate $\rho$
+  is omitted when it is zero. Feasibility of
+  $\mathcal W_{N,a}$ ensures that this vector has at
+  most $N$ nonzero coordinates. Let
+  $g_1,\ldots,g_N$ be independent $N(0,I_r)$ vectors.
+  For every $s>0$,
+  \[
+    \E\det\left(\sum_{i=1}^Nw_ig_ig_i^T\right)^{-s} \le
+    \E\det\left(\sum_{i=1}^Nw_i^*g_ig_i^T\right)^{-s}
+  \]
+  for every $w\in\mathcal W_{N,a}$, where both sides are
+  understood as extended nonnegative expectations.
+\end{lemma}
+
+\begin{proof}
+  For $\varepsilon>0$, define
+  \[
+    \Phi_\varepsilon(w)= \E\det\left(\varepsilon
+    I_r+\sum_{i=1}^Nw_ig_ig_i^T\right)^{-s}.
+  \]
+  The map
+  \[
+    A\longmapsto\det(A)^{-s}=\exp[-s\log\det A]
+  \]
+  is convex on the positive definite cone. Indeed,
+  $-\log\det A$ is convex, and the exponential is convex
+  and increasing. Hence $\Phi_\varepsilon$ is convex in
+  $w$. It is also invariant under coordinate
+  permutations because the $g_i$ are identically
+  distributed.
+
+  We next verify the required majorization directly.
+  Arrange the coordinates of $w$ in decreasing order.
+  For every $1\le j\le N$,
+  \[
+    \sum_{i=1}^jw_i\le\min\{ja,1\}.
+  \]
+  The right side is the sum of the first $j$
+  coordinates of $w^*$. Thus $w^*$ majorizes $w$. By the
+  finite-dimensional majorization theorem, there is a
+  doubly stochastic matrix $D$ such that $w=Dw^*$. By the
+  Birkhoff theorem, $D$ is a convex combination of
+  permutation matrices. Convexity and permutation
+  invariance therefore give
+  \[
+    \Phi_\varepsilon(w)\le\Phi_\varepsilon(w^*).
+  \]
+  As $\varepsilon$ decreases to zero, both integrands
+  increase pointwise. Monotone convergence proves the
+  asserted extended-valued inequality.
+\end{proof}
+
+\begin{lemma}[Real Wishart negative moment]
+  \label{lem:det-wishart-moment}
+  Let $G$ be an $r$ by $k$ real matrix with independent
+  $N(0,1)$ entries and let $W=GG^T$. If $s>0$ and
+  \[
+    k>r+2s-1,
+  \]
+  then
+  \[
+    \E\det(W)^{-s} =2^{-rs}\prod_{j=1}^r
+    \frac{\Gamma((k-j+1)/2-s)}{\Gamma((k-j+1)/2)}.
+  \]
+  If $k\le r+2s-1$, the negative moment is infinite.
+\end{lemma}
+
+\begin{proof}
+  If $k<r$, then $\rank(W)=\rank(G)\leq k<r$, so
+  $\det(W)=0$ almost surely and $\E\det(W)^{-s}=+\infty$
+  for every $s>0$. Assume henceforth $k\geq r$.
+
+  Apply Gram-Schmidt to the rows of $G$. For $1\leq
+  j\leq r\leq k$, the squared length of the component of
+  row $j$ orthogonal to the preceding $j-1$ rows has a
+  chi-square law with $k-j+1$ degrees of freedom.
+  Gaussian orthogonal invariance also makes these squared
+  lengths independent. Consequently,
+  \[
+    \det(W)\stackrel{d}=\prod_{j=1}^rX_j,
+  \]
+  where the $X_j$ are independent and $X_j$ has a
+  chi-square law with $k-j+1$ degrees of freedom.
+
+  If $X$ has a chi-square law with $m$ degrees of
+  freedom, direct integration of its density gives
+  \[
+    \E X^{-s} =\frac1{2^{m/2}\Gamma(m/2)}
+    \int_0^\infty x^{m/2-s-1}e^{-x/2}dx
+    =2^{-s}\frac{\Gamma(m/2-s)}{\Gamma(m/2)}.
+  \]
+  This integral is finite exactly when $m>2s$.
+  Multiplying the $r$ independent moments proves the
+  formula and the finiteness condition.
+\end{proof}
+
+\begin{proposition}[Uniform capped determinant moment]
+  \label{prop:det-capped-moment}
+  Fix $0<\theta<1/\sqrt2$. There is $C_\theta<\infty$
+  such that the following holds for every $r,N\ge1$. Let
+  $g_1,\ldots,g_N$ be independent $N(0,I_r)$ vectors and
+  let $z\in\R^N$ satisfy
+  \[
+    \|z\|_2=1
+  \]
+  and
+  \[
+    \sqrt r\|z\|_\infty\le\theta.
+  \]
+  Then, with
+  \[
+    W_z=\sum_{i=1}^Nz_i^2g_ig_i^T,
+  \]
+  one has
+  \[
+    \E\det(W_z)^{-r/2}\le C_\theta^{r^2}.
+  \]
+  One may take
+  \[
+    C_\theta=(1-2\theta^2)^{-1/2}
+  \]
+  for $r\ge2$, after increasing the constant to cover
+  $r=1$.
+\end{proposition}
+
+\begin{proof}
+  Set
+  \[
+    a=\frac{\theta^2}{r},
+    k=\left\lfloor\frac r{\theta^2}\right\rfloor,
+    \rho=1-ka.
+  \]
+  The weights $w_i=z_i^2$ belong to $\mathcal W_{N,a}$.
+  By \cref{lem:det-capped-extremizer}, their negative
+  determinant moment is at most the moment at the capped
+  vector $w^*$. For independent Gaussian vectors
+  $g_1,\ldots,g_{k+1}$,
+  \[
+    \sum_iw_i^*g_ig_i^T =a\sum_{i=1}^kg_ig_i^T+\rho
+    g_{k+1}g_{k+1}^T \succeq a\sum_{i=1}^kg_ig_i^T.
+  \]
+  When $\rho=0$, the last rank-one term is absent.
+  Monotonicity of the determinant on the positive
+  definite cone gives
+  \[
+    \E\det(W_z)^{-r/2} \le
+    a^{-r^2/2}\E\det(W_{r,k})^{-r/2},
+  \]
+  where $W_{r,k}$ is a real Wishart matrix with $k$
+  degrees of freedom.
+
+  Put
+  \[
+    \delta_\theta=\theta^{-2}-2>0.
+  \]
+  The floor in the definition of $k$ gives
+  \[
+    k\ge\frac r{\theta^2}-1
+  \]
+  and therefore
+  \[
+    k-2r+1\ge\delta_\theta r>0.
+  \]
+  In particular, $k>2r-1$, so
+  \cref{lem:det-wishart-moment} applies with $s=r/2$. It
+  gives
+  \[
+    \E\det(W_{r,k})^{-r/2}
+    =2^{-r^2/2}\prod_{j=1}^r
+    \frac{\Gamma(y_j)}{\Gamma(y_j+r/2)},
+  \]
+  where
+  \[
+    y_j=\frac{k-j+1-r}{2}.
+  \]
+  The same floor estimate yields
+  \[
+    y_j\ge\frac{k-2r+1}{2}\ge\frac{\delta_\theta r}{2}.
+  \]
+
+  Assume first that $r\ge2$. If $X$ has the gamma
+  distribution with shape $y_j$ and unit scale, then
+  \[
+    \frac{\Gamma(y_j+r/2)}{\Gamma(y_j)}=\E X^{r/2}.
+  \]
+  Since $r/2\ge1$, Jensen's inequality gives
+  \[
+    \E X^{r/2}\ge(\E X)^{r/2}=y_j^{r/2}.
+  \]
+  Thus
+  \[
+    \frac{\Gamma(y_j)}{\Gamma(y_j+r/2)} \le
+    y_j^{-r/2} \le \left(\frac2{\delta_\theta
+    r}\right)^{r/2}.
+  \]
+  Multiplication over $j$ now gives
+  \[
+    \E\det(W_z)^{-r/2} \le
+    \left(\frac1{2a}\right)^{r^2/2}
+    \left(\frac2{\delta_\theta r}\right)^{r^2/2} =
+    \left(\frac1{\theta^2\delta_\theta}\right)^{r^2/2} =
+    (1-2\theta^2)^{-r^2/2}.
+  \]
+  This calculation includes the floor in $k$ and does not
+  use an asymptotic replacement of $ak$ by one.
+
+  For $r=1$, the exact expression from
+  \cref{lem:det-wishart-moment} is finite because
+  $k=\lfloor\theta^{-2}\rfloor\ge2$. It is a finite number
+  depending only on $\theta$. Increasing $C_\theta$ to
+  cover this one case completes the proof.
+\end{proof}
+
+
+%%%%%%%%%%%%%%%%%%%%
+\subsection{Arbitrary-center Frobenius small balls}
+%%%%%%%%%%%%%%%%%%%%
+
+\begin{proposition}[Determinant small ball]
+  \label{prop:det-frobenius-small-ball}
+  Fix $0<\theta<1/\sqrt2$. There is $C_\theta<\infty$ such
+  that the following holds. Let $g_i,k_i$ be mutually
+  independent $N(0,I_r)$ vectors, let $z\in\R^N$ satisfy
+  \[
+    \|z\|_2=1
+  \]
+  and
+  \[
+    \sqrt r\|z\|_\infty\le\theta,
+  \]
+  and put
+  \[
+    Y_z=\frac1{\sqrt r}\sum_{i=1}^Nz_ig_ik_i^T.
+  \]
+  For every deterministic $M\in\R^{r\times r}$ and every
+  $t>0$,
+  \[
+    \Pp(\|Y_z-M\|_F\le t\sqrt r) \le (C_\theta t)^{r^2}.
+  \]
+  The same bound holds conditionally when $M$ and $z$ are
+  measurable with respect to a sigma-field independent of
+  all $g_i,k_i$, provided the two displayed conditions on
+  $z$ hold almost surely.
+\end{proposition}
+
+\begin{proof}
+  Condition on $g_1,\ldots,g_N$ and write
+  \[
+    W_z=\sum_{i=1}^Nz_i^2g_ig_i^T.
+  \]
+  The columns of $Y_z$ are conditionally independent
+  Gaussian vectors with covariance $W_z/r$. On the event
+  that $W_z$ is positive definite, their joint density is
+  bounded by
+  \[
+    (2\pi)^{-r^2/2}\det(W_z/r)^{-r/2}.
+  \]
+  The moment estimate in \cref{prop:det-capped-moment}
+  implies that $W_z$ is positive definite almost surely:
+  positive probability of $\det W_z=0$ would make
+  $\E\det(W_z)^{-r/2}$ infinite.
+
+  The Euclidean volume of a ball of radius $R$ in
+  dimension $m$ is at most
+  \[
+    \left(\frac{C R}{\sqrt m}\right)^m.
+  \]
+  Apply this with $m=r^2$ and $R=t\sqrt r$. The
+  conditional density bound and the volume estimate give,
+  uniformly in $M$,
+  \[
+    \Pp(\|Y_z-M\|_F\le t\sqrt r\mid g_1,\ldots,g_N)
+    \le(Ct)^{r^2}\det(W_z)^{-r/2}.
+  \]
+  Taking expectation and applying
+  \cref{prop:det-capped-moment} proves the claim. For the
+  conditional statement, condition first on the
+  sigma-field that determines $M$ and $z$ and repeat the
+  same argument pointwise.
+\end{proof}
+
+\begin{corollary}[Scaled Frobenius small ball]
+  \label{cor:det-scaled-frobenius}
+  Fix $0<\theta<1/\sqrt2$. Let $u\ne0$, let
+  $\sigma=\|u\|_2$, and assume
+  \[
+    \sqrt r\frac{\|u\|_\infty}{\sigma}\le\theta.
+  \]
+  For mutually independent $N(0,I_r)$ vectors $g_i,k_i$,
+  define
+  \[
+    M_u=\frac1{\sqrt d}\sum_i u_ig_ik_i^T.
+  \]
+  Then, uniformly over independent centers $C$ and every
+  $t>0$,
+  \[
+    \Pp\left(\|M_u-C\|_F\le t\sigma\frac r{\sqrt d}\right)
+    \le (C_\theta t)^{r^2}.
+  \]
+  The same statement holds conditionally when $u$ and $C$
+  are measurable with respect to a sigma-field independent
+  of the displayed Gaussian vectors.
+\end{corollary}
+
+\begin{proof}
+  Apply \cref{prop:det-frobenius-small-ball} to
+  $z=u/\sigma$ and use
+  \[
+    M_u=\sigma\sqrt{\frac rd}Y_z.
+  \]
+\end{proof}
+
+%%%%%%%%%%%%%%%%%%%%
+\subsection{Nuclear-ball covering and the block estimate}
+%%%%%%%%%%%%%%%%%%%%
+
+Let $B_F$ denote the unit ball in Frobenius norm. For a
+bounded set $T$, let $N(T,\varepsilon B_F)$ be the least
+number of translates of $\varepsilon B_F$ required to
+cover $T$.
+
+\begin{lemma}[Nuclear-ball entropy]\label{lem:det-nuclear-cover}
+  Let
+  \[
+    K_{r,R}=\{A\in\R^{r\times r}:\|A\|_*\le R\}.
+  \]
+  There is a numerical constant $C$ such that, for every
+  $\varepsilon>0$,
+  \[
+    \log N(K_{r,R},\varepsilon B_F) \le
+    C\frac{R^2r}{\varepsilon^2}.
+  \]
+  In particular, for $R=\nu r$ and
+  $\varepsilon=t\sqrt r$,
+  \[
+    \log N(K_{r,\nu r},t\sqrt r B_F) \le C\frac{\nu^2}{t^2}r^2.
+  \]
+\end{lemma}
+
+\begin{proof}
+  Let $G$ be an $r$ by $r$ matrix with independent
+  $N(0,1)$ entries. Nuclear and operator norm duality
+  gives
+  \[
+    \E\sup_{A\in K_{r,R}}\langle G,A\rangle
+    =R\E\|G\|_{op}.
+  \]
+  The Gaussian comparison inequality applied to the
+  process $y^TGx$, with $x,y$ on the Euclidean unit
+  sphere, gives
+  \[
+    \E\|G\|_{op}\le2\sqrt r.
+  \]
+  Thus the Gaussian width of $K_{r,R}$ is at most
+  $2R\sqrt r$.
+
+  Choose a maximal $\varepsilon$-separated subset of
+  $K_{r,R}$ in Frobenius norm. It is an
+  $\varepsilon$-net. Sudakov's minoration in the
+  finite-set form \cite[Section 2.1]{Fernique1974} says
+  that an $\varepsilon$-separated set of cardinality $M$
+  in the canonical metric of a Gaussian process has
+  expected supremum at least
+  $c\varepsilon\sqrt{\log M}$. Applied here, it gives
+  \[
+    \varepsilon\sqrt{\log N(K_{r,R},\varepsilon B_F)}
+    \le C\E\sup_{A\in K_{r,R}}\langle G,A\rangle.
+  \]
+  Squaring and using the width bound proves
+  \[
+    \log N(K_{r,R},\varepsilon B_F) \le
+    C\frac{R^2r}{\varepsilon^2}.
+  \]
+  The stated specialization follows by substitution.
+\end{proof}
+
+\begin{theorem}[Arbitrary-center nuclear small ball]
+  \label{thm:det-nuclear-small-ball}
+  Fix $0<\theta<1/\sqrt2$. There are constants
+  $c_\theta,\nu_\theta>0$ such that the following holds
+  under the hypotheses of
+  \cref{prop:det-frobenius-small-ball}. For every
+  deterministic $M\in\R^{r\times r}$,
+  \[
+    \Pp(\|Y_z-M\|_*\le\nu_\theta r) \le e^{-c_\theta r^2}.
+  \]
+  The same conclusion holds conditionally when $M$ and $z$
+  are measurable with respect to a sigma-field independent
+  of the driver vectors and the stated conditions on $z$
+  hold almost surely.
+\end{theorem}
+
+\begin{proof}
+  Let $C_\theta$ be the constant in
+  Lemma~\ref{prop:det-frobenius-small-ball}. Choose $t_\theta>0$
+  so small that
+  \[
+    \log(C_\theta t_\theta)\le-2.
+  \]
+  By Lemma~\ref{lem:det-nuclear-cover}, the nuclear ball
+  $K_{r,\nu r}$ has a Frobenius $t_\theta\sqrt r$-net of
+  cardinality at most
+  \[
+    \exp\left(C\frac{\nu^2}{t_\theta^2}r^2\right).
+  \]
+  If $\|Y_z-M\|_*\le\nu r$, then for one center $A$ in
+  this net,
+  \[
+    \|Y_z-(M+A)\|_F\le t_\theta\sqrt r.
+  \]
+  The union bound and
+  \cref{prop:det-frobenius-small-ball} therefore give
+  \[
+    \Pp(\|Y_z-M\|_*\le\nu r) \le \exp\left[
+    \left(C\frac{\nu^2}{t_\theta^2}
+    +\log(C_\theta t_\theta)\right)r^2 \right].
+  \]
+  Choose $\nu=\nu_\theta>0$ so small that
+  \[
+    C\frac{\nu_\theta^2}{t_\theta^2}\le1.
+  \]
+  The exponent is then at most $-r^2$, and the theorem
+  follows after changing the constant. The conditional
+  statement follows because both the Frobenius small-ball
+  estimate and the covering number are uniform in the
+  center.
+\end{proof}
+
+\begin{corollary}[Scaled coordinate block]
+  \label{cor:det-scaled-block}
+  Fix $0<\theta<1/\sqrt2$. Let $u\ne0$ be deterministic,
+  let $\sigma=\|u\|_2$, and assume
+  \[
+    \sqrt r\frac{\|u\|_\infty}{\sigma}\le\theta.
+  \]
+  For mutually independent $N(0,I_r)$ vectors $g_i,k_i$,
+  define
+  \[
+    M_u=\frac1{\sqrt d}\sum_i u_ig_ik_i^T.
+  \]
+  If $C$ is deterministic, or is measurable with respect
+  to a sigma-field independent of the displayed Gaussian
+  vectors, then
+  \[
+    \Pp\left( \|M_u-C\|_*\le
+    \nu_\theta\sigma\frac{r^{3/2}}{\sqrt d} \right) \le
+    e^{-c_\theta r^2}.
+  \]
+\end{corollary}
+
+\begin{proof}
+  Apply \cref{thm:det-nuclear-small-ball} to
+  $z=u/\sigma$ and use
+  \[
+    M_u=\sigma\sqrt{\frac rd}Y_z.
+  \]
+  Rescale the center by the same deterministic factor.
+\end{proof}    
+\end{aiblock}
+
+
+
+%%%%%%%%%%%%%%%%%%%%
+\section{A localized uniform estimate for small
+  coefficients}\label{expert-localized-module}
+%%%%%%%%%%%%%%%%%%%%
+
+\begin{aiblock}
+We now pass from one deterministic vector
+to uniform over small-coordinate vectors and
+admissible centers. With common radius
+$\zeta$, each $V_0$ has small-ball
+$\lesssim(C_\theta\zeta)^{h^2}$ while
+$|\mathcal N_V|\lesssim(C/\zeta)^n$; the
+union is
+$\exp[-(h^2-n)\log(1/\zeta)+O(d^2)]$. Hence
+we need the strict gap $h^2-n\ge cd^2$ from
+$\alpha_0<1/4$ to make fixed small $\zeta$
+beat entropy.
+
+% BEGIN INLINED FILE: localized_tube_module.tex
+%%%%%%%%%%%%%%%%%%%%
+\subsection{Uniform small-ball estimate after a
+  large/small coordinate split}
+%%%%%%%%%%%%%%%%%%%%
+
+The proposition below says the following. Fix a
+support $I$ of at most $Kd$ large coefficients.
+The contribution from $I$ may be arbitrary and
+is treated as a random center after freezing
+$\mathcal G_I=\sigma(a_i,b_i:i\in I)$: then
+$\mathcal B U_0$ and $N_0-\mathcal B U_0$ are
+$\mathcal G_I$-measurable while the $I^c$
+pairs stay independent $N(0,I_h)$, so
+$\|\mathcal B V_0-(N_0-\mathcal B U_0)\|_F
+\le3\zeta\sqrt d$ has arbitrary-center
+small-ball $(C_\theta\zeta)^{h^2}$. The
+outside coefficients have comparable $\ell_2$
+scale and no single coordinate too large.
+Uniformly over all such choices the sum
+cannot have small nuclear norm. The word
+``localized'' refers only to the fixed upper
+bounds on the two classes.
+
+
+Let $h=\lfloor d/2\rfloor$ and
+\[
+  \cB y=\frac1{\sqrt d}\sum_{i=1}^ny_ia_ib_i^T,
+\]
+where all $a_i,b_i$ are independent $N(0,I_h)$ vectors.
+For $L>0$, define
+\[
+  E_d(L)=\{\|\cB\|_{2\to F}\le L\sqrt d\}.
+\]
+
+\begin{proposition}[Uniform conditional small-ball
+  estimate]
+  \label{main-proposition-5-1}
+  Fix $\alpha_0<1/4$, $0<\theta<1/\sqrt2$, and positive
+  constants $A,B,\beta,K,L$. There are constants
+  $c,\gamma>0$, depending only on these fixed parameters,
+  such that the following holds whenever
+  $n\le\alpha_0d^2$.
+
+  Let $F_{d,L}$ be the event that there are $q>0$,
+  $I\subset[n]$, and $U,V\in\R^n$ satisfying
+  \[
+    |I|\le Kd,
+  \]
+  \[
+    \supp U\subset I,
+  \]
+  \[
+    \supp V\subset I^c,
+  \]
+  \[
+    \|U\|_1\le Aq\sqrt d,
+  \]
+  \[
+    \beta q\le\|V\|_2\le Bq,
+  \]
+  \[
+    \sqrt d\|V\|_\infty\le\theta\|V\|_2,
+  \]
+  but
+  \[
+    \|\cB(U+V)\|_*<cqd.
+  \]
+  Then, for all sufficiently large $d$,
+  \[
+    \Pp(F_{d,L}\cap E_d(L))\le e^{-\gamma d^2}.
+  \]
+\end{proposition}
+
+\begin{proof}
+  The assumptions and conclusion are homogeneous in
+  $(q,U,V)$. Dividing $U$ and $V$ by $q$ reduces the
+  proof exactly to $q=1$. Thus no discretization of the
+  scale $q$ is needed.
+
+  Fix $I\subset[n]$ with $s=|I|\le Kd$, and define
+  \[
+    \mathcal U_I=\{U:\supp U\subset I,\|U\|_1\le
+    A\sqrt d\}
+  \]
+  and
+  \[
+    \mathcal V_I=\{V:\supp V\subset I^c,\beta\le
+    \|V\|_2\le B,
+  \]
+  \[
+    \sqrt d\|V\|_\infty\le\theta\|V\|_2\}.
+  \]
+  Choose
+  \[
+    0<\zeta<\min\{1,\beta/6\}.
+  \]
+
+  Let $\mathcal N_U(I)$ be an $\ell_1$ net of
+  $\mathcal U_I$ at radius $\zeta/L$. A volumetric
+  estimate in the $s$-dimensional normed space gives
+  \[
+    |\mathcal N_U(I)| \le
+    \left(1+\frac{2AL\sqrt d}{\zeta}\right)^s.
+  \]
+  Let $\mathcal N_V(I)$ be a maximal internal Euclidean
+  net of $\mathcal V_I$ at radius $\zeta/L$. Since
+  $\mathcal V_I$ lies in the Euclidean ball of radius
+  $B$ in dimension $n-s$, the packing estimate gives
+  \[
+    |\mathcal N_V(I)| \le
+    \left(1+\frac{2BL}{\zeta}\right)^{n-s}.
+  \]
+  Every center $V_0\in\mathcal N_V(I)$ belongs to
+  $\mathcal V_I$. In particular,
+  \[
+    \beta\le\|V_0\|_2\le B
+  \]
+  and
+  \[
+    \sqrt d\|V_0\|_\infty\le\theta\|V_0\|_2.
+  \]
+
+  We next construct a deterministic matrix-center net.
+  Put
+  \[
+    \mathcal K_c=\{N\in\R^{h\times h}:\|N\|_*\le cd\}.
+  \]
+  Applying the nuclear-ball covering estimate
+  Lemma~\ref{lem:det-nuclear-cover} with $r=h$, $R=cd$, and
+  $\varepsilon=\zeta\sqrt d$ gives a deterministic
+  Frobenius net $\mathcal N_*(c)$ of $\mathcal K_c$ at
+  that radius such that
+  \[
+    \log|\mathcal N_*(c)| \le
+    C\frac{c^2}{\zeta^2}d^2.
+  \]
+  All three nets are fixed before the Gaussian samples
+  are observed.
+
+  Suppose that a bad pair $(U,V)$ exists on $E_d(L)$.
+  Choose $U_0\in\mathcal N_U(I)$ and
+  $V_0\in\mathcal N_V(I)$ such that
+  \[
+    \|U-U_0\|_1\le\zeta/L
+  \]
+  and
+  \[
+    \|V-V_0\|_2\le\zeta/L.
+  \]
+  On $E_d(L)$,
+  \[
+    \|\cB(U-U_0)\|_F \le L\sqrt d\|U-U_0\|_2
+    \le\zeta\sqrt d
+  \]
+  and
+  \[
+    \|\cB(V-V_0)\|_F\le\zeta\sqrt d.
+  \]
+  Since $\|\cB(U+V)\|_*<cd$, there is
+  $N_0\in\mathcal N_*(c)$ such that
+  \[
+    \|\cB(U+V)-N_0\|_F\le\zeta\sqrt d.
+  \]
+  It follows that
+  \[
+    \|\cB V_0-(N_0-\cB U_0)\|_F\le3\zeta\sqrt d.
+  \]
+
+  Fix a deterministic tuple $(I,U_0,V_0,N_0)$ and let
+  \[
+    \mathcal G_I=\sigma(a_i,b_i:i\in I).
+  \]
+  The matrix $N_0-\cB U_0$ is $\mathcal G_I$ measurable.
+  All pairs $(a_i,b_i)$ with $i\in I^c$ are independent
+  of $\mathcal G_I$. Put
+  \[
+    \sigma_0=\|V_0\|_2
+  \]
+  and
+  \[
+    z=V_0/\sigma_0.
+  \]
+  Then
+  \[
+    \|z\|_2=1
+  \]
+  and
+  \[
+    \sqrt d\|z\|_\infty\le\theta.
+  \]
+
+  We record the normalization from
+  \cref{prop:det-frobenius-small-ball}. Since $h/d\to1/2$,
+  the proposition, with $r=h$, implies after rescaling
+  that there is a constant $C_\theta<\infty$ such that
+  \[
+    \Pp\left( \left\|\frac1{\sqrt d}\sum_i
+    z_ia_ib_i^T-M\right\|_F \le t\sqrt d \right)
+    \le(C_\theta t)^{h^2}
+  \]
+  for every deterministic $M\in\R^{h\times h}$ and every
+  $t>0$. Indeed,
+  \[
+    \frac1{\sqrt d}\sum_i z_ia_ib_i^T
+    =\sqrt{\frac hd}Y_z,
+  \]
+  the coefficient cap for $Y_z$ is
+  \[
+    \sqrt h\|z\|_\infty\le\theta\sqrt{h/d}<\theta,
+  \]
+  and a Frobenius radius $t\sqrt d$ becomes a radius
+  \[
+    t\frac d h\sqrt h\le3t\sqrt h
+  \]
+  for all sufficiently large $d$. The constant factor is
+  absorbed into $C_\theta$. The same estimate holds
+  conditionally for a center measurable with respect to a
+  sigma-field independent of the driver vectors.
+
+  After division by $\sigma_0$, the fixed-tuple bad event
+  implies
+  \[
+    \left\| \frac1{\sqrt d}\sum_{i\in I^c}z_ia_ib_i^T
+    -\frac{N_0-\cB U_0}{\sigma_0} \right\|_F \le
+    t_0\sqrt d,
+  \]
+  where
+  \[
+    t_0=\frac{3\zeta}{\sigma_0}
+    \le\frac{3\zeta}{\beta}<1.
+  \]
+  The conditional arbitrary-center small-ball estimate
+  gives, almost surely in $\mathcal G_I$,
+  \[
+    \Pp(\text{the fixed tuple is bad}\mid\mathcal G_I)
+    \le \left(\frac{3C_\theta\zeta}{\beta}\right)^{h^2}.
+  \]
+  The bound is uniform in the realized center.
+  Integration over $\mathcal G_I$ gives the same
+  unconditional estimate.
+
+  It remains to pay the deterministic entropy. The
+  support count satisfies
+  \[
+    \log N_{supp}=O_K(d\log d).
+  \]
+  To see this, if $Kd\le n/2$, then
+  \[
+    \log\sum_{s\le Kd}\binom ns \le
+    Kd\log\left(\frac{en}{Kd}\right)+O_K(d).
+  \]
+  If $Kd>n/2$, then $n<2Kd$ and the bound
+  $2^n=e^{O_K(d)}$ applies. The head entropy satisfies
+  \[
+    \log N_{head} \le
+    Kd\log\left(1+\frac{2AL\sqrt d}{\zeta}\right)
+    =O_{A,K,L,\zeta}(d\log d).
+  \]
+  The tail and matrix-center entropies satisfy
+  \[
+    \log N_{tail} \le
+    n\log\left(1+\frac{2BL}{\zeta}\right)
+  \]
+  and
+  \[
+    \log N_{center} \le C\frac{c^2}{\zeta^2}d^2.
+  \]
+  Put
+  \[
+    \Xi_d=h^2\log\left(\frac{3C_\theta\zeta}{\beta}\right)
+    +n\log\left(1+\frac{2BL}{\zeta}\right).
+  \]
+  The union bound gives
+  \[
+    \log\Pp(F_{d,L}\cap E_d(L)) \le\Xi_d
+    +C\frac{c^2}{\zeta^2}d^2
+    +O_{A,K,L,\zeta}(d\log d).
+  \]
+
+  Set
+  \[
+    g=\frac14-\alpha_0>0.
+  \]
+  For all sufficiently large $d$,
+  \[
+    h^2-n\ge\frac g2d^2.
+  \]
+  There is a constant $C_0<\infty$, depending only on
+  $\theta,\beta,B,L$, such that
+  \[
+    \Xi_d\le-(h^2-n)\log(1/\zeta)+C_0d^2.
+  \]
+  First choose the fixed $\zeta$ so small that
+  \[
+    \frac g2\log(1/\zeta)\ge4C_0+4.
+  \]
+  With this $\zeta$ fixed, choose $c>0$ so small that
+  \[
+    C\frac{c^2}{\zeta^2} \le \frac g8\log(1/\zeta).
+  \]
+  Finally take $d$ large enough that
+  \[
+    O_{A,K,L,\zeta}(d\log d) \le
+    \frac g8d^2\log(1/\zeta).
+  \]
+  The resulting exponent is at most $-\gamma d^2$ for a
+  fixed $\gamma>0$. This proves the proposition.
+\end{proof}    
+\end{aiblock}
+
+
+% END INLINED FILE: localized_tube_module.tex
+
+%%%%%%%%%%%%%%%%%%%%
+\section{A multiscale estimate for the large
+  coordinates}\label{expert-multiscale-module}
+%%%%%%%%%%%%%%%%%%%%
+
+\begin{aiblock}
+
+The small-coordinate estimate does not control a vector
+concentrated on a few coordinates. The following section
+treats those vectors by sorting the coefficients into
+dyadic magnitude classes. We retain a later class only
+when its support is geometrically larger than the
+previously retained support. This is only a deterministic
+bookkeeping rule. The section proves a simultaneous lower
+bound for every large-coordinate vector, including vectors
+with arbitrary dynamic range.
+
+% BEGIN INLINED FILE: multiscale_coefficients_module.tex
+%%%%%%%%%%%%%%%%%%%%
+\subsection{Statement and
+  notation}\label{statement-and-notation}
+%%%%%%%%%%%%%%%%%%%%
+
+This section proves \cref{the-clipped-head-theorem}. We
+first state the estimate in the local notation used
+throughout the proof; the proof is completed at the end of
+this section in Section \ref{whole-class-deterministic-union}.
+The result is uniform over all coefficient vectors with at
+most $Kd$ nonzero coordinates, including vectors whose
+support, signs, and magnitudes are selected after the
+Gaussian sample is observed.
+
+Let $h=\lfloor d/2\rfloor$. Let
+\[
+  a_1,\ldots,a_n,b_1,\ldots,b_n
+\]
+be mutually independent $N(0,I_h)$ vectors, and define
+\[
+  \mathcal{B}u=\frac1{\sqrt d}\sum_{i=1}^n u_i a_i
+  b_i^T.
+\]
+For $I\subset[n]$, let $A_I$ and $B_I$ be the $h$ by
+$|I|$ matrices whose columns are respectively
+$(a_i)_{i\in I}$ and $(b_i)_{i\in I}$, in increasing
+index order.
+
+\begin{theorem}\label{main-theorem-6-1}
+  For every fixed $0<K,A<\infty$, there is $c_{K,A}>0$
+  such that, uniformly over every integer sequence
+  $n=n(d)\le Ad^2$,
+  \[
+    \Pp\left(\inf_{\substack{u\ne0\\
+    |\operatorname{supp}u|\le
+    Kd}}\frac{\|\mathcal{B}u\|_*}{\sqrt d\|u\|_1}\ge
+    c_{K,A}\right)\longrightarrow1.
+  \]
+  If $K_+=\max\{K,1\}$, then there is a constant
+  $c_{\rm ms}(A)>0$, depending only on $A$, such that
+  \[
+    c_{K,A}\ge\frac{c_{\rm ms}(A)}{\sqrt{K_+}(1+\log
+    K_+)}.
+  \]
+  The event is simultaneous over supports and
+  coefficients chosen after all Gaussian samples are
+  observed. No sign, flatness, centering, or
+  dynamic-range condition is imposed on $u$.
+\end{theorem}
+
+%%%%%%%%%%%%%%%%%%%%
+\subsection{The arbitrary-center block
+  estimate}\label{the-arbitrary-center-block-estimate}
+%%%%%%%%%%%%%%%%%%%%
+
+\begin{lemma}\label{record-lemma-2-1}
+  Let $r\ge1$ and $m\ge1$ be integers and let
+  $z\in{\mathbb R}^{m}$ be deterministic. Fix
+  $\theta<1/\sqrt2$. There are $c_{\rm sb}$,
+  $\nu_{\rm sb}>0$ with the following property. Let
+  $g_1,\ldots,g_m,k_1,\ldots,k_m$ be mutually
+  independent $N(0,I_r)$ vectors and suppose
+  \[
+    \|z\|_2=1,\ \sqrt r\|z\|_\infty\le\theta.
+  \]
+  Set
+  \[
+    Y_z=\frac1{\sqrt r}\sum_{i=1}^{m} z_i g_i k_i^T.
+  \]
+  For every deterministic $C\in{\mathbb R}^{r\times r}$,
+  \[
+    \Pp(\|Y_z-C\|_*\le\nu_{\rm sb}r)\le
+    e^{-c_{\rm sb}r^2}.
+  \]
+  The same statement holds conditionally if $C$ is
+  measurable with respect to a sigma-field independent
+  of all $g_i,k_i$.
+\end{lemma}
+
+\begin{proof}
+  This is the arbitrary-center nuclear small-ball
+  estimate from \cref{thm:det-nuclear-small-ball},
+  applied in dimension $r$. Its conditional form follows
+  because that theorem is uniform in every center
+  measurable with respect to an independent sigma-field.
+\end{proof}
+
+\begin{lemma}[Rectangular
+  pinching]\label{record-lemma-2-2}
+  Let $L_1,\ldots,L_J$ and $R_1,\ldots,R_J$ be pairwise
+  orthogonal row and column projections. Then, for every
+  matrix $M$,
+  \[
+    \|M\|_*\ge\sum_{j=1}^J\|L_jMR_j\|_*.
+  \]
+\end{lemma}
+
+\begin{proof}
+  For a matrix $A$, define its partial polar factor by
+  \[
+    \operatorname{pol}(A)=A(A^TA)^{\dagger/2},
+  \]
+  where the pseudoinverse power is zero on the kernel. It
+  satisfies $\|\operatorname{pol}(A)\|_{op}\le1$ and
+  $\langle\operatorname{pol}(A),A\rangle=\|A\|_*$. Let
+  $W_j=\operatorname{pol}(L_jMR_j)$, extended by zero
+  outside the indicated row and column subspaces, so that
+  $W_j=L_jW_jR_j$. Thus $\|W_j\|_{op}\le1$ and
+  \[
+    \langle W_j,L_jMR_j\rangle=\|L_jMR_j\|_*.
+  \]
+  Put $W=\sum_jW_j$. Orthogonality gives
+  \[
+    W^TW=\sum_jR_jW_j^TL_jW_jR_j\preceq\sum_jR_j\preceq
+    I.
+  \]
+  Hence $\|W\|_{op}\le1$. Nuclear and operator norm
+  duality gives
+  \[
+    \|M\|_*\ge\langle W,M\rangle=\sum_j\|L_jMR_j\|_*.
+  \]
+  This proves the inequality.
+\end{proof}
+
+
+%%%%%%%%%%%%%%%%%%%%
+\subsection{Two elementary events that hold for
+  every small support}\label{two-uniform-elementary-events}
+%%%%%%%%%%%%%%%%%%%%
+
+\begin{lemma}[Uniform bound for individual rank-one
+  terms]\label{record-lemma-3-1}
+  There is a fixed $C_A<\infty$ such that
+  \[
+    \Pp(E_{atom}^c)\to0,
+  \]
+  where
+  \[
+    E_{atom}=\left\{\max_{i\le n}\frac{\|a_i\|_2\|b_i\|_2}
+    {\sqrt d}\le C_A\sqrt d\right\}.
+  \]
+  On $E_{atom}$,
+  \[
+    \|\mathcal{B}z\|_*\le C_A\sqrt d\|z\|_1
+  \]
+  for every $z\in{\mathbb R}^n$ simultaneously.
+\end{lemma}
+
+\begin{proof}
+  Gaussian norm concentration gives
+  \[
+    \Pp(\|a_i\|_2>C\sqrt d)+\Pp(\|b_i\|_2>C\sqrt
+    d)\le4e^{-cd}.
+  \]
+  Since $n\le Ad^2$, a union bound proves
+  $\Pp(E_{atom}^c)\le4Ad^2e^{-cd}\to0$. On this event,
+  \[
+    \|\mathcal{B}z\|_* \le \frac1{\sqrt d}\sum_i|z_i|
+    \|a_i b_i^T\|_* = \frac1{\sqrt d}\sum_i|z_i|
+    \|a_i\|_2\|b_i\|_2 \le C_A\sqrt d\|z\|_1.
+  \]
+\end{proof}
+
+\begin{lemma}[Uniform singular-value bound on small
+  supports]\label{record-lemma-3-2}
+  There are absolute $c_s,\kappa>0$ such that, with
+  \[
+    s_{\rm sp}=\left\lfloor\kappa\frac{d}{\log d}
+    \right\rfloor,
+  \]
+  the event
+  \[
+    E_{\rm sp}=\left\{\min\{\sigma_{\min}(A_I),
+    \sigma_{\min}(B_I)\}\ge c_s\sqrt d\text{ for
+    all }I\subset[n]\text{ with }1\le|I|\le
+    s_{\rm sp}\right\}
+  \]
+  satisfies $\Pp(E_{\rm sp}^c)\le e^{-c_sd}$ for all
+  large $d$.
+\end{lemma}
+
+\begin{proof}
+  For a fixed $I\subset[n]$ of size $1\le s\le
+  s_{\rm sp}$, the Gaussian singular-value inequality
+  \cite[Theorem II.13]{DavidsonSzarek2001} gives
+  \[
+    \Pp(\sigma_{\min}(A_I)\le\sqrt h-\sqrt s-t)
+    \le e^{-t^2/2}.
+  \]
+  Choose $\kappa$ small enough that
+  $s_{\rm sp}\le h/16$ and take $t=\sqrt h/4$. Then
+  \[
+    \sqrt h-\sqrt s-t\ge\frac12\sqrt h\ge c_s\sqrt d.
+  \]
+  Therefore, for each fixed support $I$, the
+  probability that either $A_I$ or $B_I$ violates the
+  preceding lower bound is at most
+  \[
+    2e^{-h/32}\le2e^{-c_{\rm sv}d},
+  \]
+  where $c_{\rm sv}=1/96$. If $n\ge2s_{\rm sp}$, then
+  \[
+    \log\sum_{s\le s_{\rm sp}}\binom ns\le
+    s_{\rm sp}\log\left(\frac{en}{s_{\rm sp}}\right)
+    +O(s_{\rm sp})\le2\kappa d
+  \]
+  for all large $d$, since $n\le Ad^2$. If
+  $n<2s_{\rm sp}$, the number of supports is at most
+  $2^n\le e^{2s_{\rm sp}\log2}$. Choose
+  $\kappa<c_{\rm sv}/8$. Union over both Gaussian
+  matrices and every support gives
+  \[
+    \Pp(E_{\rm sp}^c)\le e^{-c_sd}
+  \]
+  for all large $d$, after adjusting $c_s>0$.
+\end{proof}
+
+%%%%%%%%%%%%%%%%%%%%
+\subsection{Dyadic decomposition with geometrically
+  increasing support sizes}\label{deterministic-record-decomposition}
+%%%%%%%%%%%%%%%%%%%%
+
+The next construction is entirely deterministic. Its
+purpose is to replace an arbitrary coefficient vector,
+possibly with an enormous dynamic range, by finitely
+many groups whose coefficients are comparable in
+magnitude and whose support sizes grow geometrically. We
+call a selected dyadic level a support record; this word
+has no meaning beyond the selection rule in the next
+paragraph.
+
+Fix $q>1$. For $u=0$ set $V=W=0$. For $u\ne0$ put
+$\lambda_{\max}=\|u\|_\infty$ and define
+\[
+  B_t=\{i:2^{-t-1}\lambda_{\max}<|u_i|
+  \le2^{-t}\lambda_{\max}\},\quad t\ge0.
+\]
+Empty levels are ignored. Let $t_1$ be the first
+nonempty level. Given $t_r$, let $t_{r+1}$ be the
+first later nonempty level satisfying
+\[
+  |B_{t_{r+1}}|\ge q|B_{t_r}|,
+\]
+if it exists; otherwise the construction stops and the
+last group contains all levels after its selected level.
+Put
+\[
+  S_r=|B_{t_r}|,\quad
+  \lambda_r=2^{-t_r-1}\lambda_{\max},
+\]
+and $G_r=\{t:t_r\le t<t_{r+1}\}$ with
+$t_{R+1}=\infty$ for the last record $R$. Every
+nonempty nonselected level $t\in G_r\setminus\{t_r\}$
+satisfies $|B_t|<qS_r$.
+
+Fix an integer $T\ge1$. In group $r$, retain only
+levels whose offset $j=t-t_r$ lies in
+$\{0,\dots,T-1\}$. Let $V_r$ be the restriction of $u$
+to $\bigcup_{j=0}^{T-1}B_{t_r+j}\cap G_r$, let $W_r$
+be the restriction to $\bigcup_{j\ge T}B_{t_r+j}\cap
+G_r$, and put
+\[
+  V=\sum_rV_r,\quad W=u-V=\sum_rW_r,
+\]
+\[
+  k_r=|\operatorname{supp}V_r|,\quad
+  m_r=\|V_r\|_1,\quad Q_r=\|V_r\|_2^2,\quad
+  R_r=\frac{m_r^2}{Q_r}.
+\]
+Supports of distinct $V_r$ are disjoint and $m_r>0$,
+$Q_r>0$ because $B_{t_r}\subset\operatorname{supp}V_r$.
+
+Every nonselected level in group $r$ has fewer than
+$qS_r$ entries. The base level has entries in
+$(\lambda_r,2\lambda_r]$, while a level at offset $j$
+has entries at most $2\lambda_r2^{-j}$. Therefore
+\[
+  S_r\le k_r\le TqS_r,
+\]
+\[
+  \lambda_rS_r\le m_r\le2\lambda_rS_r
+  +2q\lambda_rS_r\sum_{j\ge1}2^{-j}
+  \le4q\lambda_rS_r,
+\]
+and
+\[
+  \lambda_r^2S_r\le Q_r\le4\lambda_r^2S_r
+  +4q\lambda_r^2S_r\sum_{j\ge1}4^{-j}
+  \le\frac{16q}{3}\lambda_r^2S_r.
+\]
+Consequently,
+\[
+  \frac3{16q}S_r\le R_r\le16q^2S_r.
+\]
+Also,
+\[
+  \|V_r\|_\infty\le2\lambda_r\le8q\frac{Q_r}{m_r}
+  =8q\frac{\|V_r\|_2}{\sqrt{R_r}}.
+\]
+The omitted mass in group $r$ is bounded by
+\[
+  \|W_r\|_1\le2q\lambda_rS_r\sum_{j\ge T}2^{-j}
+  =4q2^{-T}\lambda_rS_r\le4q2^{-T}m_r.
+\]
+Summing gives
+\[
+  \|W\|_1\le\epsilon_T\|u\|_1,\quad
+  \epsilon_T=4q2^{-T}.
+\]
+The selected support sizes grow as $S_{r+1}\ge qS_r$.
+Hence
+\[
+  \sum_{l<r}S_l\le\frac{S_r}{q-1}
+\]
+and
+\[
+  \sum_{l<r}k_l\le\frac{Tq}{q-1}S_r.
+\]
+These are deterministic statements. Their constants
+depend only on $q,T$ and are independent of coefficient
+signs, the number of empty levels, and the dynamic
+range.
+
+\begin{remark}[A small example]
+  Take $q=2$ and suppose the nonempty dyadic levels
+  have support sizes $1,1,3,2,10$ at successive levels.
+  The selected support records have sizes $1,3,10$: the
+  second level is not selected because $1<2\cdot1$, the
+  third is selected because $3\ge2\cdot1$, the fourth is
+  not selected because $2<2\cdot3$, and the fifth is
+  selected because $10\ge2\cdot3$. Thus the first two
+  dyadic levels form the first group, the next two form
+  the second, and the final level begins the third. The
+  actual coefficient values and their signs play no role
+  in this selection.
+\end{remark}
+
+%%%%%%%%%%%%%%%%%%%%
+\subsection{One regular dyadic group after removing
+  earlier sample
+  spans}\label{projected-regular-cluster-lemma}
+%%%%%%%%%%%%%%%%%%%%
+
+\begin{lemma}\label{record-lemma-5-1}
+  Fix $c_{\rm rank},C_{\rm reg}>0$. There are
+  constants $C_{\rm low},c_{\rm up},c_{\rm proj}>0$,
+  depending only on $c_{\rm rank},C_{\rm reg}$, for
+  which the following holds. Let $H,J\subset[n]$ be
+  disjoint deterministic supports. Let $P_H,Q_H$ project
+  away from the left and right sample spans indexed by
+  $H$. Suppose their residual ranks are at least
+  $c_{\rm rank}d$.
+
+  Let $u$ be deterministic and supported on $J$. Put
+  \[
+    m=\|u\|_1, \sigma=\|u\|_2,
+    R=\frac{m^2}{\sigma^2}.
+  \]
+  Assume
+  \[
+    \|u\|_\infty\le C_{\rm reg}\frac\sigma{\sqrt R},
+    C_{\rm low}\log d\le R\le c_{\rm up}d.
+  \]
+  Then, almost surely with respect to
+  $\sigma(a_i,b_i:i\in H)$,
+  \[
+    \Pp\left(\|P_H\mathcal{B}uQ_H\|_*<c_{\rm proj}
+    \sqrt d m\middle|\sigma(a_i,b_i:i\in H)\right)\le
+    e^{-c_{\rm proj}dR}.
+  \]
+\end{lemma}
+
+\begin{proof}
+  Choose measurable orthonormal bases of the residual
+  spaces. Conditional on the head sigma-field, the
+  projected samples indexed by $J$ have independent
+  standard Gaussian coordinates in those bases.
+
+  Fix $\theta_0=1/2$. Choose $\gamma>0$ such that
+  \[
+    C_{\rm reg}\sqrt\gamma\le\theta_0<1/\sqrt2,
+  \]
+  and put $r=\lfloor\gamma R\rfloor$. Increasing
+  $C_{\rm low}$ if needed gives $r\ge c\log d$, while
+  decreasing $c_{\rm up}$ makes $r$ smaller than a fixed
+  fraction of each residual rank.
+
+  Partition each residual coordinate space into
+  \[
+    J_0=\left\lfloor\frac{\min\{\operatorname{rank}
+    P_H,\operatorname{rank}Q_H\}}r\right\rfloor
+  \]
+  blocks of side $r$, and pair blocks with the same
+  index. Then $J_0\ge c d/r$.
+
+  For a paired block, write
+  \[
+    M_j=\frac1{\sqrt d}\sum_{i\in J}u_i
+    g_{ij}k_{ij}^T = \frac{\sigma\sqrt r}{\sqrt d}Y_j,
+  \]
+  where
+  \[
+    Y_j=\frac1{\sqrt r}\sum_{i\in J}\frac{u_i}{\sigma}
+    g_{ij}k_{ij}^T.
+  \]
+  The coefficient cap is
+  \[
+    \sqrt r\max_i\frac{|u_i|}{\sigma} \le
+    C_{\rm reg}\sqrt{\frac rR} \le\theta_0.
+  \]
+  The arbitrary-center estimate
+  \cref{record-lemma-2-1}, with $\theta=\theta_0$ and
+  center zero, gives
+  \[
+    \Pp\left(\|M_j\|_*<\nu_{\rm sb}\sigma
+    \frac{r^{3/2}}{\sqrt d}\middle|\sigma(a_i,b_i:i\in
+    H)\right)\le p_r,
+  \]
+  where $p_r=e^{-c_{\rm sb}r^2}$. The events for
+  different paired blocks are conditionally independent
+  because they use disjoint coordinates of every current
+  $a_i$ and $b_i$.
+
+  Let $N_{bad}$ be the number of bad blocks. For all
+  large $d$,
+  \[
+    \Pp(N_{bad}\ge J_0/2\mid\sigma(a_i,b_i:i\in H))
+    \le \sum_{s\ge J_0/2}\binom{J_0}{s}p_r^s \le
+    2^{J_0}p_r^{J_0/2}.
+  \]
+  Since $p_r=e^{-c_{\rm sb}r^2}$ and $J_0r\ge cd$, the
+  last expression is at most
+  $e^{-cJ_0r^2}\le e^{-cdr}$.
+
+  On the complementary event,
+  \cref{record-lemma-2-2} gives
+  \[
+    \|P_H\mathcal{B}uQ_H\|_* \ge
+    \sum_{j=1}^{J_0}\|M_j\|_* \ge \frac{J_0}{2}
+    \nu_{\rm sb}\sigma\frac{r^{3/2}}{\sqrt d} \ge
+    c\sigma\sqrt{dr}.
+  \]
+  Since $r\asymp R$ and $\sigma\sqrt R=m$, the last
+  quantity is at least $c\sqrt d m$. Also $dr\asymp dR$.
+  This proves the lemma.
+\end{proof}
+
+%%%%%%%%%%%%%%%%%%%%
+\subsection{The small-support prefix and the point
+  where span removal
+  stops}\label{sparse-prefix-and-span-cutoff}
+%%%%%%%%%%%%%%%%%%%%
+
+Let $j_{\rm pre}$ be the largest group index for which
+\[
+  k_{\rm pre}:=\sum_{r\le j_{\rm pre}}k_{r}\le s_{sp}.
+\]
+If there is no such selected group, put
+$j_{\rm pre}=0$, $k_{\rm pre}=0$, and $V_{0}=0$.
+Otherwise, put $V_{0}=\sum_{r\le j_{\rm pre}}V_{r}$.
+On $E_{sp}$,
+\[
+  \|\mathcal{B}V_{0}\|_{*}\ge c_{s}^{2}\sqrt{d}\|V_{0}\|_{1}.
+\]
+If selected group $j_{\rm pre}+1$ exists, then
+\[
+  S_{j_{\rm pre}+1}\ge c_{q,T}\frac{d}{\log d}.
+\]
+Indeed, first suppose $k_{\rm pre}>s_{sp}/2$. The
+cumulative support estimate gives
+$k_{\rm pre}\le C_{q,T}S_{j_{\rm pre}}$, so geometric
+growth gives
+$S_{j_{\rm pre}+1}\ge qS_{j_{\rm pre}}\ge
+c_{q,T}s_{sp}$. If $k_{\rm pre}\le s_{sp}/2$,
+maximality gives $k_{j_{\rm pre}+1}>s_{sp}/2$,
+while $k_{j_{\rm pre}+1}\le TqS_{j_{\rm pre}+1}$.
+The same conclusion follows. This also covers
+$j_{\rm pre}=0$.
+
+The deterministic dyadic-group estimates imply
+\[
+  \|V_{r}\|_{\infty}\le8q\frac{\|V_{r}\|_{2}}
+  {\sqrt{R_{r}}}.
+\]
+Apply \cref{record-lemma-5-1} with $c_{\rm rank}=1/4$
+and $C_{\rm reg}=8q$, and let $C_{\rm low},c_{\rm up}$
+be the resulting effective-support thresholds. Fix
+\[
+  0<\rho<\min\left\{\frac18,
+  \frac{c_{\rm up}}{32q^{2}}\right\}.
+\]
+For all sufficiently large $d$, this gives
+\[
+  h-\rho d\ge\frac{d}{4}.
+\]
+Starting after the small-support prefix, retain
+selected groups only while
+\[
+  \sum_{l\le r}k_{l}\le\rho d.
+\]
+Before each retained selected group, both residual
+ranks are at least $h-\rho d$. Moreover,
+$S_{r}\le k_{r}\le\rho d$, so
+\[
+  R_{r}\le16q^{2}S_{r}\le16q^{2}\rho d<c_{\rm up}d.
+\]
+Every retained selected group outside the small-support
+prefix also has
+\[
+  R_{r}\asymp_{q}S_{r}\ge c_{q,T}\frac{d}{\log d}
+  \ge C_{\rm low}\log d
+\]
+for all sufficiently large $d$. Thus
+\cref{record-lemma-5-1} applies with the displayed fixed
+parameters.
+
+If $r_{*}$ is the first selected group not treated by
+span removal, then
+\[
+  S_{r_{*}}\ge c_{q,T,\rho}d.
+\]
+Indeed, the support through $r_{*}$ exceeds $\rho d$,
+while
+\[
+  \sum_{l\le r_{*}}k_{l}\le Tq\sum_{l\le r_{*}}S_{l}\le
+  \frac{Tq^{2}}{q-1}S_{r_{*}}.
+\]
+Since $S_{r}\le|\operatorname{supp}u|\le Kd$ and the
+selected support sizes grow by $q$, the number of
+remaining groups satisfies
+\[
+  J_{\rm late}\le1+\log_{q}
+  \left(\frac{C_{q}KT}{\rho}\right).
+\]
+
+
+%%%%%%%%%%%%%%%%%%%%
+\subsection{Combining nuclear-norm witnesses on
+  orthogonal subspaces}\label{orthogonal-polar-aggregation}
+%%%%%%%%%%%%%%%%%%%%
+
+For each retained group we construct a matrix of operator
+norm at most one that attains the nuclear norm of that
+group's projected contribution. The left and right support
+spaces for different groups are orthogonal. The witnesses
+can therefore be added without increasing the operator norm
+above one.
+
+For a matrix $M$, define
+\[
+  \operatorname{pol}(M)=M(M^TM)^{\dagger/2},
+\]
+where $A^{\dagger/2}$ acts by $\lambda^{-1/2}$ on every
+positive eigenspace of $A$ and by zero on its kernel. Thus
+$\|\operatorname{pol}(M)\|_{op}\le1$ and
+$\langle\operatorname{pol}(M),M\rangle=\|M\|_*$. Let
+$L_0,R_0$ project onto the left and right sample spans of
+the sparse prefix, put $M_0=\mathcal{B}V_0$, and define
+$Z_0=\operatorname{pol}(M_0)$. Then $Z_0=L_0Z_0R_0$; set
+$Z_0=0$ when $M_0=0$.
+
+For a selected group $r$ treated by span removal, let
+$P_{r-1},Q_{r-1}$ project away from every retained sample
+span preceding $r$, and let $P_r,Q_r$ also remove the
+current sample spans. Define
+\[
+  D_r=P_{r-1}-P_r, E_r=Q_{r-1}-Q_r.
+\]
+Nestedness makes $D_r,E_r$ orthogonal projections, and
+different increments are pairwise orthogonal. Moreover,
+\[
+  P_{r-1}\mathcal{B}V_rQ_{r-1} =
+  D_rP_{r-1}\mathcal{B}V_rQ_{r-1}E_r.
+\]
+Indeed, nestedness gives $P_rP_{r-1}=P_r$. For every
+current index $i$, one also has $P_ra_i=0$. Therefore
+\[
+  D_rP_{r-1}a_i=(P_{r-1}-P_r)P_{r-1}a_i=P_{r-1}a_i.
+\]
+The same calculation on the right gives
+$E_rQ_{r-1}b_i=Q_{r-1}b_i$.
+
+Put $M_r=P_{r-1}\mathcal{B}V_rQ_{r-1}$ and
+$Z_r=\operatorname{pol}(M_r)$. Then
+\[
+  Z_r=D_rZ_rE_r, \|Z_r\|_{op}\le1.
+\]
+The prefix support projections and all increments are
+mutually orthogonal. Hence, for
+\[
+  Z=Z_0+\sum_{r\text{ captured}}Z_r,
+\]
+the same calculation as in \cref{record-lemma-2-2} gives
+$Z^TZ\preceq I$ and therefore
+\[
+  \|Z\|_{op}\le1.
+\]
+If $k<r$, every left sample in $V_k$ lies in the span
+removed before increment $D_r$. Thus
+\[
+  \langle Z_r,\mathcal{B}V_k\rangle=0.
+\]
+All earlier cross terms vanish pathwise. Orthogonal
+projection and the canonical partial polar map can be
+chosen as Borel functions of the samples.
+
+%%%%%%%%%%%%%%%%%%%%
+\subsection{Controlling cross terms from later
+  coefficient groups}\label{future-cross-term-supermartingale}
+%%%%%%%%%%%%%%%%%%%%
+
+The witness for an earlier group also pairs with later
+groups. These terms have conditional mean zero but are
+not bounded almost surely. We use their exact conditional
+moment generating function. The quantity $B_{mart}$ below
+is the reciprocal radius on which that moment generating
+function is finite; it is not an almost-sure bound on an
+increment.
+
+Fix deterministic $u$ and its dyadic decomposition. Let
+$\mathcal{F}_{k-1}$ contain all samples in the
+small-support prefix and in retained groups preceding
+group $k$. Let
+\[
+  Z_{<k}=Z_0+\sum_{\substack{r<k\\r\text{ captured}}}Z_r
+\]
+and define
+\[
+  X_k=\langle Z_{<k},\mathcal{B}V_k\rangle.
+\]
+Then $Z_{<k}$ is $\mathcal{F}_{k-1}$-measurable and the
+current cluster samples are independent of
+$\mathcal{F}_{k-1}$.
+
+For independent $a,b\sim N(0,I_h)$ and fixed $Z$,
+\[
+  \E e^{\xi a^TZb}=\det(I-\xi^2ZZ^T)^{-1/2}
+\]
+when $|\xi|\|Z\|_{op}<1$. To verify it, condition on $a$,
+integrate in $b$, and then use the Gaussian
+quadratic-form formula.
+
+Independence across coefficient indices gives
+\[
+  \E(e^{tX_k}\mid\mathcal{F}_{k-1}) = \prod_{i\in
+  \operatorname{supp}V_k} \det\left(I-\frac{t^2(V_k)_i^2}
+  {d}Z_{<k}Z_{<k}^T\right)^{-1/2}.
+\]
+If
+\[
+  |t|\frac{\|V_k\|_\infty\|Z_{<k}\|_{op}}{\sqrt d}\le
+  \frac1{\sqrt2},
+\]
+then every eigenvalue in the logarithm is at most
+$1/2$. Since $-\log(1-x)\le2x$ on $[0,1/2]$,
+\[
+  \E(e^{tX_k}\mid\mathcal{F}_{k-1}) \le
+  \exp\left(\frac{t^2Q_k\|Z_{<k}\|_F^2}{d}\right).
+\]
+Thus the conditional MGF estimate holds for both signs
+of $t$.
+
+Every polar witness has squared Frobenius norm at most
+its supporting rank. Orthogonality and the cumulative
+support bound give
+\[
+  \|Z_{<k}\|_F^2 \le \sum_{l<k}k_l \le C_{q,T}S_k.
+\]
+The deterministic dyadic-group estimates give
+\[
+  Q_k\le C_q\frac{m_k^2}{S_k}
+\]
+and
+\[
+  \|V_k\|_\infty\le C_q\frac{m_k}{S_k}.
+\]
+Put $M=\sum_km_k=\|V\|_1$. Let
+\[
+  v_k=\frac{CQ_k\|Z_{<k}\|_F^2}{d}.
+\]
+The predictable variance sum has the deterministic upper
+bound
+\[
+  \sum_kv_k \le \frac{C_{q,T}}d\sum_km_k^2 \le
+  \frac{C_{q,T}}dM^2=:V_{mart}.
+\]
+Every cluster after the sparse prefix has $S_k\ge
+c_{q,T}d/\log d$. Therefore the reciprocal MGF radius is
+\[
+  B_{mart}:=\max_k\frac{\|V_k\|_\infty}{\sqrt d} \le
+  C_{q,T}\frac{M\log d}{d^{3/2}}.
+\]
+After the homogeneous normalization $M=1$, these are
+exactly $V_{mart}\le C_{q,T}/d$ and $B_{mart}\le
+C_{q,T}\log d/d^{3/2}$. The second quantity is an
+MGF-radius parameter. It is not an almost-sure increment
+bound.
+
+For $0\le\lambda\le c/B_{mart}$, iteration of the
+conditional MGF bound first gives
+\[
+  \E\exp\left(-\lambda\sum_kX_k-\lambda^2\sum_kv_k\right)
+  \le1.
+\]
+Since $\sum_kv_k\le V_{mart}$ pathwise, it follows that
+\[
+  \E\exp\left(-\lambda\sum_kX_k\right)\le
+  e^{\lambda^2V_{mart}}.
+\]
+Markov's inequality gives
+\[
+  \Pp\left(\sum_kX_k\le-x\right) \le
+  \inf_{0\le\lambda\le c/B_{mart}}
+  \exp(-\lambda x+\lambda^2V_{mart}).
+\]
+Choose
+\[
+  \lambda=\min\left\{\frac{x}{2V_{mart}},\frac{c}
+  {2B_{mart}}\right\}.
+\]
+Then
+\[
+  \Pp\left(\sum_kX_k\le-x\right) \le
+  \exp\left[-c\min\left\{\frac{x^2}{V_{mart}},
+  \frac{x}{B_{mart}}\right\}\right].
+\]
+At $x=a_{\rm mart}M\sqrt d$, where $a_{\rm mart}>0$ will
+be chosen below,
+\[
+  \frac{x^2}{V_{mart}}\ge c_{q,T}d^2,
+  \frac{x}{B_{mart}}\ge c_{q,T}\frac{d^2}{\log d}.
+\]
+Thus
+\[
+  \Pp\left(\sum_kX_k<-a_{\rm mart}M\sqrt d\right) \le
+  \exp\left(-c_{q,T}\frac{d^2}{\log d}\right).
+\]
+
+%%%%%%%%%%%%%%%%%%%%
+\subsection{When one remaining dyadic block has
+  macroscopic support}\label{macroscopic-late-driver}
+%%%%%%%%%%%%%%%%%%%%
+
+If the groups treated above carry less than half of the
+coefficient mass, then one of the remaining dyadic blocks
+has support comparable to $d$. We condition on every
+sample outside that block. The other contributions then
+form an arbitrary measurable matrix center, while the
+selected block remains independent and can be handled by
+the arbitrary-center small-ball estimate.
+
+\begin{lemma}\label{record-lemma-9-1}
+  Fix $c_0,K>0$. Let $S\subset[n]$, $s=|S|$, suppose
+  \[
+    c_0d\le s\le Kd,
+  \]
+  and suppose
+  \[
+    \lambda\le|u_i|\le2\lambda
+  \]
+  for $i\in S$. Let $C$ be measurable with respect to
+  \[
+    \mathcal{G}_S=\sigma(a_i,b_i:i\notin S).
+  \]
+  Then there is a numerical constant $c_{\rm ld}>0$ such
+  that, for all sufficiently large $d$ (with the starting
+  dimension allowed to depend on $c_0,K$), almost surely
+  with respect to $\mathcal{G}_S$,
+  \[
+    \Pp\left(\|C+\mathcal{B}u_S\|_*<c_{\rm ld}\sqrt d
+    \|u_S\|_1\sqrt{\frac{\min\{s,d\}}s}\middle|
+    \mathcal{G}_S\right) \le e^{-c_{\rm ld}d\min\{s,d\}}.
+  \]
+\end{lemma}
+
+\begin{proof}
+  Put $\sigma=\|u_S\|_2$ and choose
+  \[
+    r=\lfloor\gamma\min\{s,d\}\rfloor
+  \]
+  with a fixed numerical $\gamma>0$ small. Since
+  $s\ge c_0d$, after increasing the starting dimension
+  if necessary,
+  \[
+    r\ge\frac\gamma2\min\{s,d\}.
+  \]
+  Also, since $\sigma\ge\lambda\sqrt s$,
+  \[
+    \sqrt r\frac{\|u_S\|_\infty}{\sigma} \le
+    2\sqrt\gamma<1/\sqrt2.
+  \]
+  Partition both coordinate spaces into $J_0\ge cd/r$
+  paired $r$ by $r$ blocks. Conditional on
+  $\mathcal{G}_S$, every block of $C$ is fixed and the
+  selected coefficient block uses independent Gaussian
+  coordinates in distinct paired coordinate blocks. For
+  each paired block, \cref{record-lemma-2-1} shows that
+  the conditional probability that its nuclear norm is
+  smaller than
+  \[
+    c\sigma\frac{r^{3/2}}{\sqrt d}
+  \]
+  is at most $e^{-cr^2}$. Let $N_{good}$ denote the
+  number of paired blocks whose nuclear norm is at least
+  this threshold. The binomial calculation in
+  \cref{record-lemma-5-1} gives
+  \[
+    \Pp(N_{good}<J_0/2\mid\mathcal{G}_S)\le
+    e^{-cJ_0r^2}\le e^{-cdr}.
+  \]
+  On the complementary event, the pinching estimate
+  \cref{record-lemma-2-2} gives
+  \[
+    \|C+\mathcal{B}u_S\|_* \ge c\frac dr\sigma
+    \frac{r^{3/2}}{\sqrt d} = c\sigma\sqrt{dr}.
+  \]
+  Flatness gives $\sigma\ge\|u_S\|_1/(2\sqrt s)$. Since
+  $r\asymp\min\{s,d\}$, the last display proves the
+  asserted scale and exponent.
+\end{proof}
+
+Suppose now that less than half of $M=\|V\|_1$ lies in
+the small-support prefix and the groups treated by span
+removal. The remaining groups carry more than $M/2$.
+There are at most $J_{late}$ of them, so one remaining
+group has mass at least $M/(2J_{late})$. Its base dyadic
+bin has mass at least a $1/(4q)$ fraction of its group
+mass, because the group upper bound is $4q\lambda_rS_r$.
+
+Call this base bin $S$. It is deterministic once the
+coefficient vector is fixed. It satisfies
+\[
+  c_{q,T,\rho}d\le|S|\le Kd.
+\]
+Reveal $\mathcal{G}_S$. The center
+\[
+  C=\mathcal{B}(V-u_S)
+\]
+is $\mathcal{G}_S$-measurable, while the samples in the
+selected block remain independent of $\mathcal{G}_S$.
+The macroscopic-block estimate \cref{record-lemma-9-1},
+applied with $c_0=c_{q,T,\rho}$ and the preceding fixed
+$K$, therefore gives, almost surely with respect to
+$\mathcal{G}_S$,
+\[
+  \Pp\left(\|\mathcal{B}V\|_*<\frac{c_{\rm ld}\sqrt d}
+  {8q\sqrt{K_+}J_{late}}M\middle|\mathcal{G}_S\right)
+  \le e^{-c_{q,T,\rho,K}d^2}.
+\]
+
+%%%%%%%%%%%%%%%%%%%%
+\subsection{Combining the two alternatives for one fixed
+  coefficient vector}\label{fixed-vector-combination}
+%%%%%%%%%%%%%%%%%%%%
+
+By homogeneity, normalize $\|u\|_1=1$. Let $T$ be
+specified below and put $M=\|V\|_1\ge1-\epsilon_T$.
+
+Let $M_{cap}$ be the mass in the small-support prefix
+and the groups treated by span removal. If $M_{cap}\ge
+M/2$, the sparse and projected lower bounds give a
+diagonal polar pairing at least
+\[
+  c\sqrt dM_{cap}\ge c\sqrt dM.
+\]
+By \cref{orthogonal-polar-aggregation}, the aggregate
+witness has operator norm at most one and all backward
+terms vanish. The supermartingale estimate in
+\cref{future-cross-term-supermartingale} gives
+\[
+  \Pp\left(\sum_kX_k<-cM\sqrt d\right)\le
+  \exp\left(-c_{q,T}\frac{d^2}{\log d}\right).
+\]
+Choose $a_{\rm mart}$ to be half the diagonal constant.
+Then
+\[
+  \|\mathcal{B}V\|_*\ge c\sqrt dM.
+\]
+For each projected group $r$, let $F_r$ be the event
+that the lower bound from \cref{record-lemma-5-1} fails.
+Every such $R_r$ outside the small-support prefix is at
+least $c_{q,T}d/\log d$, and there are at most
+$1+\log_q(Kd)$ groups. The tower property and a union
+bound give
+\[
+  \Pp\left(\bigcup_rF_r\right)\le C\log
+  d\exp\left(-c_{q,T}\frac{d^2}{\log d}\right).
+\]
+If $M_{cap}<M/2$, let $F_{late}$ be the event that the
+following lower bound fails:
+\[
+  \|\mathcal{B}V\|_* \ge \frac{c}
+  {\sqrt{K_+}[1+\log_q(C_qK_+T/\rho)]}\sqrt dM.
+\]
+The conditional estimate in
+\cref{macroscopic-late-driver}, followed by the tower
+property, gives
+\[
+  \Pp(F_{late})\le e^{-c_{q,T,\rho,K}d^2}.
+\]
+Combining the branches, for every fixed deterministic
+$u$,
+\[
+  \Pp\left(\{\|\mathcal{B}V\|_*<c_{ret}(K,T)\sqrt d
+  \|V\|_1\}\cap E_{sp}\right) \le C\log
+  d\exp\left(-c_{q,T,K}\frac{d^2}{\log d}\right),
+\]
+where
+\[
+  c_{ret}(K,T) \ge \frac{c}
+  {\sqrt{K_+}[1+\log_q(C_qK_+T/\rho)]}.
+\]
+On $E_{atom}$,
+\[
+  \|\mathcal{B}W\|_*\le C_A\epsilon_T\sqrt d\|u\|_1.
+\]
+Therefore
+\[
+  \|\mathcal{B}u\|_* \ge \left[c_{ret}(K,T)(1-
+  \epsilon_T)-C_A\epsilon_T\right]\sqrt d\|u\|_1.
+\]
+Now fix $q=2$ and $\rho$ as above. Set
+\[
+  T=\left\lceil T_0+2\log_2(eK_+)\right\rceil.
+\]
+The lower constants in the small-support-prefix and
+projected-group arguments depend on $q$ and $\rho$, but
+not on $T$, and the macroscopic-block scale constant
+$c_{\rm ld}$ is numerical. The truncation depth affects
+the cumulative support factor, the exceptional exponent,
+the starting dimension, and the number of remaining
+groups. Thus the retained lower-bound scale loses only
+the factor $1+\log K_+$ displayed below.
+
+The ratio
+\[
+  \frac{(1+\log(K_+T))}{K_+^{3/2}}
+\]
+is bounded on $K_+\ge1$. Hence $T_0$, depending only on
+the atom constant, can be chosen so that
+\[
+  C_A\epsilon_T\le\frac14c_{ret}(K,T)
+\]
+for every fixed $K$. With $T_0$ increased if needed,
+$\epsilon_T\le1/2$. Define $c_{\rm ms}(A)>0$ to be a
+sufficiently small constant depending only on the
+single-summand bound for aspect parameter $A$. It follows
+that
+\[
+  \|\mathcal{B}u\|_* \ge \frac{c_{\rm ms}(A)}
+  {\sqrt{K_+}(1+\log K_+)}\sqrt d\|u\|_1.
+\]
+If $F_u$ denotes the event that this inequality fails,
+then, for every fixed deterministic $u$,
+\[
+  \Pp(F_u\cap E_{sp}\cap E_{atom})\le C\log
+  d\exp\left(-c_{q,T,K}\frac{d^2}{\log d}\right).
+\]
+
+%%%%%%%%%%%%%%%%%%%%
+\subsection{Uniformity over every support and
+  coefficient vector}\label{whole-class-deterministic-union}
+%%%%%%%%%%%%%%%%%%%%
+
+Normalize $\|u\|_1=1$. Denote the fixed-vector constant
+obtained in \cref{fixed-vector-combination} by
+\[
+  c^{fix}_{K,A}=\frac{c_{\rm ms}(A)}
+  {\sqrt{K_+}(1+\log K_+)}.
+\]
+For each support $S$ with $|S|\le Kd$, take a
+deterministic $\delta$-net of its $\ell_1$ unit sphere
+in $\ell_1$ distance, with
+\[
+  \delta=\frac{c^{fix}_{K,A}}{4C_A}.
+\]
+A volumetric packing argument gives at most
+\[
+  (1+4/\delta)^{|S|}
+\]
+points. Thus
+\[
+  \log N_{coef}\le Kd\log(1+4/\delta)=O_{A,K}(d).
+\]
+If $Kd\le n/2$, then
+\[
+  \log N_{supp} \le Kd\log\left(\frac{en}{Kd}\right)
+  +O_K(d)=O_{A,K}(d\log d).
+\]
+If $Kd>n/2$, then either $n=O_K(d)$ and
+$2^n=e^{O_K(d)}$, or one may use the same upper bound
+after replacing $Kd$ by $\min\{Kd,n\}$. In every case,
+\[
+  \log N_{supp}=O_{A,K}(d\log d).
+\]
+Each deterministic net point determines its dyadic
+decomposition. Absolute dyadic locations, gaps between
+selected support sizes, group partitions, and stopping
+indices are deterministic functions of that point.
+Projections and nuclear-norm witnesses are Borel
+functions of the revealed Gaussian samples and are
+handled by conditional probability. Thus the support and
+coefficient nets account for all entropy terms.
+
+The union-bound exponent is
+\[
+  -c'_{K,A}\frac{d^2}{\log d}+C_{A,K}d\log d
+  \longrightarrow-\infty.
+\]
+Indeed, if $E_{net}$ denotes validity at every net
+point, then
+\[
+  \Pp(E_{net}^c\cap E_{sp}\cap E_{atom}) \le
+  \exp\left[-c'_{K,A}\frac{d^2}{\log d}+C_{A,K}d\log
+  d\right].
+\]
+If $u_0$ is a net point with $\|u-u_0\|_1\le\delta$,
+then on $E_{atom}$,
+\[
+  \|\mathcal{B}(u-u_0)\|_* \le C_A\sqrt d\delta \le
+  \frac14c^{fix}_{K,A}\sqrt d.
+\]
+Both $u$ and $u_0$ have $\ell_1$-norm one, so the net
+lower bound extends with a fixed factor loss. Combining
+the last three probability estimates gives
+\[
+  \Pp\left(\inf_{\substack{u\ne0\\
+  |\operatorname{supp}u|\le Kd}}\frac{\|\mathcal{B}u\|_*}
+  {\sqrt d\|u\|_1}<\frac12c^{fix}_{K,A}\right)\to0.
+\]
+Renaming the constant proves \cref{main-theorem-6-1}
+and hence \cref{the-clipped-head-theorem}.
+   
+\end{aiblock}
+
+%%%%%%%%%%%%%%%%%%%%
+\section{How the bilinear block enters the centered
+  adjoint map}\label{off-diagonal-small-balls-and-product-state-continuity}
+%%%%%%%%%%%%%%%%%%%%
+
+\begin{aiblock}
+ 
+Let $h=\lfloor d/2\rfloor$. Split each sample into
+independent coordinate halves $a_i,b_i\in\mathbb R^h$; if $d$
+is odd, the middle coordinate is discarded. Define
+\[
+  \mathcal{B}y=\frac1{\sqrt d}\sum_i y_i a_ib_i^T.
+\]
+The identity matrix has zero off-diagonal block, and
+rectangular compression is nuclear-norm contractive, so
+this projection preserves the validity of the lower bound.
+Hence
+\[
+  \|\mathcal{T}_d^*y\|_*\ge\|\mathcal{B}y\|_*
+\]
+for $y\perp\1_n$.
+
+\begin{lemma}[Arbitrary-center determinant small
+  ball]\label{main-lemma-4-1}
+  Fix $0<\theta<1/\sqrt2$. Uniformly over deterministic
+  $z\in\mathbb R^n$ satisfying
+  \[
+    \|z\|_2=1, \|z\|_\infty\le\frac\theta{\sqrt d},
+  \]
+  and deterministic $N\in\mathbb R^{h\times h}$,
+  \[
+    \Pp\left(\left\|\frac1{\sqrt d}\sum_i z_i
+    a_ib_i^T-N\right\|_F\le t\sqrt d\right)
+    \le(C_\theta t)^{h^2}, 0<t<1.
+  \]
+\end{lemma}
+
+\begin{proof}
+  Apply \cref{prop:det-frobenius-small-ball} with
+  $r=h$. The coefficient cap is valid because
+  \[
+    \sqrt h\|z\|_\infty\le\theta\sqrt{h/d}<\theta.
+  \]
+  Moreover,
+  \[
+    \frac1{\sqrt d}\sum_i z_ia_ib_i^T=\sqrt{h/d}Y_z.
+  \]
+  Thus a Frobenius radius $t\sqrt d$ on the left becomes
+  a radius $t(d/h)\sqrt h$ for $Y_z$. Since $d/h\le3$ for
+  $d\ge2$, the factor is absorbed into $C_\theta$. The
+  exact coordinate-block statement used later is
+  \cref{cor:det-scaled-block}.
+\end{proof}
+
+\begin{lemma}[Operator norm bound for the bilinear
+  measurement matrix]\label{main-lemma-4-2}
+  If $n=O(d^2)$, then
+  \[
+    \|\mathcal{B}\|_{2\mathbin{\to}F}=O_{\Pp}(\sqrt d).
+  \]
+\end{lemma}
+
+\begin{proof}
+  Use row vectorization, so that
+  $\operatorname{vec}_r(ab^T)=a\otimes b$. If $V$ is the
+  $h^2$ by $n$ matrix with columns $a_i\otimes b_i$, then
+  \[
+    \operatorname{vec}_r(\mathcal{B}y)=\frac1{\sqrt d}Vy.
+  \]
+  Consequently,
+  \[
+    \|\mathcal{B}\|_{2\mathbin{\to}F}^2 =\frac1d
+    \left\|\sum_i(a_i\otimes b_i)(a_i\otimes
+    b_i)^T\right\|_{op}.
+  \]
+  Introduce independent real copies $a_i',b_i'$ and, for
+  $s,t\in\{-1,1\}$, put
+  \[
+    z_{i,s,t}=\frac{(a_i+\mathrm i s a_i')\otimes(b_i+
+    \mathrm i t b_i')}{2h}.
+  \]
+  Write
+  \[
+    \phi_{i,s}=\frac{a_i+\mathrm i s a_i'}{\sqrt{2h}},
+  \]
+  and
+  \[
+    \psi_{i,t}=\frac{b_i+\mathrm i t b_i'}{\sqrt{2h}}.
+  \]
+  Then $z_{i,s,t}=\phi_{i,s}\otimes\psi_{i,t}$. Every
+  complex coordinate of either factor has independent
+  real and imaginary parts of variance $1/(2h)$. Hence
+  \[
+    \E\|\phi_{i,s}\|_2^2=\E\|\psi_{i,t}\|_2^2=1.
+  \]
+  Thus, for each fixed $(s,t)$, the vectors $z_{i,s,t}$
+  are independent tensor products of two complex Gaussian
+  vectors in $\mathbb C^h$. Ambainis, Harrow, and
+  Hastings call these \emph{two-factor complex Gaussian
+  product states}; this is source terminology, and the
+  normalization above is exactly theirs.
+
+  To verify the PSD domination, put
+  \[
+    u_i=a_i\otimes b_i,
+  \]
+  \[
+    v_i=a_i\otimes b_i',
+  \]
+  \[
+    r_i=a_i'\otimes b_i,
+  \]
+  and
+  \[
+    q_i=a_i'\otimes b_i'.
+  \]
+  Then
+  \[
+    2h z_{i,s,t}=u_i+\mathrm i t v_i+\mathrm i s
+    r_i-stq_i.
+  \]
+  Since $\sum_s s=\sum_t t=\sum_{s,t}st=0$,
+  summing the four Hermitian rank-one
+  projectors cancels all mixed terms and
+  gives
+  \[
+    \sum_{s,t}z_{i,s,t}z_{i,s,t}^* =\frac1{h^2}
+    \left(u_iu_i^T+v_iv_i^T+r_ir_i^T+q_iq_i^T\right).
+  \]
+  Therefore
+  \[
+    (a_i\otimes b_i)(a_i\otimes b_i)^T \preceq
+    h^2\sum_{s,t}z_{i,s,t}z_{i,s,t}^*.
+  \]
+  In the notation of
+  \cite{AmbainisHarrowHastings2012} with $k=2$,
+  local dim $h$, fix $x_0>\sup n/h^2$ to get
+  fixed aspect $N_{\rm aug}/h^2=x_0$ for Cor~3,
+  put $N_{\rm aug}=x_0h^2$, and for each
+  $(s,t)$ augment by $N_{\rm aug}-n$ i.i.d.\
+  states; adding PSD terms only increases
+  $\|\cdot\|_{op}$, so the augmented
+  $\widehat M_{s,t}^{\rm aug}$ dominates the
+  original sum. Denote its normalized version
+  by $M_{N_{\rm aug},h,2}^{\rm norm}$
+  ($\E\|\phi\|_2^2=1$) for the concentration
+  below.
+
+
+  The distinction between these two ensembles matters in
+  the concentration formula. Corollary 3 gives, at the
+  fixed aspect $p/h^2=x_0$,
+  \[
+    \E\|M_{N_{\rm aug},h,2}^{\rm norm}\|_{op} \le
+    (1+\sqrt{x_0})^2+o(1).
+  \]
+  Equation (11) of Ambainis, Harrow, and Hastings states
+  that, for fixed $0<\epsilon\le1$ and $\Delta>0$,
+  \[
+    \begin{aligned}
+      &\Pp\left(
+      \left|\|\widehat M_{s,t}^{\rm aug}\|_{op}
+      -\E\|M_{N_{\rm aug},h,2}^{\rm norm}\|_{op}\right|
+      \ge \epsilon\E\|M_{N_{\rm aug},h,2}^{\rm norm}\|
+      _{op}+\Delta \right)\\
+      &\hspace{4em}\le4N_{\rm aug}
+      e^{-h\epsilon^2/16}+2e^{-(h-1)\Delta^2/8}.
+    \end{aligned}
+  \]
+  In particular, by fixing $\epsilon$ and $\Delta$,
+  there are constants $C,c>0$ such that
+  \[
+    \Pp\left( \left\|\sum_{i=1}^n
+    z_{i,s,t}z_{i,s,t}^*\right\|_{op}>C \right) \le
+    e^{-ch+O(\log h)}.
+  \]
+  The four sign ensembles are dependent, but a union over
+  four events needs no independence. On their common
+  event, summing the PSD domination over $i$ and using
+  vectorization gives
+  \[
+    \|\mathcal{B}\|_{2\mathbin{\to}F}^2 \le\frac{h^2}{d}
+    \sum_{s,t} \left\|\sum_i
+    z_{i,s,t}z_{i,s,t}^*\right\|_{op} \le
+    C\frac{h^2}{d}.
+  \]
+  Since $h=\lfloor d/2\rfloor$, this is at most $Cd$.
+  Hence
+  \[
+    \Pp\left(\|\mathcal{B}\|_{2\mathbin{\to}F}>C\sqrt d
+    \right) \le e^{-cd+O(\log d)}.
+  \]
+  This proves the asserted tightness and a stronger
+  fixed-constant high-probability form.
+\end{proof}
+   
+\end{aiblock}
+
+
+ 
+%%%%%%%%%%%%%%%%%%%%
+\section{The uniform estimate for
+  small-coordinate
+  vectors}\label{the-localized-conditional-tube-theorem}
+%%%%%%%%%%%%%%%%%%%%
+
+\begin{aiblock}
+ 
+For $R>0$, let
+\[
+  \mathcal B_*(R)=\{N\in\mathbb R^{h\times h}:
+  \|N\|_*\le R\}.
+\]
+Let $B_F$ be the Frobenius unit ball in
+$\mathbb R^{h\times h}$.
+
+The nuclear-ball covering lemma
+Lemma~\ref{lem:det-nuclear-cover} gives
+\[
+  \log N(\mathcal B_*(R),sB_F)\le C\frac{R^2h}{s^2}.
+\]
+At $R=cqd$ and $s=\zeta q\sqrt d$, the right side is
+$C(c/\zeta)^2d^2$. Homogeneity removes $q$ exactly. This
+is essential because a scale-dependent low-rank cover
+would instead introduce an unnecessary $d^2\log(1/q)$
+cost.
+
+\begin{proposition}\label{prop:small-coordinate-restatement}
+  Fix $\alpha_0<1/4$, $0<\theta<1/\sqrt2$, and positive
+  constants $A,B,\beta,K,c_0,C_0,L$. Suppose $n\le
+  \alpha_0d^2$ and work on
+  \[
+    E_d(L)=\{\|\mathcal B\|_{2\to F}\le L\sqrt d\}.
+  \]
+  Let $F_{d,L}$ be the event that the simultaneous
+  conclusion below fails. There are $c,\gamma>0$ such
+  that, for all sufficiently large $d$,
+  \[
+    \Pp(F_{d,L}\cap E_d(L))\le e^{-\gamma d^2}.
+  \]
+  The conclusion is the following. Simultaneously for
+  every $c_0d^{-1/2}\le q\le C_0$, if $I\subset[n]$ and
+  $U,V$ satisfy
+  \[
+    |I|\le Kd,\quad\supp U\subset I,\quad\supp
+    V\subset I^c,
+  \]
+  \[
+    \|U\|_1\le Aq\sqrt d,\quad\beta q\le\|V\|_2\le Bq,
+  \]
+  and
+  \[
+    \sqrt d\|V\|_\infty\le\theta\|V\|_2,
+  \]
+  then
+  \[
+    \|\mathcal B(U+V)\|_*\ge cqd.
+  \]
+\end{proposition}
+
+\begin{proof}
+  This is the restriction of \cref{main-proposition-5-1}
+  to $c_0d^{-1/2}\le q\le C_0$. That proposition proves
+  the stronger statement simultaneously for every $q>0$,
+  with the same event-level probability bound.
+\end{proof}
+\end{aiblock}
+
+
+ 
+%%%%%%%%%%%%%%%%%%%%
+\section{The uniform estimate for the large-coordinate
+  part}\label{the-uniform-estimate-for-the-large-coordinate-part}
+%%%%%%%%%%%%%%%%%%%%
+
+\begin{aiblock}
+
+This theorem is the global output of
+\cref{expert-multiscale-module}. It contains no flatness
+assumption and is simultaneous over supports and
+coefficients chosen from the same data. Its dependence on
+the support-size constant $K$ is displayed because it
+will be needed when $K=\eta^{-2}$ in the next section.
+
+\begin{theorem}\label{the-clipped-head-theorem}
+  Fix $0<K,A<\infty$ and assume $n\le Ad^2$. Put
+  $K_+=\max\{K,1\}$. There is $c_{K,A}>0$ such that,
+  uniformly over every such sequence $n=n_d$,
+  \[
+    \Pp\left( \inf_{\substack{u\ne0\\|\supp u|\le Kd}}
+    \frac{\|\mathcal Bu\|_*}{\sqrt d\|u\|_1}<c_{K,A}
+    \right)\longrightarrow0.
+  \]
+  Equivalently, with probability tending to one,
+  uniformly over all $u$ with $|\supp u|\le Kd$,
+  \[
+    \|\mathcal Bu\|_*\ge c_{K,A}\sqrt d\|u\|_1.
+  \]
+  Moreover, there is a constant $c_{\rm ms}(A)>0$,
+  depending only on $A$, such that
+  \[
+    c_{K,A}\ge\frac{c_{\rm ms}(A)}{\sqrt{K_+}(1+\log
+    K_+)}.
+  \]
+\end{theorem}
+
+\begin{proof}
+  The dyadic coefficient decomposition, projected block
+  estimate, orthogonal witness aggregation, conditional
+  exponential estimate for future cross terms,
+  macroscopic last-block alternative, and deterministic
+  union bound are proved in
+  \cref{expert-multiscale-module}.
+\end{proof}
+
+ \end{aiblock}
+%%%%%%%%%%%%%%%%%%%%
+\section{Combining the large and small
+  coordinates}\label{exact-clipping-and-the-mixed-modulus}
+%%%%%%%%%%%%%%%%%%%%
+
+\begin{aiblock}
+The next norm is an infimal convolution of a scaled
+$\ell_1$ norm and a scaled Euclidean norm. Its minimizing
+decomposition automatically separates a vector into a part
+supported on at most $d/\eta^2$ coordinates and a remaining
+part with a coordinatewise cap. This deterministic fact is
+the exact interface between the two preceding
+probabilistic estimates.
+
+For $0<\eta<1$, define
+\[
+  N_\eta(y)=\inf_{y=u+v} \left[\eta\sqrt d\|u\|_1+d\|v\|_2
+  \right].
+\]
+Minimize $\eta\sqrt d\|y-v\|_1+d\|v\|_2$ and put $u=y-v$.
+If $v\ne0$, subgradient optimality gives, coordinatewise,
+\[
+  \frac{dv_i}{\|v\|_2}\in\eta\sqrt d\partial|y_i-v_i|.
+\]
+Thus
+\[
+  |v_i|\le\frac{\eta\|v\|_2}{\sqrt d},
+\]
+with equality and matching sign whenever $u_i\ne0$. If
+$I=\operatorname{supp}u$, then
+\[
+  \|v\|_2^2\ge\sum_{i\in I}v_i^2=|I|\frac{\eta^2\|v\|_2^2}{d},
+\]
+so $|I|\le d/\eta^2$. If $v=0$, optimality gives an
+$s\in\partial\|y\|_1$ satisfying $\eta\sqrt d\|s\|_2\le
+d$. Since $|s_i|=1$ on $\operatorname{supp}y$, the same
+support bound follows.
+\end{aiblock}
+\begin{aiblock}
+For $v\ne0$, put
+\[
+  I=\operatorname{supp}u, U=y_I=u+v_I, V=y_{I^c}=v_{I^c}.
+\]
+Then $U,V$ have disjoint supports. Moreover,
+\[
+  \eta\sqrt d\|U\|_1\le\eta\sqrt d\|u\|_1+d\|v\|_2=
+  N_\eta(y),
+\]
+where the first inequality uses
+$\|v_I\|_1\le\sqrt{|I|}\|v\|_2$, and $\|V\|_2\le\|v\|_2\le
+N_\eta(y)/d$. If $\|y\|_2=1$ and
+\[
+  q_y=\frac{N_\eta(y)}d,
+\]
+then $q_y\le1$ by choosing $v=y$. Conversely, for every
+$y=u+v$,
+\[
+  \eta\sqrt d\|u\|_1+d\|v\|_2\ge\eta\sqrt d(\|u\|_2+
+  \|v\|_2)\ge\eta\sqrt d,
+\]
+so
+\[
+  \frac\eta{\sqrt d}\le q_y\le1,
+\]
+\[
+  \|U\|_1\le\frac{q_y\sqrt d}{\eta}, \|V\|_2\le q_y.
+\]
+If $\|V\|_2\ge\beta q_y$, then
+\[
+  \sqrt d\|V\|_\infty\le\frac\eta\beta\|V\|_2.
+\]
+On $I$, the matching-sign relation gives
+\[
+  \eta\sqrt d\|v_I\|_1=d\frac{\|v_I\|_2^2}{\|v\|_2}.
+\]
+Consequently,
+\[
+  \eta\sqrt d\|U\|_1 =N_\eta(y)-d\frac{\|V\|_2^2}
+  {\|v\|_2} \ge N_\eta(y)-d\|V\|_2.
+\]
+
+\begin{theorem}[Mixed-norm lower bound for the adjoint
+  map]\label{main-theorem-7-1}
+  Assume $\limsup n/d^2<1/4$. For every $\delta>0$, there
+  are fixed constants $\eta_\delta,c_\delta>0$ and events
+  $G_{d,\delta}$ such that
+  \[
+    \limsup_d\Pp(G_{d,\delta}^c)\le\delta
+  \]
+  and, on $G_{d,\delta}$,
+  \[
+    \|\mathcal{T}_d^*y\|_*\ge c_\delta N_{\eta_\delta}(y)
+  \]
+  for every $y\perp\1_n$.
+\end{theorem}
+
+\begin{proof}
+  By homogeneity, let $\|y\|_2=1$. Tightness in
+  \cref{main-lemma-4-2} gives, for fixed $\delta$, a fixed
+  $L_\delta$ such that
+  \[
+    \limsup_d\Pp(E_d(L_\delta)^c)\le\delta.
+  \]
+  For the multiscale theorem, use the fixed aspect bound
+  $A_0=1$, since $n\le\alpha_0d^2<d^2$. Its quantitative
+  constant gives, for every $0<\eta<1$,
+  \[
+    \frac{c_{\eta^{-2},A_0}}{\eta} \ge\frac{c}{1+\log
+    (1/\eta)}.
+  \]
+  Choose $\eta=\eta_\delta$ so small that
+  \[
+    2CL_\delta\eta <\frac12\frac{c}{1+\log(1/\eta)}
+    (1-2\eta).
+  \]
+  This is possible because $\eta[1+\log(1/\eta)]\to0$.
+  Now set
+  \[
+    K=\eta^{-2},
+  \]
+  \[
+    \beta=2\eta,
+  \]
+  and
+  \[
+    c_H(\eta)=\frac{c_{K,A_0}}{\eta}.
+  \]
+  Then $\eta/\beta=1/2<1/\sqrt2$, and
+  \cref{the-clipped-head-theorem} gives
+  \[
+    \|\mathcal{B}U\|_* \ge c_{K,A_0}\sqrt d\|U\|_1.
+  \]
+  On $E_d(L_\delta)$,
+  \[
+    \|\mathcal{B}z\|_* \le\sqrt h\|\mathcal{B}z\|_F \le
+    C L_\delta d\|z\|_2.
+  \]
+  The chosen inequality remains true with the actual
+  $c_H(\eta)$ in place of its lower bound. The absorption
+  uses the rescaled large-coordinate constant
+  $c_H=c_{K,A_0}/\eta$, not the unscaled constant
+  $c_{K,A_0}$.
+
+  If $\|V\|_2\ge\beta q_y$,
+  \cref{prop:small-coordinate-restatement} applies with
+  the fixed parameters
+  \[
+    A=2/\eta,\ B=1,\ \beta=2\eta,\ K=\eta^{-2},\
+    \theta=1/2,\ c_0=\eta,\ C_0=1,\ L=L_\delta,
+  \]
+  and gives $\|\mathcal{B}(U+V)\|_*\ge cN_\eta(y)$.
+
+  If $\|V\|_2<\beta q_y$, then
+  \[
+    \|\mathcal{B}U\|_* \ge c_H(\eta)(1-\beta)N_\eta(y),
+  \]
+  while
+  \[
+    \|\mathcal{B}V\|_* \le CL_\delta\beta N_\eta(y).
+  \]
+  The parameter inequality absorbs this error and leaves
+  half the head contribution. The case $v=0$ is purely
+  sparse and follows directly from
+  \cref{the-clipped-head-theorem}.
+
+  Let $E_{\rm large}(K)$ be the simultaneous
+  large-coordinate event in
+  \cref{the-clipped-head-theorem}, and let
+  $F_{d,L_\delta}$ be the bad event in
+  \cref{prop:small-coordinate-restatement} with the
+  parameters displayed above. Define
+  \[
+    G_{d,\delta}=E_d(L_\delta)\cap E_{\rm large}(K)\cap
+    F_{d,L_\delta}^c.
+  \]
+  Then
+  \[
+    \Pp(G_{d,\delta}^c)\le\Pp(E_d(L_\delta)^c)+
+    \Pp(E_{\rm large}(K)^c)+\Pp(F_{d,L_\delta}\cap
+    E_d(L_\delta)).
+  \]
+  The first term has limiting upper bound at most
+  $\delta$, the second tends to zero, and the third is
+  at most $e^{-c_\delta d^2}$. Taking the minimum of the
+  two branch constants proves the theorem on
+  $G_{d,\delta}$.
+\end{proof}
+
+\end{aiblock}
+
+%%%%%%%%%%%%%%%%%%%%
+\section{Exact correction and preservation of positive
+  definiteness}\label{quotient-exactification-and-sat-below-one-quarter}
+%%%%%%%%%%%%%%%%%%%%
+
+
+\begin{aiblock}
+ 
+The dual norm of $N_\eta$ on the full coefficient space
+is
+\[
+  N_\eta^*(e)=\max\left\{ \frac{\|e\|_\infty}
+  {\eta\sqrt d}, \frac{\|e\|_2}{d} \right\}.
+\]
+Indeed, the polar of the infimal-convolution unit ball
+is the intersection of the $\ell_\infty$ ball of radius
+$\eta\sqrt d$ and the Euclidean ball of radius $d$.
+Restriction to $\1_n^\perp$ can only reduce the dual
+support function, so the displayed formula remains a
+valid upper bound there.
+
+Almost surely the rank-one matrices $x_ix_i^T$ are
+linearly independent whenever $n\le d(d+1)/2$. This rank
+event is the nonvanishing of a polynomial, and it is
+nonempty because the matrices
+\[
+  e_je_j^T\text{ and }(e_j+e_k)(e_j+e_k)^T\text{ for
+  }1\le j<k\le d
+\]
+span $\operatorname{Sym}_d$: subtracting the two
+relevant diagonal matrices from the second type recovers
+$e_je_k^T+e_ke_j^T$. Thus $\mathcal{A}_d$ is surjective
+and $\mathcal{T}_d$ is surjective onto $\1_n^\perp$.
+
+\begin{lemma}[Finite-dimensional quotient
+  duality]\label{lem:quotient-duality}
+  Let $T:X\to Y$ be a surjective linear map between
+  finite-dimensional normed spaces. Then, for every
+  $e\in Y$,
+  \[
+    \inf_{Tx=e}\|x\|_X =\sup_{\substack{y^*\in Y^*\\
+    \|T^*y^*\|_{X^*}\le1}} |\langle e,y^*\rangle|.
+  \]
+  The infimum is attained.
+\end{lemma}
+
+\begin{proof}
+  The left side is the quotient norm induced by
+  $X/\ker T$. Its dual norm is
+  $y^*\mapsto\|T^*y^*\|_{X^*}$. Duality of a
+  finite-dimensional norm with its polar gives the
+  equality. Attainment follows by intersecting the
+  closed affine fiber $T^{-1}(e)$ with a sufficiently
+  large compact norm ball.
+\end{proof}
+
+Define
+\[
+  \kappa_d(S)=\inf\{\|H\|_{op}:\cT_d(H)=-\PiZero\rvec(S)\}.
+\]
+For $e=\PiZero\rvec(S_d^*)$,
+Lemma~\ref{lem:quotient-duality} gives
+\[
+  \kappa_d(S_d^*) =\inf_{\mathcal{T}_d(H)=-e}\|H\|_{op}
+  =\sup_{\substack{y\perp\1_n\\\|\mathcal{T}_d^*y\|_*
+  \le1}} |\langle e,y\rangle|.
+\]
+On $G_{d,\delta}$,
+\[
+  \kappa_d(S_d^*) \le c_\delta^{-1} \max\left\{
+  \frac{\|\PiZero\rvec(S_d^*)\|_\infty}{\eta_\delta
+  \sqrt d}, \frac{\|\PiZero\rvec(S_d^*)\|_2}{d}
+  \right\}.
+\]
+For every fixed $\delta$, \cref{main-proposition-3-1}
+makes the right side tend to zero in probability.
+Therefore, for every $r>0$,
+\[
+  \limsup_d\Pp(\kappa_d(S_d^*)>r)\le\delta.
+\]
+Letting $\delta\downarrow0$ after the $d$ limit gives
+$\kappa_d(S_d^*)\xrightarrow{\Pp}0$.
+
+The quotient infimum is attained because the affine
+constraint is closed and an operator-norm ball is compact
+in finite dimension. Choose an attainer $H_d$; no
+measurable selection is needed for the pathwise
+existence conclusion. Since $S_d^*\succeq\lambda_-I$,
+\[
+  Q_d=S_d^*+H_d\succeq\frac{\lambda_-}2I
+\]
+with probability tending to one. Also
+$\PiZero\mathcal{A}_d(Q_d)=0$, so
+$\mathcal{A}_d(Q_d)=c_d\1_n$. Positivity gives $c_d>0$.
+Then
+\[
+  \widehat S_d=\frac d{c_d}Q_d
+\]
+is positive definite and belongs to $\mathcal{F}_d$.
+This proves the feasible assertion in \cref{thm:main}.
+
+\end{aiblock}
+
+
+
+
+% %%%%%%%%%%%%%%%%%%%% -Part-
+% \part{Infeasibility above the
+%   threshold}\label{part-infeasibility-above-the-threshold}
+% %%%%%%%%%%%%%%%%%%%%
+
+
+
+%%%%%%%%%%%%%%%%%%%%
+\section{Leave-one-row interpolation for diffuse
+  positive semidefinite
+  matrices}\label{expert-leave-one-row-module}
+%%%%%%%%%%%%%%%%%%%%
+
+
+\begin{humanblock}
+
+
+This section contains the full comparison argument before
+it is used in the proof of infeasibility. The phrase
+leave-one-row interpolation means the following concrete
+construction. During the replacement of row $m$, we
+condition on all rows except row $m$ and define one Gibbs
+measure from those rows. That conditional measure is
+independent of both possible choices for the current row.
+The comparison then follows from an exact third-order
+interpolation identity.
+
+\end{humanblock}
+\begin{aiblock}
+
+ % BEGIN INLINED FILE: leave_one_row_module.tex
+%%%%%%%%%%%%%%%%%%%%
+\subsection{Uniform lower bound for diffuse
+  matrices}\label{structured-diffuse-theorem}
+%%%%%%%%%%%%%%%%%%%%
+
+This section proves \cref{thm:diffuse-restatement}. We
+begin by restating it with the local notation used in the
+comparison argument. The theorem is uniform over all
+diffuse positive semidefinite matrices and all vectors in
+one fixed low-dimensional subspace. The subspace may be
+random only after conditioning has made it deterministic
+and independent of the Gaussian rows; this point is checked
+explicitly at the end of the section in
+Section \ref{conditional-nuisance-spaces-in-the-peeling-argument}.
+
+
+
+\begin{theorem}\label{main-theorem-10-1}
+  Fix $\epsilon>0$, $0<B<\infty$, and $0<C_1<\infty$.
+  There are constants
+  \[
+    0<\tau\le1, c>0, c'>0,
+  \]
+  depending only on $\epsilon,B,C_1$, with the following
+  property.
+  
+  Let $w_1,\ldots,w_n$ be independent $N(0,I_p)$
+  vectors, and put
+  \[
+    Z_i=\frac{w_iw_i^T-I_p}{\sqrt2}.
+  \]
+  Let $L\subseteq\mathbb R^n$ be a deterministic
+  linear subspace of dimension $m_L$. Assume
+  \[
+    n-m_L\ge\left(\frac14+\epsilon\right)p^2
+  \]
+  and
+  \[
+    n\le C_1p^2.
+  \]
+  Then, for all sufficiently large $p$,
+  \[
+    \Pp\left( \inf_{\substack{D\succeq0,\ \|D\|_F=1,\
+    \|D\|_{op}\le\tau\\ v\in L,\ \|v\|_1\le Bn}}
+    \frac1n\sum_{i=1}^n|\langle Z_i,D\rangle-v_i|<c
+    \right) \le e^{-c'p^2}.
+  \]
+  The constants and the probability estimate are uniform
+  over the orientation of deterministic $L$. The result is
+  not simultaneous over subspaces chosen from the same
+  $w_i$ without conditioning. The conditional form used in
+  the ellipsoid proof is stated in
+  \cref{conditional-nuisance-spaces-in-the-peeling-argument}.
+\end{theorem}
+
+%%%%%%%%%%%%%%%%%%%%
+\subsection{Coordinates and the Gaussian comparator}\label{coordinates-and-the-gaussian-comparator}
+%%%%%%%%%%%%%%%%%%%%
+Equip $\operatorname{Sym}_p$ with the Frobenius inner product. For the standard basis $e_1, \ldots, e_p$, define
+\[
+    Q_{aa} = e_a e_a^\top
+\]
+and, when $a < b$,
+\[
+    Q_{ab} = \frac{e_a e_b^\top + e_b e_a^\top}{\sqrt{2}}.
+\]
+These matrices form an orthonormal basis of $\operatorname{Sym}_p$.
+
+\begin{lemma} \label{lem:infeasibility_above:wick}
+    For $1 \leq i \leq n$, let $w_1, \ldots, w_n$ be independent $N(0,I_p)$ vectors and let
+    \[
+        Z_i = (w_i w_i^\top - I_p) / \sqrt{2}.
+    \]
+    For any $A, B \in \operatorname{Sym}_p$ and $1 \leq i \leq n$,
+    \[
+        \E \langle Z_i, A \rangle\langle Z_i, B \rangle = \langle A, B \rangle.
+    \]
+\end{lemma}
+ 
+
+ 
+\begin{proof}
+
+    To lighten notation we drop the subscript $i$, $1 \leq i \leq n$, from $Z$ and $w$, since the argument holds for any $i$.
+    
+    Instead, in this proof the subscript refers to the specific component of $w$. For example, $w_a$, $1 \leq a \leq p$, refers to the $a$-th entry of the vector $w$ which is $N(0, 1)$.
+
+    The coordinates of $Z = (w w^\top - I_p) / \sqrt{2}$ are
+    \[
+        \langle Z, Q_{aa} \rangle = \frac{w_a^2 - 1}{\sqrt{2}}
+    \]
+    and
+    \[
+        \langle Z, Q_{ab} \rangle = w_a w_b.
+    \]
+    
+    For any $A \in \operatorname{Sym}_p$,
+    \[
+        \langle Z, A \rangle = \frac{1}{\sqrt{2}}(w^\top A w - \operatorname{Tr} A).
+    \]
+    
+    For $w \sim N(0, I_p)$, Wick's identity yields
+      
+    \[
+        \E[w_a w_b w_c w_d] = \delta_{ab} \delta_{cd} + \delta_{ac} \delta_{bd} + \delta_{ad} \delta_{bc},
+    \]
+    which equals $3$ when $a = b = c = d$, $1$ when indices pair up, $0$ otherwise.
+    Now,
+    \[
+        w^\top A w \, w^\top B w = \sum_{a,b,c,d} A_{ab} B_{cd} w_{a} w_{b} w_{c} w_{d}.
+    \]
+    Taking expectation, one gets
+  
+    \begin{align*}
+        &\E[w^\top A w \, w^\top B w] \\
+            &\quad = \sum_{a,b,c,d} A_{ab} B_{cd} \delta_{ab} \delta_{cd}
+            +\sum_{a,b,c,d}A_{ab} B_{cd} \delta_{ac} \delta_{bd}
+            +\sum_{a,b,c,d}A_{ab} B_{cd} \delta_{ad} \delta_{bc} \\
+            &\quad = \operatorname{Tr} A \operatorname{Tr} B
+            + \operatorname{Tr}(A^\top B)
+            + \operatorname{Tr}(A B) \\
+            &\quad = \operatorname{Tr} A \operatorname{Tr} B + 2 \operatorname{Tr}(A B).
+    \end{align*}
+    Since $\E[w^\top A w] = \operatorname{Tr} A$ and $\E[w^\top B w] = \operatorname{Tr} B$,
+    \begin{align*}
+        \E[(w^\top A w - \operatorname{Tr} A) (w^\top B w - \operatorname{Tr} B)]
+            &= \E[w^\top A w \, w^\top B w] - \operatorname{Tr} A \, \operatorname{Tr} B \\
+            &= 2 \operatorname{Tr}(AB).
+    \end{align*}
+    Therefore,
+    \[
+        \E \langle Z, A \rangle\langle Z, B \rangle
+            = \frac{1}{2} \E[(w^\top A w - \operatorname{Tr} A)(w^\top B w - \operatorname{Tr} B)]
+            = \operatorname{Tr}(AB).
+    \]
+
+\end{proof}
+
+Thus, if we define $G = \sum_{a\le b} g_{ab} \, Q_{ab}$ where $g_{ab}$ are independent $N(0,1)$, then
+\[
+    \E[G] = 0
+    \qquad \text{and} \qquad
+    \E \langle G, A \rangle\langle G, B \rangle = \operatorname{Tr}(AB),
+\]
+i.e., $G$ is a covariance-matched isonormal Gaussian version of $Z$ on $\operatorname{Sym}_p$.
+
+From now on, we write $G_1, \dots, G_n$ for the copies of $G$ corresponding to $w_i$, $1 \leq i \leq n$, and use single-index subscript $\{Q_a\}_{1 \leq a \leq p (p + 1) / 2}$ to enumerate the basis of $\operatorname{Sym}_p$.
+
+
+
+\begin{lemma} \label{lem:infeasibility_above:gaussian_width}
+    Let
+    \[
+        \mathcal P_p = \{D \in \operatorname{Sym}_p : D \succeq 0 \text{~and~} \|D\|_F = 1\}.
+    \]
+    Then its Gaussian width, $w(\mathcal P_p)$, satisfies
+    \[
+        w(\mathcal P_p) \le \sqrt{\frac{p (p + 1)}{4}}.
+    \]
+\end{lemma}
+
+\begin{proof}
+    Recall that the Gaussian width of $\mathcal P_p$ is defined as
+    \[
+        w(\mathcal P_p) = \E \sup_{D \in \mathcal P_p} \langle H, D \rangle
+    \]
+    where $H$ is a symmetric isonormal Gaussian operator.
+    Now,
+    \[
+        H = H_{+} - H_{-},\;
+        H_{\pm} \succeq 0,\;
+        H_{+} H_{-} = 0,\;
+        \|H\|_{F}^{2} = \|H_{+}\|_{F}^{2} + \|H_{-}\|_{F}^{2}.
+    \]
+    Therefore,
+    \[
+        \sup_{D \in \mathcal P_p} \langle H, D \rangle \le \|H_+\|_F
+    \]
+    and 
+    \[
+        \E\|H\|_{F}^{2} = \E\|H_{+}\|_{F}^{2} + 
+        \E\|H_{-}\|_{F}^{2}.
+    \]
+    
+    Now, since the law of $H$ is invariant under $H \mapsto -H$,
+    \[
+    \E\|H_+\|_F^2=\frac12\E\|H\|_F^2=\frac{p(p+1)}4.
+    \]
+    
+    By Jensen's inequality, the Gaussian width satisfies
+    \[
+    w(\mathcal P_p) \le \sqrt{\frac{p (p + 1)}{4}}.
+    \]
+
+\end{proof}
+
+
+\begin{lemma} \label{lem:infeasibility_above:projected_rows}
+    Let $G_1, \dots, G_n$ be mutually independent isonormal Gaussian operators on $\operatorname{Sym}_p$.
+    Let $L \subseteq \mathbb R^n$ be a deterministic linear subspace of dimension $m_L$.
+    Fix a deterministic retained row set $J \subseteq [n]$ with $|J| = m$. Let $L_J = \{v_J : v \in L\}$.
+    If $U_J$ is deterministic and has orthonormal rows spanning $L_J^\perp$, then $U_J G_J$ is an $r_J$-row isonormal Gaussian operator, where
+    \[
+        r_J = m - \dim L_J \ge m - m_L.
+    \]
+\end{lemma}
+
+\begin{proof}
+    Since $L$ is deterministic, so is $L_J$, and $\dim L_J \le \dim L = m_L$ by the rank-nullity theorem.
+    Hence
+    \[
+        r_J = m - \dim L_J \ge m - m_L.
+    \]
+    If $r_J = 0$ there is nothing else to prove, so assume $r_J \geq 1$.
+    
+    Recall that $\{Q_a\}_a$ is an orthonormal basis of $\operatorname{Sym}_p$ and write $\xi_{ia} = \langle G_i, Q_a\rangle = G_i(Q_a)$.
+    Since $G_1, \dots, G_n$ are independent isonormal, then $\xi_{ia}$ are independent $N(0, 1)$ in $a$, with
+    \[
+        \E[\xi_{ia} \xi_{jb}] = \delta_{ij} \delta_{ab}.
+    \]
+    
+    Put $G_J = (G_j)_{j \in J}$. Then
+    \[
+        (U_J G_J)_r = \sum_{j \in J} U_{rj} G_j,
+        \qquad
+        (U_J \xi)_{ra} = \sum_{j \in J} U_{rj} \xi_{ja},
+    \]
+    and
+    \begin{align*}
+        \E[(U_J \xi)_{ra} (U_J \xi)_{sb}] &=\sum_{j, k} U_{rj} U_{sk} \E[\xi_{ja} \xi_{kb}] \\
+        &=\sum_j U_{rj} U_{sj} \delta_{ab} = (U_J U_J^\top)_{rs} \delta_{ab} = \delta_{rs}\delta_{ab},
+    \end{align*}
+    since rows are orthonormal.
+    
+    Jointly Gaussian with identity covariance implies that $(U_J \xi)_{ra}$ are independent $N(0,1)$ in $r$, $a$, and the claim follows.
+\end{proof}
+
+
+
+
+ 
+
+%%%%%%%%%%%%%%%%%%%%
+\subsection{Gaussian escape inequality}\label{ssec:infeasibility_above:gaussian_escape}
+%%%%%%%%%%%%%%%%%%%%
+
+For completeness, the exact Gaussian escape inequality used here follows from the Gaussian min-max comparison.
+Recall that
+\[
+    \mathcal P_p = \{D \in \operatorname{Sym}_p : D \succeq 0 \text{~and~} \|D\|_F = 1\}.
+\]
+
+\begin{lemma} \label{lem:infeasibility_above:gaussian_escape}
+    Let $G_{1}, \dots, G_{r}$ be independent isonormal Gaussians on $\operatorname{Sym}_p$, and let $A : \operatorname{Sym}_p \to \mathbb R^{r}$ be a random linear operator defined by
+    \[
+        (A D)_{j} = \langle G_{j}, D \rangle \qquad \text{for $j = 1, \ldots, r$}.
+    \]
+    Let $g_{r} \sim N(0, I_{r})$ be independent of $A$.
+    
+    Then for $t > 0$
+    \[
+        \mathbb P\Bigl(\inf_{D \in \mathcal P_{p}} \|A D\|_{2} < \E \|g_{r}\|_{2} - w(\mathcal P_{p}) - t\Bigr) \le e^{-t^{2} / 2}.
+    \]
+\end{lemma}
+
+\begin{proof}
+    For any $O : \operatorname{Sym}_p \to \mathbb R^{r}$ define
+    \[
+        f(O) = \inf_{D \in \mathcal P_{p}} \|O D\|_{2}.
+    \]
+    It is not hard to see that
+    \[
+        f(O) = \inf_{D \in \mathcal P_{p}} \sup_{y \in S^{r - 1}} \langle y, O D \rangle,
+    \]
+    where
+    \[
+        S^{r - 1} = \{y \in \mathbb R^{r} : \|y\|_{2} = 1\},
+    \]
+    so $f$ is $1$-Lipschitz.
+
+    Let $h$ be isonormal on $\operatorname{Sym}_p$, independent of $A$ and $g_r$. On $\mathcal P_{p}\times S^{r - 1}$ set
+    \[
+        X_{D,y} = \langle g_{r}, y \rangle + \langle h, D \rangle,
+        \qquad
+        Y_{D,y} = \langle y, A D \rangle = \sum_{j = 1}^r y_{j} \langle G_{j}, D \rangle.
+    \]
+    Both are centred Gaussian, continuous in $(D, y)$ for fixed $A$, so finite Theorem A \cite[Theorem A]{Gordon1988} extends to compact sets as in \cite[Cor 1.2]{Gordon1988}.
+    Theorem A states that if
+    \begin{align*}
+        \E|X_{ij} - X_{ik}|^{2} &\le \E|Y_{ij} - Y_{ik}|^{2}, \\
+        \E|X_{ij} - X_{\ell k}|^{2} &\ge \E|Y_{ij} - Y_{\ell k}|^{2} \quad \text{for $i \ne \ell$},
+    \end{align*}
+    then $\E\min_{i}\max_{j} X_{ij} \le \E\min_{i}\max_{j} Y_{ij}$.
+    Equal variances are not required, only increments. In our case $i = D$, $j = y$.
+
+    Put $a = \langle y, y' \rangle \in [-1,1]$, $b = \langle D, D' \rangle_{F} \in [0,1]$ for $D, D' \succeq 0$.
+    For $\|D\|_{F} = 1$, $\|y\|_{2} = 1$,
+    \begin{align*}
+        \E\langle G_{j}, D \rangle \langle G_{j}, D' \rangle &= b, \\
+        \E(y_{j} \langle G_{j}, D \rangle - y'_{j} \langle G_{j}, D' \rangle)^{2} &= y_{j}^{2} + y_{j}'^{2} - 2 b y_{j} y'_{j}.
+    \end{align*}
+    Summing in $j$,
+    \begin{align*}
+        \E|Y_{D, y} - Y_{D', y'}|^{2} &= 2 (1 - a b), \\
+        \E|X_{D, y} - X_{D', y'}|^{2} &= \|y - y'\|_{2}^{2} + \|D - D'\|_{F}^{2} = 2 (1 - a) + 2 (1 - b).
+    \end{align*}
+    Hence
+    \[
+        \E|X - X'|^{2} - \E|Y - Y'|^{2} = 2 (1 - a) (1 - b) \ge 0
+    \]
+    with equality if $D' = D$ ($b = 1$) or $y' = y$ ($a = 1$).
+    Thus, conditions of Theorem A hold, and
+    \[
+        \E \min_{D} \max_{y} X_{D, y} \le \E \min_{D} \max_{y} Y_{D, y}.
+    \]
+
+    Now $\max_{y \in S^{r - 1}} \langle g_{r}, y \rangle = \|g_{r}\|_{2}$, $\max_{y} \langle y, A D \rangle = \|A D\|_{2}$, so
+    \[
+        \max_{y}X_{D,y}= \|g_{r}\|_{2} + \langle h, D \rangle,
+        \qquad
+        \max_{y}Y_{D,y}= \|AD\|_{2},
+    \]
+    therefore
+    \[
+        \min_{D} \max_{y} X_{D,y} = \|g_{r}\|_{2} + \inf_{D}\langle h, D \rangle,
+        \qquad
+        \min_{D} \max_{y} Y_{D,y} = f(A).
+    \]
+    With $w(\mathcal P_{p}) = \E\sup_{D}\langle h, D\rangle$ and $-h\stackrel{d}=h$,
+    \[
+        \E\inf_{D}\langle h,D\rangle=-w(\mathcal P_{p})
+    \]
+    and $g_{r} \perp h$, hence
+    \[
+        \E f(A)
+            = \E \min_{D} \max_{y} Y \ge \E\min_{D} \max_{y} X
+            = \E \|g_{r}\|_{2} - w(\mathcal P_{p}).
+    \]
+
+    Since $f$ is $1$-Lipschitz, by Gaussian concentration \cite[Theorem 3.2]{Gordon1988},
+    \[
+        \Pp\bigl(f(A) < \E f(A) - t\bigr) \le e^{-t^{2}/2} \qquad \text{for $t > 0$}.
+    \]
+    Therefore,
+    \[
+        \Pp\Bigl(\inf_{D}\|A D\|_{2} < \E\|g_{r}\|_{2} - w(\mathcal P_{p}) - t\Bigr) \le e^{-t^{2}/2}.
+    \]
+\end{proof}
+
+
+
+%%%%%%%%%%%%%%%%%%%%
+\subsection{A robust Gaussian loss margin}\label{a-robust-gaussian-loss-margin}
+%%%%%%%%%%%%%%%%%%%%
+
+\begin{lemma} \label{lem:infeasibility_above:dimensionality_bounds}
+    Let $G_1, \dots, G_n$ be mutually independent isonormal Gaussian operators on $\operatorname{Sym}_p$.
+    Fix $\epsilon > 0$ and $0 < C_1 < \infty$.
+    Let $L \subseteq \mathbb R^n$ be a deterministic linear subspace of dimension $m_L$, and assume that
+    \[
+        n - m_L \ge a_0 p^2
+        \qquad
+        \text{and}
+        \qquad
+        n \le C_1 p^2,
+    \]
+    where
+    \[
+        a_0 = \frac{1}{4} + \epsilon.
+    \]
+    Then, there exists $\gamma = \gamma(\epsilon) > 0$, such that except on an event of probability at most
+    \[
+        \exp\left(-\frac{\gamma^2 p^2}{4}\right),
+    \]
+    the inequality
+    \[
+        \inf_{D \in \mathcal P_p} \inf_{v \in L} \|(\langle G_i, D\rangle - v_i)_{i \in J}\|_2 \ge\gamma p
+    \]
+    holds simultaneously for all retained row sets $J \subseteq [n]$ with $|J| = m$.
+\end{lemma}
+
+\begin{proof}
+    Set
+    \[
+        \Delta = \sqrt{\frac{1}{4} + \frac{\epsilon}{2}} - \frac{1}{2}.
+    \]
+    Choose $0 < \theta < 1/2$ small enough so that
+    \[
+        \theta \, C_1 \le \frac{\epsilon}{2}
+        \qquad \text{and} \qquad
+        C_1 H_2(\theta) \le \frac{1}{8}\left(\frac{\Delta}{4}\right)^2,
+    \]
+    where $H_2(t) = -t \log(t) - (1 - t) \log(1 - t)$. This is possible because $H_2(t) \to 0$ as $t \downarrow 0$. Define
+    \[
+        \gamma = \frac{\Delta}{4}, k = \lfloor\theta n\rfloor, m = n - k.
+    \]
+    
+    Lemma~\ref{lem:infeasibility_above:projected_rows}, the dimensional assumptions, and the choice of $\theta$ give
+    \[
+        r_J = m - \dim L_J \ge n - m_L - k \ge \left(\frac{1}{4} + \frac{\epsilon}{2}\right)p^2.
+    \]
+    
+    Since, $\|\cdot\|_{2}$ is $1$-Lipschitz, so $\operatorname{Var}\|g_{r_J}\|_{2} \le 1$ and $\E\|g_{r_J}\|_{2}^{2} = r_J$, whence $\E\|g_{r_J}\|_{2} \ge \sqrt{r_J - 1}$.
+    Consequently, combining the bounds above with Lemma~\ref{lem:infeasibility_above:gaussian_width}, for all sufficiently large $p$,
+    \[
+        \E\|g_{r_J}\|_2 - w(\mathcal P_p) \ge 2 \gamma p.
+    \]
+    
+    Using $t = \gamma p$ in Lemma~\ref{lem:infeasibility_above:gaussian_escape} gives
+    \[
+        \Pp\left( \inf_{D \in \mathcal P_p}\inf_{v \in L} \|(\langle G_i, D\rangle - v_i)_{i \in J}\|_2 < \gamma p \right) \le e^{-\gamma^2 p^2 / 2}.
+    \]
+    
+    There are at most
+    \[
+        \binom{n}{k} \le e^{n H_2(\theta)}
+    \]
+    possible retained sets. Moreover,
+    \[
+        n H_2(\theta) \le C_1 p^2 H_2(\theta) < \frac{\gamma^2 p^2}{4}.
+    \]
+    Hence, except on an event of probability at most
+    \[
+        \exp\left(-\gamma^2 p^2 / 4\right),
+    \]
+    the inequality
+    \[
+        \inf_{D \in \mathcal P_p} \inf_{v \in L} \|(\langle G_i, D\rangle - v_i)_{i \in J}\|_2 \ge\gamma p
+    \]
+    holds simultaneously for all $J$ with $|J| = m$.
+\end{proof}
+
+
+Following the notation used in the proof, define the fixed coordinate threshold
+\[
+    a = \frac{\gamma}{2\sqrt{C_1}}.
+\]
+
+Fix $D \in \mathcal P_p$ and $v \in L$. If at most $k$ residual coordinates
+\[
+    r_i = \langle G_i, D\rangle - v_i
+\]
+satisfied $|r_i| \ge a$, one could select $m = n - k$ coordinates with $|r_i| < a$. On this retained set,
+\[
+    \|r_J\|_2 < a \sqrt n \le \frac{\gamma p}{2},
+\]
+contradicting the simultaneous lower bound. Thus more than $k$ coordinates satisfy $|r_i| \ge a$. Since $k + 1 > \theta n$, their fraction is larger than $\theta$.
+
+Choose a fixed smooth function $\chi : [0,\infty) \to [0,1]$ such that $\chi(s) = 0$ for $s \le 1/4$ and $\chi(s) = 1$ for $s \ge 1$, and put
+\begin{align}
+    \ell(t) = \chi(t^2/a^2). \label{eq:infeasibility_above:smoothing}
+\end{align}
+
+Then $\ell \in C^3(\mathbb R; [0,1])$, $\ell(t)=1$ when $|t| \ge a$, and
+\[
+    \ell(t) \le C_\ell|t|, \qquad C_\ell = \frac{2}{a}.
+\]
+On the preceding Gaussian event,
+\begin{align}
+    \inf_{D \in \mathcal P_p} \inf_{v \in L} \frac{1}{n} \sum_{i = 1}^n \ell(\langle G_i, D\rangle - v_i) \ge \theta. \label{eq:infeasibility_above:smooth_lower_bound}
+\end{align}
+This is the required robust Gaussian bounded-loss margin. Every parameter in it depends only on $\epsilon$ and $C_1$.
+
+
+%%%%%%%%%%%%%%%%%%%%
+\subsection{\texorpdfstring{The empirical
+  Frobenius-to-$\ell_1$ event}{The empirical
+  Frobenius-to-l1 event}}\label{the-empirical-frobenius-to-ell_1-event}
+%%%%%%%%%%%%%%%%%%%%
+
+In the previous section we established a lower bound for the worst-case scenario of $\frac{1}{n} \sum_{i = 1}^n \ell(\langle G_i, D\rangle - v_i)$.
+However, $G_i$'s are only covariance-matched isonormal Gaussian versions of $Z_i$'s.
+To start bridging that gap, in this section we provide a uniform $O(1)$ bound on $\frac{1}{n} \sum_{i = 1}^n |\langle Z_i, D \rangle|$.
+
+\begin{lemma} \label{lem:infeasibility_above:average_z_bound}
+    Define
+    \[
+        \Lambda_p = \sup_{\substack{A \in \operatorname{Sym}_p \\ \|A\|_F = 1}} \frac{1}{n} \sum_{i = 1}^n |\langle Z_i, A \rangle|.
+    \]
+    Then there exist $A_* = A_*(\epsilon) < \infty$ and a universal constant $c_2 > 0$, such that
+    \[
+        \Pp(\Lambda_p > A_*) \le 2 \exp(-c_2 \, a_0 \, p^2).
+    \]
+\end{lemma}
+
+
+\begin{proof}
+    For a fixed $A \in \operatorname{Sym}_p$ with $\|A\|_F=1$, Hanson-Wright inequality gives
+    \[
+        \Pp(|\langle Z_i, A \rangle| > t) \le 2 \exp[-c_0 \min(t^2, t)],
+    \]
+    where $c_0$ is a universal constant since $\|A\|_F = 1$ implies that $\|A\|_{op} \le 1$.
+    Recall that the subexponential norm is defined as
+    \[
+        \|X\|_{\psi_1} = \inf\{t > 0 : \E\exp(|X| / t) \le 2\}.
+    \]
+    The preceding tail bound implies $\|\langle Z_i, A \rangle\|_{\psi_1} \le C_0$ uniformly in $A$, and from Lemma~\ref{lem:infeasibility_above:wick} and Jensen one has $\E|\langle Z_i, A \rangle| \le 1$.
+    
+    Let $Y_{i}(A) = |\langle Z_{i}, A \rangle|$. To lighten notation we drop the explicit dependence of $Y_i(A)$ on $A$ and just write $Y_i$.
+    Then $\bar Y_{i} = Y_{i} - \E Y_{i}$ is centered subexponential with $\|\bar Y_{i}\|_{\psi_{1}} \le 2 C_{0}$, since centering at most doubles the $\psi_1$-norm: $\|Y - \E Y\|_{\psi_1} \le 2 \|Y\|_{\psi_1}$ because $|EY| \le \|Y\|_{\psi_1}$.
+    Therefore, Bernstein's inequality \cite[Theorem 2.8.1]{Vershynin2018} gives
+    \[
+        \Pp\Bigl(\frac{1}{n} \sum_{i = 1}^n \bar Y_{i} > s\Bigr) \le 2 \exp[-c_{1} n \min(s^2, s)]
+    \]
+    with $c_{1} = c_{1}(C_{0})$. Since $Y_1, \dots, Y_n$ are i.i.d.\ and $\E Y_{1} \le 1$,
+    \[
+        \Bigl\{\frac{1}{n} \sum_{i = 1}^n Y_{i} > 1 + s \Bigr\} \subset
+        \Bigl\{\frac{1}{n} \sum_{i = 1}^n \bar Y_{i} > s + 1 - \E Y_{1} \Bigr\} \subset
+        \Bigl\{\frac{1}{n} \sum_{i = 1}^n \bar Y_{i} > s \Bigr\}.
+    \]
+    Hence
+    \[
+        \Pp\left(\frac{1}{n} \sum_{i = 1}^n| \langle Z_i, A\rangle| > 1 + s\right) \le 2 \exp[-c_1 n \min(s^2, s)].
+    \]
+    
+    Let $d_p = p (p + 1) / 2$. A Frobenius $1/2$-net $\mathcal N$ of the unit sphere in $\operatorname{Sym}_p$ can be chosen with
+    \[
+        |\mathcal N| \le 5^{d_p}.
+    \]
+    By the assumption of Lemma~\ref{lem:infeasibility_above:dimensionality_bounds}, $n \ge a_0p^2$ and $a_0 \geq 1/4$, so
+    \[
+        \frac{d_p}{n} \le \frac{p (p + 1)}{2 a_0 p^2} \le \frac{1}{a_0} \le 4,
+    \]
+    hence there exists a universal constant $c_2 > 0$ and a large enough $s_0$ depending only on $\epsilon$ via $a_0$, such that
+    \[
+        c_1 \min(s_0^2, s_0) - \frac{d_p}{n} \log(5)
+            \ge c_1 \min(s_0^2, s_0) - \frac{\log(5)}{a_0}
+            \ge c_2 > 0.
+    \]
+    The union bound then gives
+    \[
+        \Pp\left(\max_{A_0 \in \mathcal N} \frac{1}{n} \sum_{i = 1}^n |\langle Z_i, A_0 \rangle| > 1 + s_0 \right)
+            \le 2 e^{-c_2 n}
+            \le 2 e^{-c_2 a_0 p^2}.
+    \]
+    For any Frobenius-unit $A$, choose $A_0 = A_0(A) \in \mathcal N$ with $\|A - A_0\|_F \le 1/2$. By homogeneity,
+    \begin{align*}
+        \Lambda_p
+            &\le \sup_{\substack{A \in \operatorname{Sym}_p \\ \|A\|_F = 1}} \frac{1}{n} \sum_{i = 1}^n \Big(|\langle Z_i, A_0 \rangle| + |\langle Z_i, A - A_0 \rangle|\Big) \\
+            &\le \max_{A_0' \in \mathcal N} \frac{1}{n} \sum_{i = 1}^n |\langle Z_i, A_0' \rangle| + \frac{1}{2} \Lambda_p,
+    \end{align*}
+    thus, since $\Lambda_p < \infty$ a.s.,
+    \[
+        \{\Lambda_p > 2(1 + s_0)\} \subset\Big\{ \max_{A_0 \in \mathcal N} \frac{1}{n} \sum_{i = 1}^n |\langle Z_i, A_0 \rangle| > 1 + s_0 \Big\}.
+    \]
+    Taking $A_* = 2 (1 + s_0)$, depending only on $\epsilon$ through $s_0$, one gets
+    \[
+        \Pp(\Lambda_p > A_*) \le 2e^{-c_2 a_0 p^2}.
+    \]
+\end{proof}
+
+
+
+%%%%%%%%%%%%%%%%%%%%
+\subsection{Discretization and an approximation to the minimum}\label{deterministic-nets-and-free-energy-inequalities}
+%%%%%%%%%%%%%%%%%%%%
+
+Section~\ref{a-robust-gaussian-loss-margin} gives a uniform positive lower bound for the Gaussian model, and \cref{lem:infeasibility_above:average_z_bound} gives that, with high probability, $\Lambda_p \le A_*$. Both are infima/suprema over a continuum with a non-smooth extremum.
+This section replaces the continuum by a finite collection and the extremum by a smooth average suitable for interpolation.
+We show that both the discretization and smoothing errors can be made small, both a small fraction of the Gaussian margin with fixed constants.
+
+For the moment keep $\tau \in (0,1]$ symbolic, and let
+\[
+    \mathcal K_\tau = \{D \in {\rm Sym}_p : D \succeq 0, \|D\|_F = 1, \|D\|_{op} \le \tau\}.
+\]
+If this class is empty, \cref{main-theorem-10-1} is immediate. Assume below that it is nonempty, forcing $\tau \geq 1 / \sqrt{p}$.
+
+Fix $0 < B < \infty$ and let
+\[
+    \mathcal V = L\cap\{v : \|v\|_1 \le B n\}
+\]
+be the radius-$(B n)$ ball in the $m_L$-dimensional normed space $(L,\|\cdot\|_1)$.
+
+\begin{lemma} \label{lem:infeasibility_above:nets-entropy}
+    For $0 < r \le 1$, $0 < s \le B$ there is a maximal $r$-net $\mathcal N_D \subset {\mathcal K}_\tau$ in Frobenius norm with centers in ${\mathcal K}_\tau$ and an $(s n)$-net $\mathcal N_L \subset \mathcal V$ in $\ell_1$-norm intrinsic to $L$ such that for $\mathcal C = \mathcal N_D \times \mathcal N_L$,
+    \begin{align*}
+        \frac{\log(|\mathcal C|)}{n} \le R_*,
+    \end{align*}
+    where
+    \[
+        R_* = \frac{1}{a_0} \log\left(\frac{3}{r}\right) + \log \Bigl(1 + \frac{2 B}{s}\Bigr).
+    \]
+\end{lemma}
+
+\begin{proof}
+    ${\mathcal K}_\tau$ lies in the Frobenius unit ball of dimension $d_p$.
+    A maximal $r$-net has disjoint $r / 2$-balls, volume comparison gives
+    \[
+        |\mathcal N_D| (r / 2)^{d_p} \le (1 + r / 2)^{d_p},
+    \]
+    i.e.,
+    \[
+        \log(|\mathcal N_D|) \le d_p \log(1 + 2 / r) \le d_p \log(3 / r) \qquad \text{for $r \le 1$}.
+    \]
+    
+    $\mathcal V$ is a $(B n)$-ball in $(L , \|\cdot\|_1)$, covered by $(1 + 2 B / s)^{m_L}$ balls of radius $(s n)$, thus
+    \[
+        \log(|\mathcal N_L|) \le m_L \log\left(1 + \frac{2 B}{s}\right).
+    \]
+    
+    Therefore,
+    \begin{align*}
+        \log(|\mathcal C|) \le d_p \log\left(\frac{3}{r}\right) + m_L \log\Bigl(1 + \frac{2 B}{s}\Bigr).
+    \end{align*}
+    
+    Since $m_L \leq n$ and \cref{lem:infeasibility_above:dimensionality_bounds} implies that $d_p \le p^2$ and $n \ge a_0 p^2$, the claim follows.
+\end{proof}
+
+
+
+A candidate $u = (R_u, v_u) \in \mathcal C$ has row shift $c_{iu} = -(v_u)_i$.
+For a row ensemble $X=(X_1,\ldots,X_n)$, define the total bounded loss
+\[
+    H_X(u) = \sum_{i = 1}^n \ell(\langle X_i, R_u \rangle + c_{iu})
+\]
+and its normalized log-sum-exp approximation
+\[
+    F_X = -\frac{1}{\beta n} \log\left[\frac{1}{|\mathcal C|} \sum_{u \in \mathcal C} e^{-\beta H_X(u)} \right].
+\]
+\begin{lemma} \label{lem:infeasibility_above:net_approximation}
+    Let $H_* = \min_u H_X(u)$, $L_j = \|\ell^{(j)}\|_\infty$, choose the mesh radii
+    \[
+        r \le \min\left\{1, \frac{\theta}{64 L_1 A_*}\right\}
+        \qquad \text{and} \qquad
+        s \le \min\left\{B, \frac{\theta}{64 L_1}\right\},
+    \]
+    and $\beta \ge (16 R_*) / \theta$.
+    Then
+    \[
+        \frac{H_*}{n} \le F_X \le \frac{H_*}{n} + \frac{\theta}{16}.
+    \]
+\end{lemma}
+
+\begin{proof}
+    We have
+    \[
+        \frac{e^{-\beta H_*}}{|\mathcal C|} \le \frac{1}{|\mathcal C|} \sum_u e^{-\beta H_X(u)} \le e^{-\beta H_*}.
+    \]
+    Taking $-(\beta n)^{-1}$ times the logarithm proves the exact inequalities
+    \[
+        \frac{H_*}{n} \le F_X \le \frac{H_*}{n} + \frac{\log(|\mathcal C|)}{\beta n}.
+    \]
+    Then
+    \[
+        \frac{\log|\mathcal C|}{\beta n} \le \frac{\theta}{16},
+    \]
+    and the claim follows.
+\end{proof}
+
+The order is important: first choose the Gaussian margin and $\ell$, then the two fixed mesh radii, and then the fixed $\beta$. The covering estimate is uniform in $\tau$. The telescoping argument in \cref{telescoping-concentration-and-continuum-extension} chooses $\tau$ after $\beta$, and the net is then instantiated inside that chosen class.
+
+%%%%%%%%%%%%%%%%%%%%
+\subsection{One conditional Gibbs law shared by both current-row distributions} \label{a-common-leave-one-row-cavity-law}
+%%%%%%%%%%%%%%%%%%%%
+
+Let $G_1, \ldots, G_n$ be independent isonormal Gaussian rows, independent of $Z_1, \ldots, Z_n$. Define
+\[
+    X^{(m)} = (Z_1, \ldots, Z_m, G_{m + 1}, \ldots, G_n) \qquad \text{for $0 \le m \le n$}.
+\]
+Then $X^{(n)}=Z$, $X^{(0)}=G$, and
+\[
+    \E[F_Z] - \E[F_G] = \sum_{m = 1}^n \E[F_{X^{(m)}} - F_{X^{(m - 1)}}].
+\]
+Fix $m$ and set
+\[
+    \mathcal F_{-m} = \sigma(Z_1, \ldots, Z_{m - 1}, G_{m + 1}, \ldots, G_n).
+\]
+The rows $Z_m$ and $G_m$ are mutually independent and are both independent of $\mathcal F_{-m}$. Every hybrid row other than the $m$-th is $\mathcal F_{-m}$-measurable.
+Define the \emph{row-deleted} Gibbs distribution on the net $\mathcal C = \mathcal N_D\times\mathcal N_L$.
+For $u = (R_u, v_u) \in \mathcal C$, $c_{iu} = -(v_u)_i$,
+\[
+    \nu_{-m}(u) = \frac{e^{-\beta \sum_{i \ne m} \ell(\langle X_i, R_u \rangle + c_{iu})}}{\sum_{v \in \mathcal C} e^{-\beta \sum_{i \ne m} \ell(\langle X_i, R_v \rangle + c_{iv})}}.
+\]
+Because the sum excludes $i=m$, $\nu_{-m}$ is $\mathcal F_{-m}$-measurable.
+
+The other hybrid rows are identical on both sides of the replacement. Therefore the same conditional law governs both replacements; no Gibbs object depending on either current row is used in the conditioning step.
+
+Let
+\[
+    H_{-m}(u) = \sum_{i \ne m} \ell(\langle X_i, R_u \rangle + c_{iu}),
+\]
+where $X_i$ is the common $X_i^{(m)} = X_i^{(m - 1)}$.
+Then
+\[
+    \sum_u e^{-\beta H_X(u)} = \left(\sum_v e^{-\beta H_{-m}(v)}\right) \cdot \sum_u \nu_{-m}(u) e^{-\beta\ell(\langle X_m, R_u \rangle + c_{mu})}
+\]
+
+Hence,
+\[
+    F_X = C_{-m} + \phi_{\nu}(X_m)
+\]
+where
+\[
+    C_{-m} = -\frac{1}{\beta n} \log\sum_v e^{-\beta H_{-m}(v)} + \frac{1}{\beta n} \log|\mathcal C|
+\]
+is $\mathcal F_{-m}$-measurable and independent of $X_m$, and
+\[
+    \phi_{\nu}(X) = -\frac{1}{\beta n} \log\sum_{u \in \mathcal C} \nu_{-m}(u) e^{-\beta\ell(\langle X, R_u \rangle + c_{mu})}.
+\]
+
+$C_{-m}$ cancels in the difference:
+\[
+    F_{X^{(m)}} - F_{X^{(m - 1)}} = \phi_{\nu}(Z_m) - \phi_{\nu}(G_m).
+\]
+Therefore,
+\[
+    \E[F_{X^{(m)}}-F_{X^{(m-1)}}] = \E\big[ \E[\phi_{\nu}(Z_m)-\phi_{\nu}(G_m)\mid\mathcal F_{-m}]\big].
+\]
+
+Conditionally on $\mathcal F_{-m}$, $\nu_{-m}$ is deterministic, $Z_m$ and $G_m$ are independent of it and have matching first two moments. The $m$-th summand is now a one-row comparison problem.
+
+%%%%%%%%%%%%%%%%%%%%
+\subsection{Exact derivatives and the independent-draw expansion}\label{exact-derivatives-and-the-full-replica-expansion}
+%%%%%%%%%%%%%%%%%%%%
+
+For a generic current row $X$, define
+\[
+    q_u = \langle X, R_u \rangle + c_{mu}.
+\]
+Let $\mu_X$ be the full Gibbs law obtained by tilting $\nu_{-m}$ with $e^{-\beta\ell(q_u)}$. Relative to the leave-one-row law, it is
+\[
+    \frac{d\mu_X}{d\nu_{-m}}(u) = \frac{e^{-\beta \ell(q_u)}}{\sum_v \nu_{-m}(v) e^{-\beta \ell(q_v)}}.
+\]
+Write
+\[
+    \langle f \rangle_X = \sum_{u \in \mathcal C} f(u) \mu_X(u)
+\]
+and
+\[
+    \operatorname{Cov}_X(f, g) = \langle f g \rangle_X - \langle f \rangle_X \langle g \rangle_X.
+\]
+For a row direction $A \in \operatorname{Sym}_p$, put
+\begin{align*}
+    a_A(u) &= \ell'(q_u) \langle A, R_u \rangle, \\
+    b_{AB}(u) &= \ell''(q_u) \langle A, R_u \rangle \langle B, R_u \rangle, \\
+    c_{ABC}(u) &= \ell'''(q_u) \langle A, R_u \rangle \langle B, R_u \rangle \langle C, R_u \rangle.
+\end{align*}
+For every row-dependent observable $f$,
+\[
+    D\langle f\rangle_X[B] = \langle D f[B] \rangle_X - \beta\operatorname{Cov}_X(f, a_B).
+\]
+The first term is differentiation inside, the second is differentiation of the Gibbs weight itself.
+Differentiating gives
+\begin{align*}
+  D\phi_\nu(X)[A] &= \frac{1}{n} \langle a_A \rangle_X, \\
+  D^2\phi_\nu(X)[A,B] &= \frac{1}{n} \left( \langle b_{AB} \rangle_X - \beta[\langle a_A a_B \rangle_X - \langle a_A \rangle_X \langle a_B \rangle_X] \right).
+\end{align*}
+Let $\sum_{cyc}$ denote the three cyclic choices of $(A, B, C)$. Then
+\[
+  n D^3\phi_\nu(X)[A, B, C] = \langle c_{ABC} \rangle_X - \beta\sum_{cyc} \operatorname{Cov}_X(b_{A B}, a_C) + \beta^2\kappa_{3, X}(a_A, a_B, a_C),
+\]
+where
+\[
+    \kappa_{3,X}(a, b, c)
+        = \langle abc \rangle_X
+        - \langle ab \rangle_X \langle c \rangle_X
+        - \langle ac \rangle_X \langle b \rangle_X
+        - \langle bc \rangle_X \langle a \rangle_X
+        + 2 \langle a \rangle_X \langle b \rangle_X \langle c \rangle_X.
+\]
+The $\ell'''$ group is the one-independent-draw from the same Gibbs probability measure term
+\[
+    \langle c_{ABC}\rangle_X.
+\]
+For each of the three cyclic choices, the $\ell'' \ell'$ group is
+\[
+  \operatorname{Cov}_X(b_{A B}, a_C) = \langle b_{A B} a_C \rangle_X -\langle b_{A B} \rangle_X \langle a_C \rangle_X,
+\]
+which is respectively a one-independent-draw term and a two-independent-draw term.
+The $(\ell')^3$ group has one one-independent-draw term, $\langle a_A a_B a_C\rangle_X$, three two-independent-draw terms
+\[
+    -\langle a_A a_B \rangle_X \langle a_C \rangle_X,
+    -\langle a_A a_C \rangle_X \langle a_B \rangle_X,
+    -\langle a_B a_C \rangle_X \langle a_A \rangle_X,
+\]
+and the three-independent-draw term
+\[
+    2 \langle a_A \rangle_X \langle a_B \rangle_X \langle a_C \rangle_X.
+\]
+
+
+Since $0 \le \ell \le 1$ by \eqref{eq:infeasibility_above:smoothing},
+\[
+    e^{-\beta} \le \frac{d\mu_X}{d\nu_{-m}} \le e^\beta.
+\]
+For product measures (one, two, and three independent draws) the exact product bounds are:
+\[
+    e^{-k \beta} \le \frac{d\mu_X^{\otimes k}}{d\nu_{-m}^{\otimes k}} \le e^{k \beta} \qquad \text{for $k = 1, 2, 3$}.
+\]
+
+If we replace an expectation under $\mu_X$ by one under $\nu_{-m}$ we pay at most $e^{k\beta}$.
+Only after these replacements do we take absolute values and use
+\[
+    |\ell'|\le L_1, |\ell''|\le L_2, |\ell'''|\le L_3.
+\]
+After this change of measure, independent samples are drawn from $\nu_{-m}$, which is ${\mathcal F}_{-m}$-measurable and independent of both $Z_m$ and $G_m$. Its $R_u$'s are fixed given ${\mathcal F}_{-m}$.
+
+Then the scalar part of $D^3$ can be bounded purely by constants. The $R$-dependent part $\langle A,R_{u_1} \rangle \langle B, R_{u_2} \rangle \langle C, R_{u_3}\rangle$ remains, but now $u_i$ are independent of $X$.
+
+Counting absolute values: $Cov$ gives 2 terms per cyclic, $\kappa_3$ gives $1+1+1+1+2=6$ terms in absolute value. Hence the total absolute scalar mass is at most
+\[
+    \frac{1}{n} \big[L_3 + 6 \beta L_1 L_2 + 6 \beta^2 L_1^3\big].
+\]
+
+
+%%%%%%%%%%%%%%%%%%%%
+\subsection{An exact integration-by-parts identity for centered rank-one rows}\label{exact-second-chaos-identity-and-interpolation}
+%%%%%%%%%%%%%%%%%%%%
+
+The next identity is the only point where the non-Gaussian distribution of $Z=(ww^\top - I_p)/\sqrt2$ enters.
+We derive it in coordinates rather than invoking a named interpolation principle. The Hessian term matches the Gaussian row exactly; the remaining error contains the third derivative and is small when all candidate matrices have small operator norm.
+
+For $1\le a, b \le p$, define
+\[
+    S_{ab} = \frac{e_a e_b^\top + e_b e_a^\top}{2}
+\]
+and
+\[
+    B_a(w) = \frac{e_a w^\top + w e_a^\top}{\sqrt{2}}.
+\]
+Then
+\[
+    \frac{\partial Z}{\partial w_a} = B_a(w)
+\]
+and
+\[
+    \frac{\partial^2 Z}{\partial w_a \partial w_b} = \sqrt{2} S_{ab}.
+\]
+Let $M \in \operatorname{Sym}_p$ be independent of $w$, let $s\ge0$ be deterministic, and set $Y = M + s Z$.
+Consider $\Phi\in C^3(\operatorname{Sym}_p)$ with bounded derivatives, and identify $D\Phi$ with the symmetric gradient and $D^2\Phi$, $D^3\Phi$ with the symmetric bi/tri-linear forms.
+
+Let
+\[
+    f_{ab}(w) = \langle D\Phi(Y), S_{ab} \rangle.
+\]
+Note that since $D^j\Phi$ is bounded for $j = 1, 2, 3$, it follows that $f_{ab}$ is bounded, and $\partial_a\partial_b f_{ab}$ is at most quadratic in $w$.
+Since $M$ is independent of $w$, the requirements of conditional Stein's lemma, given $M$, are met; and by the law of total expectation,
+\[
+    \E[(w_a w_b - \delta_{ab}) f_{ab}(w)] = \E[\partial_a \partial_b f_{ab}(w)].
+\]
+
+Since
+\[
+  \langle Z, D\Phi(Y) \rangle = \frac{1}{\sqrt{2}} \sum_{a,b} (w_a w_b - \delta_{ab}) \langle D\Phi(Y), S_{ab} \rangle,
+\]
+the chain rule gives, before summing over $a, b$,
+\[
+    \partial_a\partial_b f_{ab}(w) = s^2 D^3\Phi(Y)[B_a(w), B_b(w), S_{ab}] + s \sqrt{2} D^2\Phi(Y)[S_{ab}, S_{ab}].
+\]
+Indeed, $\partial_a Y = s B_a(w)$ and $\partial_a B_b(w) = \sqrt{2} S_{ab}$. Multiplication by $1/\sqrt{2}$ and summation over the ordered pairs $(a, b)$ therefore gives
+\[
+    \E\langle Z, D\Phi(M + s Z) \rangle = s \, \E\Delta\Phi(M + s Z) + s^2 \, \E\mathfrak T_w(D^3\Phi(M + sZ)),
+\]
+where
+\[
+    \Delta\Phi(Y) = \operatorname{Tr} D^2 \Phi(Y) = \sum_{a \leq b} D^2\Phi(Y)[Q_{ab}, Q_{ab}]
+\]
+and
+\[
+    \mathfrak T_w(T) = \frac{1}{\sqrt{2}} \sum_{a, b = 1}^p T[B_a(w), B_b(w), S_{ab}].
+\]
+The Hessian term is exactly the Frobenius Laplacian.
+Indeed, $S_{aa} = Q_{aa}$, while $S_{ab} = Q_{ab}/\sqrt{2}$ for $a \ne b$, and the two ordered pairs $(a, b)$ and $(b, a)$ give one copy of $D^2\Phi[Q_{ab}, Q_{ab}]$.
+
+For matrices $A,B,C \in \operatorname{Sym}_p$, the ordered pure tensor $T = A \otimes B \otimes C$ is the trilinear form
+\[
+    T[U,V,W] = \langle A, U \rangle \langle B, V \rangle \langle C, W \rangle.
+\]
+For this tensor,
+\[
+    \mathfrak T_w(A \otimes B \otimes C) = \sqrt{2} w^\top A C B w.
+\]
+This follows from
+\[
+    \langle A, B_a(w) \rangle = \sqrt{2}(A w)_a
+\]
+and $\langle C, S_{ab} \rangle = C_{ab}$.
+
+
+
+For $\Phi=\phi_\nu$, finiteness of the candidate family and boundedness of the first three derivatives of $\ell$ give deterministic bounds on $D^j\Phi$ for $1 \le j \le 3$.
+The Gaussian variables appearing below have finite moments of every order. Hence, on every interval $[\delta, 1 - \delta]$, the difference quotients and
+integration-by-parts integrands admit an integrable dominating function, which justifies differentiating under the expectation. The bound obtained below is uniform in $\delta$ and justifies passage to the endpoints by dominated convergence.
+
+Now set
+\[
+    Y_t = \sqrt{t} \, G + \sqrt{1 - t} \, Z.
+\]
+Gaussian integration by parts gives
+\[
+    \E\langle G, D\Phi(Y_t) \rangle = \sqrt{t} \, \E\Delta\Phi(Y_t).
+\]
+Using the second-chaos identity with $s = \sqrt{1 - t}$ yields
+\[
+    \frac d{dt}\E\Phi(Y_t) = -\frac{\sqrt{1 - t}}{2} \, \E\mathfrak T_w(D^3\Phi(Y_t)).
+\]
+The right side is uniformly bounded and tends to zero as $t \uparrow 1$. The identity can first be integrated on $[\delta, 1 - \delta]$ and then  $\delta \downarrow 0$. Thus both endpoints are integrable, and no fourth derivative is used.
+
+
+
+%%%%%%%%%%%%%%%%%%%%
+\subsection{Bounding the third-derivative error for one replaced row}\label{fixed-triple-contraction-and-the-one-row-bound}
+%%%%%%%%%%%%%%%%%%%%
+
+Let $R_1, R_2, R_3$ be symmetric and satisfy
+\[
+    \|R_j\|_F \le 1, \|R_j\|_{op} \le \tau \le 1.
+\]
+For every ordering,
+\[
+    |\operatorname{Tr}(R_1 R_2 R_3)| \le \|R_1\|_F \|R_2 R_3\|_F \le \tau
+\]
+and
+\[
+  \|R_1 R_2 R_3\|_F \le \|R_1\|_{op} \|R_2\|_{op} \|R_3\|_F \le \tau^2.
+\]
+The symmetric part $Q$ of the ordered product obeys the same bounds. Since
+\[
+    \E|w^\top Q w| \le |\operatorname{Tr}Q| + [\E|w^\top Q w - \operatorname{Tr}Q|^2]^{1/2},
+\]
+and
+\[
+    \E|w^\top Q w - \operatorname{Tr}Q|^2 = 2\|Q\|_F^2,
+\]
+we obtain
+\[
+    \E|w^\top Q w| \le \tau + \sqrt{2} \tau^2 \le (1 + \sqrt{2}) \tau.
+\]
+Combining this with the termwise change-of-measure bounds and the tensor contraction gives a universal $C_2$ such that
+\[
+    \E|\mathfrak T_w(D^3\phi_\nu(Y_t))| \le \frac{C_2 e^{3\beta}\tau}{n} [L_3 + \beta L_1 L_2 + \beta^2 L_1^3].
+\]
+Integrating the interpolation and absorbing the constant factors into $C_2$ gives the normalized one-row estimate
+\[
+    |\E\phi_\nu(Z) - \E\phi_\nu(G)| \le \frac{C_2 e^{3\beta} \tau}{n} [L_3 + \beta L_1 L_2 + \beta^2 L_1^3].
+\]
+The factor $1/n$ comes from the free-energy normalization. The estimate is uniform in the leave-one-row law, the finite family, the shifts, $p$, and $n$.
+
+%%%%%%%%%%%%%%%%%%%%
+\subsection{Telescoping, concentration, and continuum extension}\label{telescoping-concentration-and-continuum-extension}
+%%%%%%%%%%%%%%%%%%%%
+
+Summing the $n$ hybrid-row estimates yields
+\[
+    |\E F_Z - \E F_G| \le C_2 e^{3\beta} \tau [L_3 + \beta L_1 L_2 + \beta^2 L_1^3].
+\]
+Choose $\tau \le 1$ after $\beta$ so that the right side is at most $\theta / 16$. Then for $p \ge \tau^{-2}$, $1/\sqrt p \le \tau$ and ${\mathcal K}_\tau \neq \emptyset$. So a $p$-independent $\tau$ works for all sufficiently large $p$.
+
+On the Gaussian robust event, every candidate has $H_G(u) / n \ge \theta$. Since $F_G \ge \min_u H_G(u) / n$ and $F_G \ge 0$ always,
+\[
+    \E F_G \ge \theta[1 - e^{-\gamma^2 p^2 / 4}].
+\]
+For all sufficiently large $p$, this is at least $15 \theta / 16$. Hence
+\[
+    \E F_Z \ge \frac{7 \theta}{8}.
+\]
+Replacing one row changes every $H_X(u)$ by at most one.
+The log-sum-exp map therefore changes $F_X$ by at most $1 / n$. The bounded-differences inequality \cite{McDiarmid1989} gives
+\[
+    \Pp(|F_Z - \E F_Z| > t) \le 2 e^{-2 n t^2}.
+\]
+With $t = \theta / 8$,
+\[
+    \Pp\left(F_Z < \frac{3 \theta}{4}\right) \le 2 e^{-n \theta^2 / 32}.
+\]
+The free-energy inequality and the entropy choice imply, on the complement of this event,
+\[
+    \min_{u \in \mathcal C} \frac{H_Z(u)} n \ge F_Z - \frac{\log|\mathcal C|}{\beta n} \ge \frac{11 \theta}{16}.
+\]
+Now take any $D \in \mathcal K_\tau$ and $v\in L$ with $\|v\|_1 \le B n$. Choose net points $R$ and $v_0$ satisfying
+\[
+    \|D - R\|_F \le r, \|v - v_0\|_1 \le s n.
+\]
+If $D = R$ set $A = 0$, otherwise put $A = (D - R) / \|D - R\|_F$ so $\|A\|_F = 1$ and $D - R = \|D - R\|_F A$. Then it follows from the definition of $\Lambda_p$ that
+\[
+    \frac{1}{n} \sum_{i = 1}^n |\langle Z_i, D - R \rangle| = \|D - R\|_F \frac{1}{n} \sum_{i = 1}^n |\langle Z_i, A\rangle| \le \|D - R\|_F \Lambda_p \le r \Lambda_p
+\]
+on $\{\Lambda_p \le A_*\}$, with the convention $0 \cdot \Lambda_p = 0$. In particular on $\{\Lambda_p \le A_*\}$,
+\[
+    \frac{1}{n} \sum_{i = 1}^n \big(|\langle Z_i, D - R \rangle| + |v_i - (v_0)_i|\big) \le \Lambda_p r + s \le A_*r + s.
+\]
+Therefore the Lipschitz property of $\ell$ gives
+\[
+    \frac{1}{n} \sum_{i = 1}^n |\ell(\langle Z_i, D \rangle - v_i) - \ell(\langle Z_i, R \rangle - (v_0)_i)| \le L_1(A_* r + s) \le \frac{\theta}{32},
+\]
+hence
+\[
+    \inf_{\substack{D \in \mathcal K_\tau \\ v \in L, \|v\|_1 \le B n}} \frac{1}{n}\sum_{i = 1}^n \ell(\langle Z_i, D \rangle - v_i) \ge \frac{\theta}{2}.
+\]
+Since $\ell(t) \le C_\ell |t|$, the conclusion of \cref{main-theorem-10-1} holds with
+\[
+    c = \frac\theta{2 C_\ell}.
+\]
+For large $p$, the total failure probability is at most
+\[
+    2 e^{-n \theta^2 / 32} + 2 e^{-c_2' n} \le e^{-c'p^2}
+\]
+after decreasing $c' > 0$, because $n \ge a_0 p^2$ and $n \le C_1 p^2$.
+
+This proves \cref{main-theorem-10-1}.
+% TODO: remove reference to future \cref{lem:cavity-comparison} or re-structure.
+
+%%%%%%%%%%%%%%%%%%%%
+\subsection{Conditional nuisance-space reduction}\label{conditional-nuisance-spaces-in-the-peeling-argument}
+%%%%%%%%%%%%%%%%%%%%
+
+Fix a deterministic subspace $E_0\subseteq\mathbb R^d$ of
+dimension $j\le K$, and split each sample as
+\[
+  x_i=g_i+w_i\in E_0\oplus E_0^\perp.
+\]
+
+Suppose that
+\[
+S_0=H_0+\rho D_0,
+\]
+where $H_0$ is supported on $E_0$, $D_0$ is supported on
+$E_0^\perp$,
+\[
+D_0\succeq0,\qquad
+\|D_0\|_F=1,\qquad
+\|D_0\|_{op}\le\tau,
+\]
+and $\rho\ge\delta$.
+
+
+Let
+\[
+  \mathcal G=\sigma(g_1,\ldots,g_n).
+\]
+Conditional on $\mathcal G$, the vectors $w_i$ are still
+independent $N(0,I_p)$ vectors with $p=d-j$. Define
+\[
+  \mathcal Q_w(A)_i=\frac{w_i^TAw_i-\operatorname{Tr}A}
+  {\sqrt2} =\langle Z_i,A\rangle.
+\]
+For $A\in\operatorname{Sym}(E_0)$, also define
+\[
+  \mathcal Q_g(A)_i=\frac{g_i^TAg_i-\operatorname{Tr}A}
+  {\sqrt2}.
+\]
+Now define
+\[
+  L(E_0,g)=\operatorname{span}\{\1_n\}+\{\mathcal Q_g(A):
+  A\in\operatorname{Sym}(E_0)\}.
+\]
+This is a $\mathcal G$-measurable subspace. After
+conditioning, it is a deterministic subspace independent
+of all tail rows, and
+\[
+  \dim L(E_0,g)\le1+\frac{j(j+1)}2\le1+\frac{K(K+1)}2.
+\]
+For every realization of $g$ for which the dimensional
+inequality holds, define
+\[
+  \mathcal E_{\rm str}(g)=\left\{ \inf_{\substack{D\succeq0,\
+  \|D\|_F=1,\ \|D\|_{op}\le\tau\\ v\in L(E_0,g),\
+  \|v\|_1\le Bn}} \frac1n\|\mathcal Q_w(D)-v\|_1\ge c
+  \right\}.
+\]
+Then \cref{main-theorem-10-1} and the empirical
+continuity estimate give
+\[
+  \Pp\left((\mathcal E_{\rm str}(g)\cap\{\Lambda_w\le
+  A_*\})^c\mid\mathcal G\right)\le3e^{-c'p^2},
+\]
+where
+\[
+  \Lambda_w=\sup_{\|A\|_F=1}\frac1n\|\mathcal Q_w(A)\|_1.
+\]
+The bound is independent of the orientation of the
+realized nuisance subspace. Integrating over $g$
+preserves the same bound. Since the event in
+\cref{main-theorem-10-1} takes an infimum over the full
+classes of $D$ and $v$, both may be measurable functions
+of the tail rows. This is why the nuisance vector may be
+selected after observing the tail.
+
+
+The proof of \cref{main-theorem-10-1} also gives the
+joint tail-continuity event
+\[
+  \frac1n\|\mathcal Q_w(A)\|_1\le A_*\|A\|_F
+\]
+for every symmetric $A$, with conditional failure probability at most
+$e^{-cp^2}$. In particular,
+\[
+  \frac1n\|\mathcal Q_w(D_0)\|_1\le A_*.
+\]
+
+
+For the decomposition $S_0=H_0+\rho D_0$, define
+\[
+  \bar a
+  =
+  \frac1{\rho n}\1_n^T\mathcal Q_d(S_0),
+  \qquad
+  v
+  =
+  -\mathcal Q_g(H_0/\rho)+\bar a\1_n.
+\]
+Then
+\[
+  \mathcal Q_w(D_0)-v
+  =
+  \rho^{-1}\PiZero\mathcal Q_d(S_0).
+\]
+
+Assume $B>A_*+1$, and decrease $c$ if necessary so that
+$0<c\le1$. On
+\[
+  \mathcal E_{\rm str}(g)\cap\{\Lambda_w\le A_*\},
+\]
+if
+\[
+  \frac1n\|\PiZero\mathcal Q_d(S_0)\|_1<\rho c,
+\]
+then
+\[
+  \frac1n\|\mathcal Q_w(D_0)-v\|_1<c.
+\]
+Moreover,
+\[
+  \frac1n\|v\|_1
+  \le
+  \frac1n\|\mathcal Q_w(D_0)\|_1
+  +
+  \frac1n\|\mathcal Q_w(D_0)-v\|_1
+  <
+  A_*+1
+  <
+  B.
+\]
+This contradicts the definition of
+$\mathcal E_{\rm str}(g)$. Therefore, on the same good
+event,
+\[
+  \frac1n\|\PiZero\mathcal Q_d(S_0)\|_1
+  \ge
+  \rho c
+  \ge
+  \delta c.
+\]
+
+Thus the conditional diffuse margin holds uniformly for
+every deterministic $E_0$ of dimension at most $K$, with
+conditional failure probability at most $3e^{-c'p^2}$. 
+
+\end{aiblock}
+
+
+%%%%%%%%%%%%%%%%%%%%
+\section{The comparison estimate extracted from the
+  preceding
+  calculation}\label{the-comparison-estimate-extracted-from-the-preceding-calculation}
+%%%%%%%%%%%%%%%%%%%%
+
+\begin{aiblock}
+ 
+\begin{lemma}[Finite-family leave-one-row
+  comparison]\label{lem:cavity-comparison}
+  Let $Z=(ww^T-I_p)/\sqrt2$, where $w\sim N(0,I_p)$, and
+  let $G$ be the isonormal Gaussian vector on $\Sym_p$.
+  Let $\mathcal C$ be a nonempty finite set. For each
+  $u\in\mathcal C$, let $R_u\in\Sym_p$ be deterministic with
+  $\|R_u\|_F\le1$ and $\|R_u\|_{op}\le\tau$, and let
+  $c_{iu}$ be deterministic. 
+  For every fixed $\beta>0$, if
+  $0\le\ell\le1$ is $C^3$ and
+  \[
+    F_X=-\frac1{\beta n}\log\left[
+    \frac1{|\mathcal C|}\sum_{u\in\mathcal C}
+    \exp\left(-\beta\sum_{i=1}^n
+    \ell(\langle X_i,R_u\rangle+c_{iu})\right)
+    \right],
+  \]
+  then
+  \[
+    |\E F_Z-\E F_G| \le Ce^{3\beta}\tau \left(L_3+\beta
+    L_1L_2+\beta^2L_1^3\right),
+  \]
+  where $L_j=\|\ell^{(j)}\|_\infty$. The constant is
+  uniform in $p$, $n$, $\mathcal C$, and the shifts.
+\end{lemma}
+
+\begin{proof}
+  This is exactly the finite-family comparison established in
+  \cref{expert-leave-one-row-module}, especially the coordinate
+  Stein identity, the leave-one-row Gibbs construction, the
+  derivative expansion, and the telescoping row replacement.
+\end{proof}
+
+\end{aiblock}
+
+
+%%%%%%%%%%%%%%%%%%%%
+\section{Applying the comparison uniformly over diffuse
+  matrices and nuisance
+  vectors}\label{applying-the-comparison-uniformly-over-diffuse-matrices-and-nuisance-vectors}
+%%%%%%%%%%%%%%%%%%%%
+
+\begin{aiblock}
+ 
+\begin{theorem}\label{thm:diffuse-restatement}
+  Fix $\epsilon,B,C_1>0$. There are $\tau,c,c'>0$ such that
+  the following holds. Let $L\subset\R^n$ be
+  deterministic, with dimension $m_L$, and assume
+  \[
+    n-m_L\ge\left(\frac14+\epsilon\right)p^2, \qquad
+    n\le C_1p^2.
+  \]
+  Let $w_1,\ldots,w_n$ be independent $N(0,I_p)$ vectors,
+  and put
+  \[
+    Z_i=\frac{w_iw_i^T-I_p}{\sqrt2}, \qquad 1\leq i\leq n.
+  \]
+  Then, for all sufficiently large $p$,
+  \[
+    \Pp\left[ \inf_{\substack{D\succeq0,\\ \|D\|_F=1,\\
+    \|D\|_{op}\le\tau\\ v\in L,\\ \|v\|_1\le Bn}}
+    \frac1n\sum_i|\langle Z_i,D\rangle-v_i|<c \right]\le
+    e^{-c'p^2}.
+  \]
+% Maybe adding a human input defining the set M=\{D\succeq
+  The constants are uniform over the orientation of
+  deterministic $L$.
+\end{theorem}
+
+\begin{proof}
+  The Gaussian robust-loss margin, finite-family
+  comparison, leave-one-row construction, exact
+  third-derivative expansion, continuum extension, and
+  conditional nuisance-space form are proved in
+  \cref{expert-leave-one-row-module}.
+\end{proof}
+
+\end{aiblock}
+
+
+
+%%%%%%%%%%%%%%%%%%%%
+\section{From diffuse matrices to the full positive
+  semidefinite
+  cone}\label{fixed-rank-peeling-and-unsat-above-one-quarter}
+%%%%%%%%%%%%%%%%%%%%
+
+\begin{aiblock}
+ 
+Peeling Lemma~\ref{main-lemma-11-2}: $S=H+R$, $\rank H\le K$:
+either $\|R\|_F\le\delta$ (low-rank by $c_*$)
+or $S=H+\rho D$ $\tau$-diffuse (diffuse by
+Grassmann net and Theorem~\ref{thm:diffuse-restatement}).
+
+We first record a global empirical-continuity
+estimate.
+For every fixed $0<c_{\rm asp}\le C_{\rm asp}<\infty$,
+define, whenever $c_{\rm asp}d^2\le n\le C_{\rm asp}d^2$,
+\[
+  \Lambda_d=\sup_{\|A\|_F=1}\frac1n\|\mathcal Q_d(A)\|_1.
+\]
+There are constants $C_{\rm cont}<\infty$ and
+$c_{\rm cont}>0$, depending only on $c_{\rm asp},C_{\rm asp}$,
+such that
+\[
+  \Pp(\Lambda_d>C_{\rm cont})\le e^{-c_{\rm cont}n}.
+\]
+The fixed-net argument in
+\cref{expert-leave-one-row-module} proves this estimate.
+
+\begin{lemma}[Universal fixed-rank lower
+  bound]\label{main-lemma-11-1}
+  Fix $0<c_{\rm asp}\le C_{\rm asp}<\infty$. There is a
+  numerical $c_*>0$ such that, for every fixed $K$, there
+  is $c_K>0$ for which, whenever $c_{\rm asp}d^2\le n\le
+  C_{\rm asp}d^2$,
+  \[
+    \Pp\left( \inf_{\substack{\operatorname{rank}A\le
+    K\\\|A\|_F=1}} \frac1n\|\PiZero\mathcal{Q}_d(A)\|_1<c_*
+    \right)\le e^{-c_Kd^2}.
+  \]
+  Only the starting dimension may depend on fixed $K$.
+\end{lemma}
+
+\begin{proof}
+  Pair consecutive observations and put
+  \[
+    Y_j(A)=\mathcal{Q}_d(A)_{2j-1}-\mathcal{Q}_d(A)_{2j}.
+  \]
+  For $\|A\|_F=1$,
+  \[
+    \E Y_j(A)^2=2.
+  \]
+  The Gaussian quadratic fourth-moment formula gives
+  \[
+    \E\mathcal{Q}_d(A)_1^4=3+12\operatorname{Tr}(A^4)
+    \le15,
+  \]
+  and hence $\E Y_j(A)^4\le36$. Paley-Zygmund and Chernoff
+  give, for fixed $A$,
+  \[
+    \Pp\left(\frac1m\sum_{j=1}^m|Y_j(A)|<\frac1{72}\right)
+    \le e^{-cm}, m=\lfloor n/2\rfloor.
+  \]
+  Here is the covering estimate used to make the preceding
+  bound uniform. For $1\le r\le K$, write
+  \[
+    A=U\operatorname{diag}(\lambda)U^T,
+  \]
+  where $U\in\operatorname{St}(d,r)$ and
+  $\|\lambda\|_2=1$. A maximal $\varepsilon/4$-separated
+  subset of the Stiefel manifold in Frobenius distance has
+  cardinality at most
+  \[
+    \left(1+\frac{8\sqrt r}{\varepsilon}\right)^{dr},
+  \]
+  by the usual disjoint-ball volume comparison in
+  $\mathbb R^{dr}$, and the unit sphere in $\mathbb R^r$
+  has an $\varepsilon/4$-net of cardinality at most
+  $(1+8/\varepsilon)^r$. For two such parameter pairs,
+  \[
+    \|U\operatorname{diag}(\lambda)U^T
+    -V\operatorname{diag}(\mu)V^T\|_F \le2\|U-V\|_F+
+    \|\lambda-\mu\|_2.
+  \]
+  Consequently the Frobenius unit sphere of rank-at-most-
+  $K$ symmetric matrices has an $\varepsilon$-net of
+  cardinality
+  \[
+    \sum_{r=1}^K\left(\frac{C_K}{\varepsilon}\right)^{dr+r}.
+  \]
+  At fixed resolution its entropy is $O_K(d)$, whereas the
+  fixed-object failure exponent is $\Theta(d^2)$. On the
+  continuity event the net extension costs $2C_{\rm cont}
+  \|A-A_0\|_F$. Finally,
+  \[
+    \|\PiZero\mathcal{Q}_d(A)\|_1\ge\sum_{j=1}^m|Y_j(A)|.
+  \]
+  Choosing a numerical resolution gives a numerical $c_*$
+  independent of fixed $K$.
+\end{proof}
+
+\begin{lemma}[Finite decomposition into large eigenvalues
+  and a diffuse
+  remainder]\label{main-lemma-11-2}
+  For fixed $0<\tau,\delta<1$, choose
+  \[
+    K=\left\lceil\frac{2\log(1/\delta)}{\tau^2}\right\rceil+1.
+  \]
+  Every PSD Frobenius-unit $S$ has one of two
+  decompositions.
+
+  The low-rank branch is
+  \[
+    S=H+R, H,R\succeq0, HR=0, \operatorname{rank}H\le K,
+    \|R\|_F\le\delta.
+  \]
+  The diffuse branch is
+  \[
+    S=H+\rho D, H,D\succeq0, HD=0, \operatorname{rank}H\le
+    K,
+  \]
+  \[
+    \rho>\delta, \|D\|_F=1, \|D\|_{op}\le\tau.
+  \]
+\end{lemma}
+
+\begin{proof}
+  Start with $R_0=S$. If $\|R_j\|_F\le\delta$, stop in
+  the first branch. If $\|R_j\|_{op}\le\tau\|R_j\|_F$,
+  stop in the second. Otherwise remove a largest
+  eigenvalue and put it in $H$. Then
+  \[
+    \|R_{j+1}\|_F^2<(1-\tau^2)\|R_j\|_F^2.
+  \]
+  After $K$ steps the tail is at most $\delta$, so the
+  alternatives are exhaustive.
+\end{proof}
+
+\paragraph{Replacing the random leading eigenspace by a
+  deterministic net.} The leading eigenspace of $S$ is
+random. To make the conditioning in
+\cref{conditional-nuisance-spaces-in-the-peeling-argument}
+uniform we replace $\operatorname{Gr}(j,d)$ by a
+deterministic net and rotate the approximant to the true
+subspace with a near-identity orthogonal map.
+
+\begin{lemma}[Grassmann $\zeta$-net and near-identity
+  rotation]\label{lem:grassmann-net}
+  Let $0<\zeta<1/2$ and equip $\operatorname{Gr}(j,d)$
+  with $d_{\rm Gr}(E,F)=\|P_E-P_F\|_{op}$, where $P_E$ is
+  the orthogonal projector onto $E$. For $j\ge1$,
+  $\operatorname{Gr}(j,d)$ has a $\zeta$-net of
+  cardinality at most
+  \[
+    \left(1+\frac{4\sqrt j}{\zeta}\right)^{dj},
+  \]
+  and for $j=0$ the singleton is a net. If
+  $d_{\rm Gr}(E,F)\le\zeta$, there exists $O\in O(d)$
+  with
+  \[
+    OE=F\quad\text{and}\quad\|O-I\|_{op}\le\sqrt2\,\zeta.
+  \]
+\end{lemma}
+
+\begin{proof}
+  Choose a maximal $\zeta/2$-separated set of orthonormal
+  $j$-frames in Frobenius distance. Disjoint Frobenius
+  balls of radius $\zeta/4$ around these frames lie in the
+  Euclidean ball of radius $\sqrt j+\zeta/4$ in
+  $\R^{dj}$, which proves the displayed cardinality.
+  Maximality makes the set a $\zeta/2$-net, and
+  \[
+    \|UU^{T}-VV^{T}\|_{op}\le2\|U-V\|_{F}
+  \]
+  shows that the corresponding subspaces form a $\zeta$-
+  net.
+
+  For the last claim, rotate the principal two-planes from
+  $E$ to $F$ and act as the identity on the remaining
+  directions. If $\theta_{\max}$ is the largest principal
+  angle, then
+  \[
+    \sin\theta_{\max}=\|P_E-P_F\|_{op},\qquad
+    \|O-I\|_{op}=2\sin(\theta_{\max}/2) \le\sqrt2\sin
+    \theta_{\max},
+  \]
+  since $\zeta<1/2$ implies $\theta_{\max}<\pi/2$ and
+  $\cos(\theta_{\max}/2)\ge1/\sqrt2$.
+\end{proof}
+
+\begin{theorem}[Uniform conic lower
+  bound]\label{main-theorem-11-3}
+  For fixed $1/4<\alpha_-\le\alpha_+<\infty$, there are
+  $c,C>0$ such that, for all sufficiently large $d$,
+  whenever
+  \[
+    \alpha_-d^2\le n\le\alpha_+d^2,
+  \]
+  one has
+  \[
+    \Pp\left[ \inf_{\substack{S\succeq0\\\|S\|_F=1}}
+    \frac1n\|\PiZero\mathcal{Q}_d(S)\|_1<c \right]\le
+    e^{-Cd^2}.
+  \]
+\end{theorem}
+
+\begin{proof}
+  Set
+  \[
+    \epsilon_0=\frac12\left(\alpha_--\frac14\right)\text{
+    and }C_1=4\alpha_+.
+  \]
+  Let $C_{\rm cont}$ be the global continuity constant for
+  the aspect interval $[\alpha_-,\alpha_+]$, let $c_*$ be
+  the fixed-rank constant, and let $A_*=A_*(\epsilon_0,C_1)$
+  be the tail-continuity constant proved in
+  \cref{expert-leave-one-row-module}. Choose
+  $0<\delta<1/2$ so that
+  \[
+    g_{\rm lr}=c_*\sqrt{1-\delta^2}-2C_{\rm cont}\delta>0,
+  \]
+  and set $B=A_*+2$. Apply \cref{thm:diffuse-restatement}
+  with parameters $(\epsilon_0,B,C_1)$, and denote its
+  margin and probability constants by $c_{\rm str}$ and
+  $c'_{\rm str}$. Let $\tau$ be its operator-norm cap, and
+  then choose $K=K(\tau,\delta)$ by
+  \cref{main-lemma-11-2}.
+
+  By the preceding Grassmann cover and rotation statement,
+  the rotation below satisfies $\|O-I\|_{op}\le C_O\zeta$
+  with $C_O=\sqrt2$. Put $C_{\rm rot}=2C_OC_{\rm cont}$
+  and choose a fixed $\zeta>0$ such that
+  \[
+    C_{\rm rot}\frac\zeta\delta\le\min\left\{
+    \frac{c_{\rm str}}4,\frac12\right\}.
+  \]
+  Finally choose
+  \[
+    0<c_{\rm cone}<\min\left\{\frac{g_{\rm lr}}2,
+    \frac{\delta c_{\rm str}}4,\frac\delta2\right\}.
+  \]
+  In the low-rank branch, if $n^{-1}\|\PiZero\mathcal{Q}_d
+  (S)\|_1<c_{\rm cone}$, then
+  \[
+    c_*\|H\|_F \le\frac1n\|\PiZero\mathcal{Q}_d(H)\|_1
+    \le\frac1n\|\PiZero\mathcal{Q}_d(S)\|_1+2C_{\rm cont}
+    \|R\|_F.
+  \]
+  Since $\|H\|_F\ge\sqrt{1-\delta^2}$, this gives
+  \[
+    c_*\sqrt{1-\delta^2}<c_{\rm cone}+2C_{\rm cont}\delta<
+    c_*\sqrt{1-\delta^2},
+  \]
+  a contradiction.
+
+  In the diffuse branch, let $j=\operatorname{rank}H$ and
+  $E=\operatorname{range}H$. For each $0\le j\le K$, fix
+  a deterministic $\zeta$-net of $\operatorname{Gr}(j,d)$
+  before observing the samples. Choose the nearest point
+  $E_0$ and an orthogonal $O$ such that
+  \[
+    OE=E_0\text{ and }\|O-I\|_{op}\le C_O\zeta.
+  \]
+  Put
+  \[
+    S_0=OSO^T=H_0+\rho D_0.
+  \]
+  Then $H_0$ is supported on $E_0$, $D_0$ on $E_0^\perp$,
+  and the canonical rotation obeys the following sharper
+  PSD estimate. If $S=\sum_j\lambda_jv_jv_j^T$ with
+  $\lambda_j\ge0$, then
+  \[
+    \operatorname{Tr}(SOSO^T) =\sum_{j,k}\lambda_j\lambda_k
+    (v_j^TOv_k)^2 \ge\cos^2(\theta_{\max})\sum_j\lambda_j^2,
+  \]
+  because the symmetric part of the canonical
+  principal-plane rotation is at least
+  $\cos(\theta_{\max})I$. Consequently,
+  \[
+    \|OSO^T-S\|_F^2 =2\operatorname{Tr}(S^2)-2\operatorname
+    {Tr}(SOSO^T) \le2\sin^2(\theta_{\max})\|S\|_F^2.
+  \]
+  Since $\|S\|_F=1$ and $\sin\theta_{\max}\le\zeta$, this
+  gives
+  \[
+    \|S_0-S\|_F\le C_O\zeta\text{ and }\frac{\|S_0-S\|_F}
+    {\rho}\le C_O\frac\zeta\delta.
+  \]
+  For fixed $E_0$, write $x_i=g_i+w_i$ along
+  $E_0\oplus E_0^\perp$ and define
+  \[
+    \mathcal G_{E_0}=\sigma(g_1,\ldots,g_n).
+  \]
+  Conditional on $\mathcal G_{E_0}$, the $w_i$ are
+  independent $N(0,I_p)$ vectors with $p=d-j$. For
+  $A\in\operatorname{Sym}(E_0)$ and
+  $D\in\operatorname{Sym}(E_0^\perp)$, define
+  \[
+    \mathcal Q_g(A)_i=\frac{g_i^TAg_i-\operatorname{Tr}A}
+    {\sqrt2}\text{ and } \mathcal Q_w(D)_i=
+    \frac{w_i^TDw_i-\operatorname{Tr}D}{\sqrt2}.
+  \]
+  Then
+  \[
+    \mathcal Q_d(H_0+\rho D_0)=\mathcal Q_g(H_0)+\rho
+    \mathcal Q_w(D_0).
+  \]
+  Define
+  \[
+    L(E_0,g)=\operatorname{span}\{\1_n\}+\{\mathcal Q_g(A):
+    A\in\operatorname{Sym}(E_0)\}.
+  \]
+  After conditioning, this is a deterministic subspace
+  independent of the tail samples, and
+  \[
+    \dim L(E_0,g)\le1+\frac{j(j+1)}2.
+  \]
+  The tail dimension is $p=d-j=d-O_K(1)$ and the nuisance
+  dimension is $O_K(1)$. For all sufficiently large $d$,
+  \[
+    n-\dim L(E_0,g)\ge\alpha_-d^2-1-\frac{K(K+1)}2\ge
+    \left(\frac14+\epsilon_0\right)p^2,
+  \]
+  and, because $p\ge d/2$,
+  \[
+    n\le\alpha_+d^2\le4\alpha_+p^2=C_1p^2.
+  \]
+  Put
+  \[
+    \bar a=\frac1{\rho n}\1_n^T\mathcal Q_d(S_0)\text{ and
+    } v=-\mathcal Q_g(H_0/\rho)+\bar a\1_n.
+  \]
+  The block identity and the definition of $\PiZero$ give
+  \[
+    \mathcal Q_w(D_0)-v=\rho^{-1}\PiZero\mathcal Q_d(S_0).
+  \]
+  On the global continuity event, $\|\PiZero z\|_1\le2
+  \|z\|_1$ and the rotation estimate give
+  \[
+    \frac1n\|\mathcal Q_w(D_0)-v\|_1 \le C_{\rm rot}
+    \frac\zeta\delta+\frac1{\delta n}\|\PiZero\mathcal
+    Q_d(S)\|_1.
+  \]
+  Conditional on $\mathcal G_{E_0}$, define
+  \[
+    \mathcal E_{\rm str}=\left\{ \inf_{\substack{D\succeq0,\
+    \|D\|_F=1,\ \|D\|_{op}\le\tau\\ v\in L(E_0,g),\
+    \|v\|_1\le Bn}} \frac1n\|\mathcal Q_w(D)-v\|_1\ge
+    c_{\rm str} \right\}.
+  \]
+  Then \cref{thm:diffuse-restatement} and the
+  tail-continuity estimate from
+  \cref{expert-leave-one-row-module} give, for a constant
+  $c_{\rm cond}>0$ depending only on the fixed parameters,
+  \[
+    \Pp\left((\mathcal E_{\rm str}\cap\{\Lambda_w\le
+    A_*\})^c\mid\mathcal G_{E_0}\right)\le3e^{-c_{\rm
+    cond}p^2},
+  \]
+  where
+  \[
+    \Lambda_w=\sup_{\|D\|_F=1}\frac1n\|\mathcal Q_w(D)\|_1.
+  \]
+  The bound is uniform in the realized nuisance subspace.
+
+  Suppose that $n^{-1}\|\PiZero\mathcal Q_d(S)\|_1<
+  c_{\rm cone}$. On the preceding good events,
+  \[
+    \frac1n\|\mathcal Q_w(D_0)-v\|_1 \le C_{\rm rot}
+    \frac\zeta\delta+\frac{c_{\rm cone}}\delta \le
+    \frac{c_{\rm str}}2.
+  \]
+  Moreover,
+  \[
+    \frac1n\|v\|_1 \le\frac1n\|\mathcal Q_w(D_0)\|_1+
+    \frac1n\|\mathcal Q_w(D_0)-v\|_1 \le A_*+1<B.
+  \]
+  Thus $D_0$ and $v$ lie in the classes prohibited by
+  \cref{thm:diffuse-restatement}, a contradiction.
+  Uniformity over both classes permits $D_0$ and $v$ to be
+  selected after observing the tail rows.
+
+  The deterministic Grassmann nets constructed above
+  satisfy
+  \[
+    \sum_{j=0}^K N(\operatorname{Gr}(j,d),\zeta) \le1+
+    \sum_{j=1}^K \left(1+\frac{4\sqrt j}{\zeta}\right)^{dj}
+    \le(K+1)e^{C_{K,\zeta}d}.
+  \]
+  Consequently, for all sufficiently large $d$,
+  \[
+    (K+1)e^{C_{K,\zeta}d}3e^{-c_{\rm cond}(d-K)^2}
+    \le e^{-c_{\rm prob}d^2}
+  \]
+  for a fixed $c_{\rm prob}>0$. Adding the
+  global-continuity and fixed-rank exceptional events
+  proves the theorem with margin $c=c_{\rm cone}$ and a
+  positive failure exponent depending only on $\alpha_-$
+  and $\alpha_+$.
+
+  If $T\in\mathcal F_d$, then $T\ne0$. The normalization
+  $S=T/\|T\|_F$ satisfies $S\succeq0$, $\|S\|_F=1$, and
+  $\PiZero\mathcal Q_d(S)=0$, contradicting the margin. 
+    If $\liminf n/d^2>1/4$ but the aspect ratio is
+  unbounded, choose a fixed $\alpha_0$ with
+  \[
+    \frac14<\alpha_0<\min\left\{\frac12,
+    \liminf_d\frac{n}{d^2}\right\}.
+  \]
+  For all sufficiently large $d$,
+  $\lfloor\alpha_0d^2\rfloor\le n(d)$. After
+  discarding finitely many initial dimensions,
+  which does not affect limits, retain
+  deterministically the first
+  $\lfloor\alpha_0d^2\rfloor$ observations. 
+  By antitone monotonicity
+  (Section~\ref{deterministic-framework}),
+  $n_1\le n_2\Rightarrow
+  \cF_{n_2}\subseteq\cF_{n_1}$, so
+  $\cF_{n(d)}\subseteq
+  \cF_{\lfloor\alpha_0d^2\rfloor}$; hence
+  infeasibility with
+  $\lfloor\alpha_0d^2\rfloor$ observations implies
+  infeasibility with $n(d)$ observations.
+ 
+  This proves Theorem~\ref{thm:main}(ii) for
+  unbounded aspect from
+  \cref{main-theorem-11-3}.
+\end{proof}
+% END INLINED FILE: expert_body_main.tex
+
+\end{aiblock}
+
+%%%%%%%%%%%%%%%%%%%%
+\section{Conclusion}\label{conclusion}
+%%%%%%%%%%%%%%%%%%%%
+
+\begin{humanblock}
+
+
+Part I constructs an exact positive definite fit whenever
+the aspect ratio stays a fixed distance below $1/4$. Part
+II proves that the centered kernel contains no nonzero
+positive semidefinite matrix whenever the aspect ratio
+stays a fixed distance above $1/4$. These are precisely the
+two assertions of Theorem~\ref{thm:main}. The proof contains no
+statement about the critical sequence $n/d^2\to1/4$.
+
+\end{humanblock}
+
+% \section*{Statement on AI Use}
+
+% \begin{humanblock}
+
+% Meta AI played a substantial collaborative role in the research leading
+% to this manuscript. The proof was developed through many rounds of
+% human-directed interaction rather than a single autonomous AI run.
+% Meta AI proposed proof strategies, derived intermediate lemmas and
+% calculations, explored alternative approaches, produced candidate
+% arguments, responded to mathematical objections, and revised or
+% replaced arguments when gaps were identified. Many proposed arguments
+% did not survive further checking and were rejected, substantially
+% changed, or replaced.
+
+% Review and collaboration with other mathematicians were essential
+% throughout this process. The author discussed the developing proof
+% with reviewers and collaborators, shared drafts for examination,
+% received mathematical objections and suggestions, and used this
+% feedback to identify parts of the argument requiring further work.
+% In several cases, this feedback led to new rounds of mathematical
+% analysis, clarification, and revision.
+
+% The author selected the problem, set the research goals, decided
+% which proof directions to pursue or abandon, evaluated competing
+% arguments, and determined which parts of the proof required further
+% investigation. Meta AI outputs were not accepted simply because it described an argument as correct or complete. AI-generated
+% claims of correctness were treated as research suggestions rather
+% than mathematical verification.
+
+% Meta AI also contributed to the preparation and revision of the mathematical exposition. The discovery, derivation, criticism, organization, and writing of parts of this manuscript emerged from a collaborative process involving Meta AI, the author, and reviewers. Because these contributions were closely intertwined throughout the project, no numerical percentages of contribution are assigned.
+
+% The author takes responsibility for all mathematical claims in this
+% manuscript. The final arguments are presented on the basis of the
+% author's judgment together with extensive human review and
+% collaboration. AI-generated arguments or assessments of correctness
+% are not treated as substitutes for mathematical verification.
+
+% \end{humanblock}
+
+
+
+
+
+\section{Acknowledgment} 
+The authors would like to thank Ricky Simanjuntak and Joseph Brennan for discussions at various stages of the project, and Ricky Simanjuntak for his feedback on the final draft.
+
+%==================== Bibliography ====================
+
+\bibliographystyle{plain}
+\bibliography{bib}
+
+
+% %%%%%%%%%%%%%%%%%%%%
+% \bibliographystyle{amsplain}
+% % BEGIN INLINED BIBLIOGRAPHY
+% \providecommand{\bysame}{\leavevmode\hbox to3em{\hrulefill}\thinspace}
+% \providecommand{\MR}{\relax\ifhmode\unskip\space\fi MR }
+% % \MRhref is called by the amsart/book/proc definition of \MR.
+% \providecommand{\MRhref}[2]{%
+%   \href{http://www.ams.org/mathscinet-getitem?mr=#1}{#2}
+% }
+
+% %\providecommand{\href}[2]{#2}
+% %%%%%%%%%%%%%%%%%%%%
+
+
+% \begin{thebibliography}{1}
+
+% \bibitem{AmbainisHarrowHastings2012}
+%   Andris Ambainis, Aram~W. Harrow, and Matthew~B. Hastings,
+%   \emph{Random tensor theory: Extending random matrix
+%   theory to mixtures of random product states},
+%   Communications in Mathematical Physics \textbf{310}
+%   (2012), no.~1, 25--74.
+
+%   \bibitem{AizenmanSimsStarr2003}
+%   Michael Aizenman, Robert Sims, and Shannon~L. Starr,
+%   \emph{An extended variational principle for the
+%   Sherrington--Kirkpatrick spin-glass model},
+%   Physical Review B \textbf{68} (2003), 214403.
+
+% \bibitem{BandeiraMaillard2025}
+%   Afonso~S. Bandeira and Antoine Maillard, \emph{Exact
+%   threshold for approximate ellipsoid fitting of random
+%   points}, Electronic Journal of Probability \textbf{30}
+%   (2025), 1--46.
+
+% \bibitem{DavidsonSzarek2001}
+%   Kenneth~R. Davidson and Stanislaw~J. Szarek,
+%   \emph{Local operator theory, random matrices and {Banach}
+%   spaces}, Handbook of the Geometry of Banach Spaces,
+%   vol.~1, Elsevier, 2001, See Theorem II.13 for the
+%   Gaussian singular-value estimate, pp.~317--366.
+
+% \bibitem{MisiakiewiczWen2026}
+%   Theodor Misiakiewicz and Garrett~G. Wen,
+%   \emph{The sharp SAT/UNSAT phase transition
+%   in random ellipsoid fitting},
+%   arXiv:2608.10184 (2026).
+
+% \bibitem{Fernique1974}
+%   Xavier Fernique, \emph{Minorations des fonctions
+%   al\'eatoires gaussiennes}, Annales de l'Institut Fourier
+%   \textbf{24} (1974), no.~2, 61--66. See Section 2.1 for
+%   Sudakov minoration.
+
+% \bibitem{Gordon1988}
+%   Yehoram Gordon, \emph{On {M}ilman's inequality and
+%   random subspaces which escape through a mesh in
+%   {$\mathbb R^n$}}, Geometric Aspects of Functional
+%   Analysis, Lecture Notes in Mathematics, vol. 1317,
+%   Springer, 1988, pp.~84--106.
+
+% \bibitem{KaneDiakonikolas2023}
+%   Daniel~M. Kane and Ilias Diakonikolas,
+%   \emph{A nearly tight bound for fitting an
+%   ellipsoid to Gaussian random points},
+%   Proceedings of the Thirty-Sixth Conference on
+%   Learning Theory, Proceedings of Machine Learning
+%   Research \textbf{195} (2023), 3014--3028.
+
+%   \bibitem{MaillardKunisky2024}
+% Antoine Maillard and Dmitriy Kunisky,
+% \emph{Fitting an ellipsoid to random points: predictions using the
+% replica method},
+% IEEE Transactions on Information Theory \textbf{70} (2024),
+% no.~10, 7273--7296.
+
+% \bibitem{McDiarmid1989}
+%   Colin McDiarmid, \emph{On the method of bounded
+%   differences}, Surveys in Combinatorics, 1989, London
+%   Mathematical Society Lecture Note Series, vol. 141,
+%   Cambridge University Press, 1989, pp.~148--188.
+
+% \bibitem{RudelsonVershynin2013}
+%   Mark Rudelson and Roman Vershynin,
+%   \emph{{Hanson--Wright} inequality and {Sub-Gaussian}
+%   concentration}, Electronic Communications in Probability
+%   \textbf{18} (2013), no.~82, 1--9.
+
+% \bibitem{SaundersonParriloWillsky2013}
+%   James Saunderson, Pablo~A. Parrilo, and
+%   Alan~S. Willsky,
+%   \emph{Diagonal and low-rank decompositions and
+%   fitting ellipsoids to random points},
+%   Proceedings of the 52nd IEEE Conference on
+%   Decision and Control (2013), 6031--6036.
+
+%   \bibitem{Talagrand2011}
+%   Michel Talagrand,
+%   \emph{Mean Field Models for Spin Glasses, Volume I:
+%   Basic Examples},
+%   Ergebnisse der Mathematik und ihrer Grenzgebiete,
+%   vol.~54, Springer, 2011.
+
+% \bibitem{vaart}
+% A.~W.~van der Vaart, \emph{Asymptotic Statistics},
+%   Cambridge University Press, 1998.
+
+% \bibitem{Vershynin2018}
+%   Roman Vershynin, \emph{High-dimensional probability: An
+%   introduction with applications in data science},
+%   Cambridge University Press, 2018.
+
+
+
+% \end{thebibliography}
+
+% END INLINED BIBLIOGRAPHY
+
+\end{document}

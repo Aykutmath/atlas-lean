@@ -1,0 +1,1 @@
+{"challenge_module":"gaussian_ellipsoid_comparator","solution_module":"GaussianEllipsoid","theorem_names":["GaussianEllipsoid.strict_threshold_unconditional"],"definition_names":[],"permitted_axioms":["propext","Classical.choice","Quot.sound"]}

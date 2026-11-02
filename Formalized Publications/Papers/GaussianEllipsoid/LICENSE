@@ -1,0 +1,12 @@
+Licensing status
+
+No new license has been selected or granted by this package.
+
+The supplied manuscript and supporting files retain their existing notices and
+rights. The source files drafted for this formalization are attributed to the
+project owner, Aykut Arslan. No assertion is made that the manuscript or the new
+source is released under the license of any reference project.
+
+Lean, mathlib, and their dependencies retain their upstream licenses. They are
+not bundled in this package. Local KaTeX and font assets retain their included
+upstream license notices.

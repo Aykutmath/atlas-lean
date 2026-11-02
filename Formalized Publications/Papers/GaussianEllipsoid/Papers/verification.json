@@ -1,0 +1,27 @@
+{
+ "paper": "Supplied manuscript formalized as Papers/gaussian_ellipsoid.pdf (sha256 24dbb073079ead0fec59a1a93bc695b6b2818cd9cf1f37dfec23ef6a36264181, 62 pages).",
+ "lean": "leanprover/lean4:v4.34.0-rc2",
+ "mathlib": "85e3a25e006c35636f0e53b0e9296caca2685bc0",
+ "build": "Atlas-layout rebuild PASS (2026-11-02): all 771 Formalization modules (770 sources + root) elaborate with exit 0 and no sorry under the pinned toolchain and mathlib, via direct-lean elaboration in topological order (43 levels) against rev-matched prebuilt oleans. First pass covered 18 levels (539 modules); a resume-only continuation covered the remaining 25 levels (232 modules). Zero module failures; all 771 oleans produced, including the root.",
+ "axioms": "Only propext, Classical.choice and Quot.sound occur as transitive axioms: full sweep PASS (2026-11-02) over all 167 inventory declarations (166 depend only on the standard axioms, 1 depends on no axioms); comparator endpoints likewise (exit 0).",
+ "coverage": "Generator-verified: all 48 inventory rows (40 named + 8 supplemental, 167 declarations) resolve verbatim in Formalization/ with valid source links.",
+ "comparator": "Independent challenge Comparator/gaussian_ellipsoid_comparator.lean with gaussian_ellipsoid_comparator.json (Mathlib-only restatement, single sorry placeholder); solution judged against it by the official 4.35 lake comparator from original-4.34 NDJSON exports (4.34 serializer Verification/export34.lean; no source port). Endpoint audit: Verification/EndpointAudit.lean.",
+ "latex": "Recompiled Papers/Latex/main.tex with TinyTeX (TeX Live 2026): 62 pages, bibliography byte-identical to the supplied .bbl, final pass with no warnings or errors. Bytes differ from the supplied PDF (engine timestamps), so the supplied PDF stays canonical; recompilation is reported, not substituted.",
+ "html_rendering": {
+  "checked_on": "2026-11-01",
+  "browser": "Chromium 156.0.8078.4, offline",
+  "viewports": [
+   1280,
+   390
+  ],
+  "rendered_equations": 2109,
+  "math_errors": 0,
+  "javascript_errors": 0,
+  "embedded_font_faces_loaded": 20,
+  "lean_boxes": 48,
+  "source_links": 167,
+  "page_overflow": false,
+  "visual_checks": "Desktop, mobile and opened Lean box screenshots inspected",
+  "regression_test": "python3 Papers/test_html_rendering.py --browser"
+ }
+}

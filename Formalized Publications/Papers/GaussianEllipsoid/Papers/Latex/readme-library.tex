@@ -1,0 +1,149 @@
+\documentclass[11pt,reqno]{amsart}
+
+
+\usepackage{lipsum} %used for testing
+\usepackage{verbatim} %used to quote code
+
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage{amsmath,amssymb,mathtools}
+\usepackage{booktabs}
+\usepackage{enumitem}
+\usepackage[hidelinks]{hyperref}
+\usepackage[nameinlink,capitalise]{cleveref}
+\input{stylelibrary}
+
+\numberwithin{equation}{section}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+
+\newcommand{\R}{\mathbb R}
+\newcommand{\E}{\mathbb E}
+\newcommand{\Pp}{\mathbb P}
+\newcommand{\1}{\boldsymbol 1}
+\newcommand{\cA}{\mathcal A}
+\newcommand{\cB}{\mathcal B}
+\newcommand{\cF}{\mathcal F}
+\newcommand{\cQ}{\mathcal Q}
+\newcommand{\cT}{\mathcal T}
+\newcommand{\PiZero}{\Pi_n}
+\newcommand{\Sym}{\operatorname{Sym}}
+\newcommand{\Tr}{\operatorname{Tr}}
+\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\rank}{\operatorname{rank}}
+\newcommand{\diag}{\operatorname{diag}}
+\newcommand{\res}{\operatorname{res}}
+\newcommand{\rvec}{\res}
+\newcommand{\rentry}[1]{\res_{#1}}
+\newcommand{\op}{\operatorname{op}}
+\newcommand{\Frob}{F}
+\newcommand{\whp}{\text{with high probability}}
+
+\title[Strict threshold for Gaussian ellipsoid fitting]
+{The Strict Threshold for Gaussian Ellipsoid Fitting\\
+{\large An Expanded Expert-Reader Draft}}
+\author{Aykut Arslan}
+\date{}
+\subjclass[2020]{60B20, 52A20, 90C22}
+\keywords{ellipsoid fitting, random semidefinite feasibility, Gaussian quadratic forms, small-ball probability, second Gaussian chaos}
+\hypersetup{
+  pdftitle={The Strict Threshold for Gaussian Ellipsoid Fitting: An Expanded Expert-Reader Draft},
+  pdfauthor={Aykut Arslan},
+  pdfsubject={Expanded proof of the strict-threshold theorem for Gaussian ellipsoid fitting}
+}
+
+\begin{document}
+
+\section{Use of style commands}
+
+%The Colors are defined in stylelibrary.tex. They can be changed arbitrarily.
+
+%
+% Main blocks:
+\textbf{Main Blocks:}
+
+
+\begin{humanblock}
+This Human block was made with 
+
+\begin{verbatim}
+    \begin{humanblock}
+        ...
+    \end{humanblock}
+\end{verbatim}
+
+
+    \lipsum[1]
+\end{humanblock}
+
+
+\begin{aiblock}
+This AI block was made with 
+
+\begin{verbatim}
+    \begin{aiblock}
+        ...
+    \end{aiblock}
+\end{verbatim}
+
+
+    \lipsum[2]
+\end{aiblock}
+
+
+We also have:
+
+\begin{editedaiblock}
+This edited AI block was made with 
+
+\begin{verbatim}
+    \begin{editedaiblock}
+        ...
+    \end{editedaiblock}.
+\end{verbatim}
+
+\humanul{We can highlight human edits to the AI output with the human underline command}
+\begin{verbatim}
+    \humanul{We can highlight human edits to the AI output...}
+\end{verbatim}
+    \lipsum[3]
+\end{editedaiblock}
+
+\begin{aiassistedblock}
+This Human: AI-assisted block was made with
+\begin{verbatim}
+    \begin{aiassistedblock}
+        ...
+    \end{aiassistedblock}
+\end{verbatim}
+
+
+\aiul{We can highlight AI output with the ai underline command}
+\begin{verbatim}
+    \aiul{We can highlight AI output with the ai underline ...}.
+\end{verbatim}
+
+
+    \lipsum[4]
+\end{aiassistedblock}
+
+
+The colors are customizable, just change:
+\begin{verbatim}
+    %Define colors
+\definecolor{humancolor}{RGB}{0, 102, 204}        % blue
+\definecolor{aicolor}{RGB}{200, 0, 0}             % dark red
+\definecolor{editedaicolor}{RGB}{102, 0, 204}     % dark purple
+\definecolor{aiassistedcolor}{RGB}{1, 50, 32}     % dark green
+\definecolor{defaultcolback}{RGB}{255, 255, 255}  % white
+\end{verbatim}
+in {stylelibrary.tex}.
+
+\end{document}
