@@ -1,0 +1,16 @@
+# Local checks and exports are not publication sources.
+__pycache__/
+*.py[cod]
+.lake/
+build/
+*.olean
+*.ilean
+*.ndjson
+*.log
+*.aux
+*.bbl
+*.blg
+*.out
+*.fls
+*.fdb_latexmk
+.DS_Store

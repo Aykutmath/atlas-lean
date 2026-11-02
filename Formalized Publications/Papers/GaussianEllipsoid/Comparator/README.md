@@ -95,7 +95,8 @@ Pins: Lean `v4.34.0-rc2`
 exports; judge: Lean `v4.35.0` (`eb6cafb7290e8bd5f2937522d8d804f58f02bafc`)
 with `bwrap` sandbox active and default kernels.
 
-Export bindings (sha256; produced by [reproduce.sh](reproduce.sh)):
+Export bindings (sha256; generated from the compiled sources by the
+4.34 serializer commands below and verified after transfer):
 
 - challenge source `gaussian_ellipsoid_comparator.lean`:
   `4884c3d6b5ddc5c21017c1d749ccf86c2783964a8f49faadc67a4169edb8849c`
@@ -160,6 +161,26 @@ chain (challenge compile with exactly one `sorry`, both 4.34 exports,
 official judge) and reports every step's real exit code. A
 compilation, export, or comparison failure stops the script with a
 nonzero exit; a platform without Linux+bwrap prints the exact command
-and exits 2, not a passing verdict. Driver error handling is tested
-separately with stub executables: `python3 test_reproduce.py` (this
-driver test is not a Lean proof check).
+and exits 2, not a passing verdict. Set `LEAN34` and `LAKE34` to the
+original compiler tools and, on Linux, `LAKE35` and `LEAN35` to the
+colocated official judge tools. The driver checks both version strings
+and compiler commit hashes, validates the exact dependency manifest,
+and excludes all project outputs and unlisted packages from the
+challenge's search path.
+
+`guard_inputs.py` recognizes indented and `public import` lines, masks
+nested comments and strings, and requires exactly the main theorem and
+its single placeholder. Names that merely start with `Mathlib` are not
+accepted as external imports. Every named definition remains fixed;
+no definition holes or additional permitted axioms can be introduced
+through the config.
+
+Driver error handling is tested separately with stub executables:
+`python3 test_reproduce.py` (these tests are not Lean proof checks).
+Failures of version commands, compilation, either export, comparison,
+missing tools, changed pins, hidden project-package paths and invalid
+imports all return nonzero. The end-to-end proof verdict above comes
+from the actual exported environments and the official Linux judge,
+not from stub tests. The portable driver is supplied for reproduction;
+Lake workspace loading still fails on this particular Mac, so the
+recorded compile/export run used the original pinned direct-Lean route.

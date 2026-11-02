@@ -4,6 +4,21 @@ Small receipts for this reformat. Full historical evidence stays in the
 source project (`projects/arslan/agents/gaussian-ellipsoid/`) and in git
 history; nothing below re-audits the mathematics.
 
+## Publication package
+
+This review copy contains only the paper package, not the private research
+repository or its Git history. Its publication branch starts from the
+personal Atlas fork's `main` at `4b1c449f04bcb7f7bff6a83a15e0d82bbde3773a`.
+The 770 proof files and the final PDF/HTML are unchanged from the verified
+source snapshot recorded below. The independent comparator and its
+separate verification tooling were added for the main strict-threshold
+conjunction; see [Comparator/README.md](Comparator/README.md) for the
+source/export bindings, actual judge verdict and mutation controls.
+
+All proof and comparison results remain under the original Lean 4.34 pin.
+Using the official 4.35 comparator on the exported terms is not a source
+port to Atlas's toolchain.
+
 ## Base
 
 - New branch `arslan/gaussian-ellipsoid-atlas-format` from cached
