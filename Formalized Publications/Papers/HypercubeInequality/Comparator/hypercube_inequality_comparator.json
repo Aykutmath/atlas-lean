@@ -2,6 +2,6 @@
   "challenge_module": "hypercube_inequality_comparator",
   "solution_module": "HypercubeInequality",
   "theorem_names": ["HypercubeInequality.main_full"],
-  "definition_names": ["HypercubeInequality.S", "HypercubeInequality.gap"],
+  "definition_names": [],
   "permitted_axioms": ["propext", "Classical.choice", "Quot.sound"]
 }

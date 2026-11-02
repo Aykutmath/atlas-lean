@@ -60,8 +60,10 @@ all endpoints depend only on the standard axioms (`propext`,
   independently (Mathlib imports only, nothing imported from
   `Formalization/`), and `HypercubeInequality.main_full` stated with
   those definitions and proved with `sorry` — the single authorized
-  placeholder. The config names exactly one theorem and two
-  definitions, on the standard axioms (`propext`,
+  placeholder. The config names exactly one theorem and zero
+  definition holes (`S`/`gap` are checked as fixed constants through
+  the theorem, bodies included — not as holes), on the standard
+  axioms (`propext`,
   `Classical.choice`, `Quot.sound`). Verified 2026-11-02 with the
   real `lake comparator` (Linux, Lean `v4.35.0`, default kernels):
   `Your solution is okay!`, exit 0 — plus negative controls
