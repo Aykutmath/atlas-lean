@@ -1,0 +1,1008 @@
+
+\documentclass[11pt]{article}
+
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage{booktabs}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{mathtools}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage{flexart}
+\input{stylelibrary}
+\usepackage{verbatim}
+\usepackage{setspace}
+\usepackage[margin=1in]{geometry}
+\usepackage[colorlinks=true,linkcolor=blue,citecolor=blue,urlcolor=blue]{hyperref}
+\usepackage[nameinlink,capitalise]{cleveref}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\E}{E}
+\newcommand{\vol}{\operatorname{vol}}
+\newcommand{\nvol}{\operatorname{Vol}}
+\newcommand{\conv}{\operatorname{conv}}
+\newcommand{\sgn}{\operatorname{sgn}}
+\newcommand{\one}{1}
+
+\newcommand{\HumanLabel}{%
+  ({\bfseries\sffamily\color{humancolor!70}Human})%
+}
+
+\newcommand{\AILabel}{%
+  ({\bfseries\sffamily\color{aicolor!70}AI})%
+}
+
+
+
+% \title{The Hypercube Inequality via Signed Simplex Cocycles}
+% \author{Aykut Arslan}
+% \date{September 8, 2026; revised October 2026}
+
+
+\title[The Hypercube Inequality]
+{The Hypercube Inequality via Signed Simplex Cocycles}
+
+\newcommand{\Muse}{with {\itshape Muse Spark} via \href{https://meta.ai}{meta.ai}}
+
+\primaryauthors{
+\MakeUppercase{Aykut Arslan}
+\\
+\Muse
+}
+
+\newcommand{\secondaryAuthorsLabel}{Mathematical review by}
+
+\flexset{
+secondarylabel = {\secondaryAuthorsLabel},
+}
+
+\secondaryauthors{
+\MakeUppercase{Dinh Pham}
+\and
+\MakeUppercase{Juan Torres Toral}
+}
+
+\date{September 8, 2026; revised October 2026}
+
+
+\flexabstract{%
+We prove that the expected volume of the convex hull of $d+1$ independent samples from a probability measure on $\R^d$ is at most $(d+1)/2^d$ times the product of the mean absolute pairwise differences of its coordinate marginals. The constant is optimal in every dimension, and the coordinates within each sample may be arbitrarily dependent. For measures supported on
+$\{0,1\}^d$, the result gives the Hypercube inequality of Averkov, von Dichter, and Soprunov. The proof begins with an alternating identity for signed indicators of projected simplices. An exterior-algebra estimate yields a sharp one-coordinate inequality for binary heights, and integration over thresholds extends it to real heights. The same argument recovers the corresponding projection inequality for zonoids. Induction on the dimension completes the proof.
+}
+
+\begin{document}
+\maketitle
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+%%%%%%
+
+
+
+
+
+%%%%%%%
+
+
+
+
+
+
+
+
+
+
+
+\section{Introduction}
+\label{sec:intro}
+\begin{humanblock}
+Averkov, von Dichter, and Soprunov \cite{AVS} formulated the Hypercube inequality in their study of projection and mixed-volume inequalities for zonoids. It compares a weighted sum of simplex volumes on cube vertices with a product of the total weights on the facets. The three-dimensional zonoid case was established by Fradelizi, Madiman, Meyer, and Zvavitch \cite{FMMZ}. In the first version of their paper, Averkov, von Dichter, and Soprunov established the four-dimensional zonoid case, corresponding to cube dimension $d=3$. We give a proof in every dimension based on signed-simplex cancellation. Its main step is a sharp one-coordinate estimate for arbitrary probability measures with finite first moments.
+
+
+
+% Averkov, von Dichter, and Soprunov proved the four-dimensional zonoid case, corresponding to cube dimension $d=3$. Here we prove the Hypercube inequality in every dimension through a bound for arbitrary probability measures on $\R^d$.
+
+
+
+
+
+
+
+
+
+
+
+
+
+Let $d\geq1$ and let $\nu$ be a Borel probability measure on $\R^d$. For independent samples $Z_0,\ldots,Z_d$ with law $\nu$, define
+\begin{equation}
+S_d(\nu)=\E\vol_d(\conv\{Z_0,\ldots,Z_d\}).
+\end{equation}
+For independent $Z,Z'$ with law $\nu$ and $1\leq j\leq d$, define the coordinate gaps
+\begin{equation}
+D_j(\nu)=\E|Z^{(j)}-Z'^{(j)}|.
+\end{equation}
+The volume is ordinary Lebesgue volume, and both expectations may take the value $+\infty$.
+
+\begin{theorem}[Random-simplex inequality]
+\label{thm:main}
+For every integer $d\geq1$ and every Borel probability measure $\nu$ on $\R^d$,
+\begin{equation}
+S_d(\nu)\leq\frac{d+1}{2^d}\prod_{j=1}^dD_j(\nu).
+\end{equation}
+
+
+
+
+If any $D_j(\nu)=0$, then $S_d(\nu)=0$, and the product on the right is interpreted as zero, even if another coordinate gap is infinite. If all coordinate gaps are positive and at least one is infinite, the right-hand side is $+\infty$.
+
+
+\end{theorem}
+
+Independence is required between samples, not within each sample. The bound uses only the coordinate marginals, whereas the simplex volume depends on the joint law.
+
+
+\paragraph{Relation to Loomis--Whitney inequalities.}
+
+The classical Loomis--Whitney inequality bounds volume using codimension-one coordinate projections. A closer comparison is the local Loomis--Whitney inequality of Alonso-Gutierrez et al.~\cite[Theorem 4.5]{AG}, which allows two-dimensional projections sharing a common coordinate axis.
+
+To see the connection, let $\nu$ be a finitely supported probability measure on $\R^d$, with atoms $z_1,\ldots,z_N$ and corresponding probabilities $q_1,\ldots,q_N$, where $q_i\geq0$ and $\sum_{i=1}^N q_i=1$.
+
+Define the zonotope
+$$
+K=\sum_{i=1}^N[0,q_i(z_i,1)]\subset\R^{d+1}.
+$$
+Here $(z_i,1)$ is obtained by appending a coordinate equal to $1$ to $z_i$, and $[0,q_i(z_i,1)]$ denotes the line segment joining the origin to $q_i(z_i,1)$. The sum is the Minkowski sum of these segments, namely
+$$
+K=\left\{\sum_{i=1}^N t_iq_i(z_i,1):0\leq t_i\leq1\right\}.
+$$
+
+
+
+The lifted zonotope $K$ is constructed from the entire probability distribution, rather than from a single sampled simplex. The distribution may have more than $d+1$ support points, although each sampled convex hull uses exactly $d+1$ points. For example, when $d=2$, the distribution may be supported on all four vertices of a square, while each sampled convex hull is a triangle or a degenerate simplex.
+
+
+
+
+
+Let $L$ be the last coordinate axis and $E_j$ the plane spanned by $L$ and the $j$th coordinate axis. The zonotope volume formulas give
+
+$$
+\vol_{d+1}(K)=\frac{S_d(\nu)}{d+1},
+\qquad
+\vol_1(P_LK)=1,
+\qquad
+\vol_2(P_{E_j}K)=\frac{D_j(\nu)}{2}.
+$$
+
+For this projection arrangement, the local Loomis--Whitney inequality~\cite[Theorem 4.5]{AG} gives
+$$
+\vol_{d+1}(K)\vol_1(P_LK)^{d-1}
+\leq\frac{2^d}{d+1}
+\prod_{j=1}^d\vol_2(P_{E_j}K).
+$$
+Substituting the preceding zonotope identities yields
+$$
+S_d(\nu)\leq\prod_{j=1}^dD_j(\nu),
+$$
+
+whereas our theorem establishes
+$$
+S_d(\nu)\leq\frac{d+1}{2^d}\prod_{j=1}^dD_j(\nu).
+$$
+
+The constant in the general convex-body inequality is sharp. For the lifted zonotopes associated with probability measures,
+our theorem gives a strictly stronger bound when $d\geq2$, with the optimal constant established in Section~\ref{sec:sharpness}.
+
+Thus the improvement relies on additional geometric structure and does not follow directly from the general local Loomis--Whitney theorem.
+
+
+The constant is optimal in every fixed dimension, already among measures supported on cube vertices; the extremizing family is given in Section~\ref{sec:sharpness}.
+
+
+
+
+Our contribution is a proof based on signed-simplex cancellation and exterior algebra. Its main step is a sharp one-coordinate inequality for probability measures with finite coordinate first absolute moments. Threshold integration and induction yield the random-simplex inequality and its Hypercube specialization. We also establish optimality of the one-coordinate constant and recover the corresponding zonoid projection inequality.
+
+
+
+
+The main step removes one coordinate. Write $Z=(Y,B)$, let $\mu$ be the law of $Y\in\R^{d-1}$, and suppose first that all coordinate first absolute moments are finite. We prove
+$$S_d(\nu)\leq\frac{d+1}{2d}D_d(\nu)S_{d-1}(\mu).$$
+The finite-support case is Theorem~\ref{thm:onestep}; Corollary~\ref{cor:finite-moment} gives the finite-moment extension.
+
+For every probability measure $\nu$ on $\R$, $S_1(\nu)=D_1(\nu)$ by definition. Together with the convention $S_0(\mu)=1$, iteration yields the constant in Theorem~\ref{thm:main}.
+
+
+For a finite law, we first take the last coordinate to be binary. The signed indicators of the projected omission simplices satisfy an alternating cancellation identity. We encode these indicators in an exterior vector, where the cancellation permits centering the binary height vector. Its squared norm is the Bernoulli variance. The unweighted alternating sums are integers, so $|s|\leq s^2$ converts the resulting squared-norm estimate into an absolute-value estimate. Integration over
+thresholds then gives the corresponding inequality for real heights. 
+
+Our determinant convention is that $\det(1;v_0,\ldots,v_k)$ is the determinant of the matrix with rows $(1,v_i)$ in the indicated order. Thus
+$$|\det(1;v_0,\ldots,v_k)|=k!\vol_k(\conv\{v_0,\ldots,v_k\}).$$
+For every probability measure $\nu$ on $\R^0$, we adopt the convention $S_0(\nu)=1$. An indicator is denoted by $\one_T$, with $\sgn(0)=0$. Almost-everywhere statements about projected points refer to Lebesgue measure. Exterior powers carry the inner product for which the increasing wedges of an orthonormal basis are orthonormal. Throughout the paper, $D_j(\nu)$ denotes the coordinate gap of a probability measure $\nu$, whereas $D_r$ and $D(U)$ denote projected determinants. The measure argument distinguishes the coordinate gaps from these determinants.
+
+The paper is organized as follows. Sections~\ref{sec:cocycle}--\ref{sec:binary} establish the signed-simplex cancellation and the binary determinant estimate. Sections~\ref{sec:layercake}--\ref{sec:general} treat real heights,
+derive the one-coordinate inequality, and pass to general measures. Section~\ref{sec:induction} proves the main theorem. We then recover the Hypercube and zonoid projection formulations and establish sharpness. Finally, Section~\ref{sec:projection-monotonicity} develops a consequence for coordinate projections and discusses further questions.
+
+
+\end{humanblock}
+
+\section*{Statement of AI Use}
+
+\begin{humanblock}
+
+
+This research was developed with assistance from Muse Spark via \href{https://meta.ai}{meta.ai}. The model assisted with the development of mathematical arguments and the preparation of the manuscript. The author examined and revised the arguments, and Dinh Pham and Juan Torres Toral provided mathematical review.
+
+The author takes responsibility for the mathematical claims, proofs, citations, and final presentation. The Human and AI blocks describe the provenance of the corresponding material; they do not constitute mathematical verification.
+\end{humanblock}
+
+\section*{Concurrent work}
+
+
+\begin{humanblock}
+Guo, Mo, Li, and Deng~\cite[Section 5.2 and Appendix J.1]{EPOCH} give an all-dimensional proof of the Hypercube inequality. Averkov, von Dichter, and Soprunov~\cite[Section 7]{AVS} also give an all-dimensional proof in the revised version of their paper. These arguments use integer-valued determinants, second-moment identities, and Hadamard's inequality. The present paper gives a different proof based on signed-simplex cancellation and exterior algebra.
+
+% Our determinant convention is that $\det(1;v_0,\ldots,v_k)$ is the determinant of the matrix with rows $(1,v_i)$ in the indicated order. Thus
+% $$|\det(1;v_0,\ldots,v_k)|=k!\vol_k(\conv\{v_0,\ldots,v_k\}).$$
+% For every probability measure $\nu$ on $\R^0$, we adopt the convention $S_0(\nu)=1$. An indicator is denoted by $\one_T$, with $\sgn(0)=0$. Almost-everywhere statements about projected points refer to Lebesgue measure. Exterior powers carry the inner product for which the increasing wedges of an orthonormal basis are orthonormal. Throughout the paper, $D_j(\nu)$ denotes the coordinate gap of a probability measure $\nu$, whereas $D_r$ and $D(U)$ denote projected determinants. The measure argument distinguishes the coordinate gaps from these determinants.
+
+
+
+
+\end{humanblock}
+
+\section{Signed simplex cancellation}
+\label{sec:cocycle}
+
+\begin{aiblock}
+Fix $d\geq1$ and an ordered tuple $Y_0,\ldots,Y_d\in\R^{d-1}$. For each $r$, let $T_r=\conv(Y_s:s\neq r)$ and define
+\begin{equation}
+D_r=\det(1;Y_0,\ldots,\widehat{Y_r},\ldots,Y_d).
+\end{equation}
+The remaining rows retain their original order. Put $\sigma_r=(-1)^r\sgn(D_r)$.
+
+\begin{lemma}[Alternating deletion identity]
+\label{lem:cocycle}
+For Lebesgue-almost every $x\in\R^{d-1}$,
+\begin{equation}
+\sum_{r=0}^d\sigma_r\one_{T_r}(x)=0.
+\end{equation}
+More precisely, outside a finite union of proper affine subspaces, either all signed terms vanish or exactly two are nonzero, one equal to $1$ and the other to $-1$.
+\end{lemma}
+
+\begin{proof}
+When $d=1$, both omission determinants equal $1$, and both omission simplices are the single point of $\R^0$. The two signed terms are $1$
+and $-1$. Assume henceforth that $d\geq2$.
+
+If the points do not affinely span $\R^{d-1}$, all omission simplices lie in a proper affine subspace and the assertion follows. Otherwise the matrix with rows $(1,Y_r)$ has rank $d$. The signed maximal minors
+$\lambda_r=(-1)^rD_r$ satisfy
+$$\sum_r\lambda_r=0,\sum_r\lambda_rY_r=0.$$
+These identities follow by expanding determinants with a repeated column. Since the matrix has rank $d$, the vector $\lambda$ is nonzero and spans the one-dimensional space of affine dependencies. Also
+$\sigma_r=\sgn(\lambda_r)$.
+
+Fix $x\in\R^{d-1}$. Its affine representations $x=\sum_s\beta_sY_s$, with $\sum_s\beta_s=1$, form the line
+$\beta(t)=\beta^0+t\lambda$. For $\lambda_r\neq0$, put $t_r=-\beta_r^0/\lambda_r$. Then $x\in T_r$ if and only if $\beta(t_r)$ is coordinatewise nonnegative.
+
+Since $\lambda\neq0$ and $\sum_r\lambda_r=0$, both sign classes are nonempty. If some $\beta_r^0<0$ with $\lambda_r=0$, no nonnegative representation exists. Otherwise the feasible parameters form the
+interval with endpoints
+$$t_{\min}=\max_{\lambda_r>0}t_r, t_{\max}=\min_{\lambda_r<0}t_r,$$
+provided $t_{\min}\leq t_{\max}$; if not, the feasible set is empty. An index with $\lambda_r>0$ is active precisely when $t_r=t_{\min}$, and an index with $\lambda_r<0$ is active precisely when $t_r=t_{\max}$. Here an index is called active when its signed indicator is nonzero.
+
+An endpoint attained by two indices gives a nonnegative representation with two zero coordinates. Thus $x$ belongs to
+$\conv(Y_s:s\neq r,r')$, which lies in an affine subspace of dimension at most $d-2$. Let $N$ be the union of these affine hulls over all pairs $r\neq r'$. It is a finite union of proper affine subspaces and hence has measure zero. If $t_{\min}=t_{\max}$, one positive and one negative index attain the same endpoint, so this case is also contained in $N$.
+
+For $x\notin N$, an empty feasible interval gives no active terms. Otherwise each endpoint is attained by exactly one index. These two indices have opposite signs, and their contributions cancel. Indices with $\lambda_r=0$ have $\sigma_r=0$ and do not contribute.
+\end{proof}
+
+For example, if $y_0<y_1<y_2$ are points of the line, the identity is
+$$\one_{[y_1,y_2]}-\one_{[y_0,y_2]}+\one_{[y_0,y_1]}=0$$
+away from the endpoints. The longer interval is the union of the two
+shorter intervals with disjoint interiors.
+
+
+\end{aiblock}
+
+
+\section{Exterior-algebra Bernoulli estimate}
+\label{sec:exterior}
+\begin{aiblock}
+
+
+Let a finite law have distinct atoms
+$Z_i=(Y_i,B_i)\in\R^{d-1}\times\R$, $i=1,\ldots,N$, with positive probabilities $p_i$
+summing to one. Zero-probability atoms are omitted. For every set of
+labels $J\subseteq\{1,\ldots,N\}$, put $w_J=\prod_{i\in J}p_i$.
+For an increasing $d$-set $U=\{i_1<\cdots<i_d\}$, define
+\begin{equation}
+D(U)=\det(1;Y_{i_1},\ldots,Y_{i_d}).
+\end{equation}
+Write $\one_U(x)=\one_{\conv(Y_i:i\in U)}(x)$ and
+$S_U(x)=\sgn(D(U))\one_U(x)$. The signed-volume identities are
+$$D(U)=(d-1)!\int_{\R^{d-1}}S_U(x)dx, |D(U)|=(d-1)!\int_{\R^{d-1}}\one_U(x)dx.$$
+These identities include affinely dependent projected points, whose
+convex hull has measure zero. Different full atoms may have the same
+projection; their labels are retained throughout.
+
+For an increasing $(d+1)$-set $T=\{t_0<\cdots<t_d\}$, put
+$S_r^T(x)=(-1)^rS_{T\setminus\{t_r\}}(x)$.
+Lemma~\ref{lem:cocycle} gives
+\begin{equation}
+\sum_{r=0}^dS_r^T(x)=0
+\end{equation}
+outside a null set. There are finitely many $T$, so we choose a single
+null set $N^\star$ outside which the lemma holds for every $T$.
+
+We encode these simultaneous identities in the exterior algebra of
+$\R^N$. Let $e_1,\ldots,e_N$ be its standard orthonormal basis and
+$e_U=e_{i_1}\wedge\cdots\wedge e_{i_d}$. Define
+$$v_0=\sum_i\sqrt{p_i}e_i, V_x=\sum_{|U|=d}\sqrt{w_U}S_U(x)e_U.$$
+We have $\|v_0\|^2=1$. Since
+$\sqrt{w_{T\setminus\{t_r\}}}\sqrt{p_{t_r}}=\sqrt{w_T}$ and
+$e_{T\setminus\{t_r\}}\wedge e_{t_r}=(-1)^{d-r}e_T$, the coefficient
+of $e_T$ in $V_x\wedge v_0$ is
+\begin{equation}
+(-1)^d\sqrt{w_T}\sum_{r=0}^d(-1)^rS_{T\setminus\{t_r\}}(x).
+\end{equation}
+It vanishes outside $N^\star$. Therefore
+\begin{equation}
+V_x\wedge v_0=0
+\end{equation}
+almost everywhere. Orthonormality also gives the pointwise bound
+\begin{equation}
+\|V_x\|^2=\sum_{|U|=d}w_US_U(x)^2\leq\sum_{|U|=d}w_U\one_U(x).
+\end{equation}
+The inequality accommodates degenerate simplices without changing their
+indicators on the exceptional set.
+
+Now assume $B_i\in\{0,1\}$. Put $\bar p=\sum_i p_iB_i$ and define
+\begin{equation}
+u=\sum_i\sqrt{p_i}B_ie_i.
+\end{equation}
+Set $\tilde b=u-\bar p v_0$. Then $\langle v_0,\tilde b\rangle=0$ and
+\begin{equation}
+\|\tilde b\|^2=\sum_i p_i(B_i-\bar p)^2=\bar p(1-\bar p).
+\end{equation}
+The cancellation gives $V_x\wedge u=V_x\wedge\tilde b$ almost everywhere.
+For each $T$, define
+\begin{equation}
+s_T(x)=\sum_{r=0}^dS_r^T(x)B_{t_r}.
+\end{equation}
+The coefficient of $e_T$ in $V_x\wedge u$ is
+$(-1)^d\sqrt{w_T}s_T(x)$. 
+
+Lemma~\ref{lem:cocycle} gives either no nonzero signed terms or exactly two with opposite signs. Since the heights are binary, this implies
+$s_T(x)\in\{-1,0,1\}$ outside $N^\star$. Therefore
+$|s_T(x)|=s_T(x)^2$ almost everywhere. Summing and using orthonormality gives
+$$
+\sum_Tw_T|s_T(x)|=\sum_Tw_Ts_T(x)^2=\|V_x\wedge\tilde b\|^2
+$$
+almost everywhere.
+
+For any exterior $d$-vector $V$ and ordinary vector $w$,
+$\|V\wedge w\|\leq\|V\|\|w\|$. Indeed, when $w\neq0$, choose an
+orthonormal basis beginning with $w/\|w\|$. Terms containing that basis
+vector vanish on wedging with $w$; the remaining coefficients are
+multiplied by $\|w\|$. The case $w=0$ is immediate. No decomposability
+assumption on $V$ is needed. Thus
+\begin{equation}
+\|V_x\wedge\tilde b\|^2\leq\bar p(1-\bar p)\|V_x\|^2.
+\end{equation}
+Combining the preceding bounds proves the local estimate.
+
+\begin{lemma}[Local Bernoulli estimate]
+\label{lem:local}
+For binary heights and almost every $x\in\R^{d-1}$,
+\begin{equation}
+\sum_Tw_T|s_T(x)|\leq\bar p(1-\bar p)\sum_Uw_U\one_U(x).
+\end{equation}
+\end{lemma}
+
+
+\end{aiblock}
+
+\section{The binary determinant inequality}
+\label{sec:binary}
+
+\begin{aiblock}
+
+For an increasing $(d+1)$-set $T=\{t_0<\cdots<t_d\}$, let
+\begin{equation}
+A_T(B)=\det\begin{pmatrix}
+1&Y_{t_0}&B_{t_0}\\
+\vdots&\vdots&\vdots\\
+1&Y_{t_d}&B_{t_d}
+\end{pmatrix}.
+\end{equation}
+Expanding along the last column gives
+\begin{equation}
+A_T(B)=\sum_{r=0}^d(-1)^{r+d}D(T\setminus\{t_r\})B_{t_r}.
+\end{equation}
+Here rows and columns are indexed starting at zero. The signed-volume
+identity implies
+\begin{equation}
+A_T(B)=(-1)^d(d-1)!\int_{\R^{d-1}}s_T(x)dx,
+\end{equation}
+and hence
+\begin{equation}
+|A_T(B)|\leq(d-1)!\int_{\R^{d-1}}|s_T(x)|dx.
+\end{equation}
+Multiplying by $w_T$, summing over $T$, and integrating
+Lemma~\ref{lem:local} proves the following inequality. The finite sums
+and integrals may be interchanged, since the integrands are nonnegative.
+
+\begin{lemma}[Weighted Bernoulli inequality]
+\label{lem:weighted}
+For binary heights,
+\begin{equation}
+\sum_Tw_T|A_T(B)|\leq\bar p(1-\bar p)\sum_Uw_U|D(U)|.
+\end{equation}
+\end{lemma}
+
+Let $Z_0,\ldots,Z_d$ now be independent samples from the finite law, and
+write $A=A(Z_0,\ldots,Z_d)$. A repeated full atom label gives two equal
+rows and hence determinant zero. Each increasing $(d+1)$-set corresponds
+to $(d+1)!$ ordered tuples of the same probability and absolute
+determinant. Therefore
+\begin{equation}
+\E|A|=(d+1)!\sum_Tw_T|A_T|.
+\end{equation}
+Counting $d$ sampled labels in the same way gives
+\begin{equation}
+\E|D(Y_1,\ldots,Y_d)|=d!\sum_Uw_U|D(U)|.
+\end{equation}
+This count uses the original full atom labels even when projections
+coincide; any resulting repeated projected rows give determinant zero.
+Each omitted cofactor has the same distribution, so
+\begin{equation}
+\E\sum_{r=0}^d|D_r|=(d+1)\E|D(Y_1,\ldots,Y_d)|.
+\end{equation}
+Multiplying Lemma~\ref{lem:weighted} by $(d+1)!$ gives the probabilistic
+form.
+
+\begin{corollary}[Bernoulli determinant inequality]
+\label{cor:iid}
+Let $(Y,B)$ have finite support, with $B\in\{0,1\}$ and $\bar p=\E B$.
+For independent samples with this joint law,
+\begin{equation}
+\E|A(Z_0,\ldots,Z_d)|\leq\bar p(1-\bar p)\E\sum_{r=0}^d|D_r|.
+\end{equation}
+\end{corollary}
+
+
+
+\end{aiblock}
+
+\section{From binary labels to real heights}
+\label{sec:layercake}
+
+\begin{aiblock}
+
+
+Continue to assume finite support, but now allow real heights $B_i$.
+The alternating projected determinants satisfy
+\begin{equation}
+\sum_{r=0}^d(-1)^rD(T\setminus\{t_r\})=0.
+\end{equation}
+This follows by expanding the determinant with rows $(1,Y_i,1)$, whose
+first and last columns agree. In particular, adding a common constant
+to all heights does not change $A_T$.
+
+For $t\in\R$, put $B_i^{(t)}=\one_{B_i>t}$ and
+$q(t)=\sum_i p_i\one_{B_i>t}$. The threshold representation
+$$B_i=\int_\R(B_i^{(t)}-\one_{0>t})dt$$
+holds for positive and negative heights. The reference term contributes
+zero to the determinant, so
+\begin{equation}
+A_T(B)=\int_\R A_T(B^{(t)})dt,
+\end{equation}
+and
+\begin{equation}
+|A_T(B)|\leq\int_\R|A_T(B^{(t)})|dt.
+\end{equation}
+The integrands vanish outside the range of the heights, where the
+threshold column is constant.
+
+Apply Corollary~\ref{cor:iid} to the joint law of $(Y,\one_{B>t})$.
+Thresholding may merge full atoms, but merging their probabilities does
+not change this law or the projected expectations. Tonelli's theorem
+and the preceding bound give
+\begin{equation}
+\E|A(B)|\leq\left(\int_\R q(t)(1-q(t))dt\right)\E\sum_r|D_r|.
+\end{equation}
+The projected law is unchanged by thresholding, so the last expectation
+is independent of $t$. This does not require independence of height and
+projection.
+
+For independent copies $B,B'$,
+\begin{equation}
+|B-B'|=\int_\R|\one_{B>t}-\one_{B'>t}|dt.
+\end{equation}
+Taking expectations and using independence of the copies gives
+\begin{equation}
+\E|B-B'|=2\int_\R q(t)(1-q(t))dt.
+\end{equation}
+Consequently,
+\begin{equation}
+\E|A(Z_0,\ldots,Z_d)|\leq\frac12\E|B-B'|\E\sum_{r=0}^d|D_r|.
+\label{eq:det-onestep}
+\end{equation}
+
+
+\end{aiblock}
+
+\section{The one-coordinate inequality}
+\label{sec:onestep}
+\begin{aiblock}
+
+
+
+
+The determinant inequality has the following volume formulation.
+
+\begin{theorem}[One-coordinate inequality]
+\label{thm:onestep}
+Let $\nu$ be a finitely supported probability measure on $\R^d$, and
+let $\mu$ be its projection onto the first $d-1$ coordinates. Then
+\begin{equation}
+S_d(\nu)\leq\frac{d+1}{2d}D_d(\nu)S_{d-1}(\mu).
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Write $Z=(Y,B)$. The determinant-volume formula gives
+\begin{equation}
+\E|A(Z_0,\ldots,Z_d)|=d!S_d(\nu).
+\end{equation}
+Each omitted projected determinant satisfies
+\begin{equation}
+|D_r|=(d-1)!\vol_{d-1}(\conv(Y_i:i\neq r)).
+\end{equation}
+The $d+1$ projected omission simplices have the same distribution, so
+\begin{equation}
+\E\sum_{r=0}^d|D_r|=(d+1)(d-1)!S_{d-1}(\mu).
+\end{equation}
+Substitute these equalities and $D_d(\nu)=\E|B-B'|$ into
+\eqref{eq:det-onestep}, and divide by $d!$.
+\end{proof}
+
+For $d=1$, we have $S_1(\nu)=D_1(\nu)$ directly from the definitions. This agrees with the one-coordinate inequality under the convention $S_0(\mu)=1$. For $d\geq2$, the factor $(d+1)/(2d)$ combines the $d+1$ omission positions, the factor $1/2$ in the threshold identity, and the volume ratio $(d-1)!/d!=1/d$.
+
+
+
+\end{aiblock}
+\section{Approximation by finite laws}
+\label{sec:general}
+\begin{aiblock}
+We first separate the endpoint cases of Theorem~\ref{thm:main}. If
+$D_j(\nu)=0$, then two independent copies of coordinate $j$ agree almost
+surely. Its distribution must be a point mass: otherwise a threshold
+$t$ would satisfy $0<P(Z^{(j)}\leq t)<1$, and independence would give
+$P(Z^{(j)}\leq t<Z'^{(j)})>0$. All sampled simplices then lie in a fixed
+hyperplane, so $S_d(\nu)=0$. If all coordinate gaps are positive and
+one is infinite, the main upper bound is infinite. It remains to treat
+finite coordinate gaps.
+
+Finite gaps imply finite coordinate first absolute moments. Indeed, for
+independent copies $X,X'$, define $g(a)=\E|X-a|$. Tonelli's theorem gives
+$$\E g(X')=\E|X-X'|.$$
+If this is finite, there is a finite $a$ with $g(a)<\infty$. Hence
+$$\E|X|\leq\E|X-a|+|a|<\infty.$$
+Apply this argument to each coordinate. No translation is needed to
+establish finiteness.
+
+We now assume finite coordinate first absolute moments and extend
+Theorem~\ref{thm:onestep}; the approximation also allows zero gaps.
+For integers $n\geq1$, set
+$$\varphi_n(t)=\max(-n,\min(n,\lfloor nt\rfloor/n)).$$
+Let $Z^{(n)}$ be obtained by applying $\varphi_n$ to each coordinate,
+and let $\nu_n$ be its law. This law has finite support. Since
+$$|\varphi_n(t)-t|\leq1/n+|t|\one_{|t|>n},$$
+each coordinate converges in $L^1$. Moreover,
+$$\E|Z^{(n,j)}|\leq\E|Z^{(j)}|+1.$$
+Couple an independent copy $Z'$ with the same quantization. The inequality
+$$\left||a-b|-|c-e|\right|\leq|a-c|+|b-e|$$
+then gives $D_j(\nu_n)\to D_j(\nu)$.
+
+For the simplex functional, couple all sample rows by
+$Z_r^{(n)}=(\varphi_n(Z_r^{(1)}),\ldots,\varphi_n(Z_r^{(d)}))$.
+Each monomial in the expansion of $\det(1;Z_0,\ldots,Z_d)$ uses at most
+one coordinate from each row. Thus its nonconstant factors come from
+distinct independent samples, even when coordinates within a row are
+dependent.
+
+Write one such monomial and its approximation as $\prod_{k=1}^d a_k$
+and $\prod_{k=1}^d a_{n,k}$, respectively. Telescoping and independence
+across rows give
+$$\E\left|\prod_{k=1}^d a_{n,k}-\prod_{k=1}^d a_k\right|\leq\sum_{k=1}^d\E|a_{n,k}-a_k|\prod_{\ell<k}\E|a_{n,\ell}|\prod_{\ell>k}\E|a_\ell|.$$
+Each summand tends to zero: its difference factor converges in $L^1$,
+and the other first moments are uniformly bounded. There are only
+$(d+1)!$ determinant monomials. Therefore,
+\begin{equation}
+\E|A(Z_0^{(n)},\ldots,Z_d^{(n)})-A(Z_0,\ldots,Z_d)|\longrightarrow0.
+\end{equation}
+The reverse triangle inequality yields $S_d(\nu_n)\to S_d(\nu)$.
+Let $\mu_n$ and $\mu$ be the projections of $\nu_n$ and $\nu$ onto
+the first $d-1$ coordinates. The same argument applies to their determinants,
+so $S_{d-1}(\mu_n)\to S_{d-1}(\mu)$; for $d=1$, both projected functionals satisfy $S_0(\mu_n)=S_0(\mu)=1$. Passing to the limit proves the following statement.
+
+\begin{corollary}[Finite-moment extension]
+\label{cor:finite-moment}
+The one-coordinate inequality of Theorem~\ref{thm:onestep} holds for every
+Borel probability measure with finite coordinate first absolute moments.
+\end{corollary}
+
+
+
+\end{aiblock}
+\section{Induction and proof of the main theorem}
+\label{sec:induction}
+\begin{aiblock}
+
+
+\begin{proof}[Proof of Theorem~\ref{thm:main}]
+The zero-gap and infinite-gap cases were settled in
+Section~\ref{sec:general}. When all gaps are finite, that section also
+shows that all coordinate first absolute moments are finite. The base
+case is $S_1(\nu)=D_1(\nu)$.
+
+Let $d\geq2$, and let $\mu$ be the projection onto the first $d-1$
+coordinates. Then $D_j(\mu)=D_j(\nu)$ for $j\leq d-1$.
+Corollary~\ref{cor:finite-moment} and the induction hypothesis give
+\begin{equation}
+S_d(\nu)\leq\frac{d+1}{2d}D_d(\nu)\frac{d}{2^{d-1}}\prod_{j=1}^{d-1}D_j(\nu)
+=\frac{d+1}{2^d}\prod_{j=1}^dD_j(\nu).
+\end{equation}
+This completes the induction.
+\end{proof}
+
+
+
+
+\end{aiblock}
+\section{Hypercube specialization}
+\label{sec:cube}
+\begin{aiblock}
+
+
+
+
+Let $V_d=\{0,1\}^d$ and let $q_v\geq0$, with $\sum_{v\in V_d}q_v=1$,
+be a probability distribution on its vertices. Put
+$$p_j=\sum_{v\in V_d}q_vv^{(j)}.$$
+Coordinate $j$ is Bernoulli with parameter $p_j$, so
+\begin{equation}
+D_j(\nu)=2p_j(1-p_j).
+\end{equation}
+Thus, Theorem~\ref{thm:main} gives
+$S_d(\nu)\leq(d+1)\prod_jp_j(1-p_j)$.
+For a vertex set $T\subseteq V_d$ of size $d+1$, there are $(d+1)!$
+orderings. Tuples with a repeated vertex have volume zero. Consequently,
+\begin{equation}
+S_d(\nu)=(d+1)!\sum_{\substack{T\subseteq V_d\\|T|=d+1}}\vol_d(\conv T)\prod_{v\in T}q_v.
+\end{equation}
+Dividing by $(d+1)!$ gives the probability-weighted form.
+
+\begin{corollary}[Probability-weighted Hypercube inequality]
+\label{cor:cube}
+For any probability masses $(q_v)_{v\in V_d}$,
+\begin{equation}
+\sum_{\substack{T\subseteq V_d\\|T|=d+1}}\vol_d(\conv T)\prod_{v\in T}q_v
+\leq\frac1{d!}\prod_{j=1}^dp_j(1-p_j).
+\end{equation}
+\end{corollary}
+
+To recover the original formulation \cite[Eq.~(3)]{AVS}, use normalized
+simplex volume
+$$\nvol(T)=d!\vol_d(\conv T).$$
+Assign arbitrary nonnegative weights $x_v$ to the vertices and define
+$$Q=\sum_{v\in V_d}x_v, M_{j,b}=\sum_{\substack{v\in V_d\\v^{(j)}=b}}x_v,$$
+and
+$$F(x)=\sum_{\substack{T\subseteq V_d\\|T|=d+1}}\nvol(T)\prod_{v\in T}x_v.$$
+The two values of $b$ select the two opposite facets perpendicular to
+ coordinate $j$.
+
+\begin{corollary}[Hypercube inequality]
+\label{cor:weighted-cube}
+For all nonnegative vertex weights,
+$$F(x)Q^{d-1}\leq\prod_{j=1}^dM_{j,0}M_{j,1}.$$
+Equivalently,
+$$\left(\sum_{\substack{T\subseteq V_d\\|T|=d+1}}\nvol(T)\prod_{v\in T}x_v\right)
+\left(\sum_{v\in V_d}x_v\right)^{d-1}
+\leq\prod_{\substack{F\text{ facet}\\\text{of }[0,1]^d}}\sum_{v\in F\cap V_d}x_v.$$
+\end{corollary}
+
+\begin{proof}
+If $Q>0$, set $q_v=x_v/Q$. The counting identity and the Bernoulli gap
+formula give
+$$S_d(\nu)=\frac{d+1}{Q^{d+1}}F(x), D_j(\nu)=\frac{2M_{j,0}M_{j,1}}{Q^2}.$$
+Substitution in Theorem~\ref{thm:main}, followed by multiplication by
+$Q^{2d}/(d+1)$, yields the claimed inequality. If $Q=0$, all weights
+vanish and both polynomial sides are zero. For $d=1$, the factor
+$Q^{d-1}$ is the constant polynomial $1$.
+\end{proof}
+
+
+
+
+
+\end{aiblock}
+\section{The zonoid projection formulation}
+\label{sec:zonoids}
+\begin{aiblock}
+
+
+
+Let $L$ be the last coordinate axis in $\R^{d+1}$, and let $E_j$ be
+the plane spanned by $L$ and the $j$th coordinate axis. Write $P_H$
+for orthogonal projection onto $H$.
+
+For a finite probability law $\nu=\sum_iq_i\delta_{z_i}$, define
+$$
+K_\nu=\sum_i[0,q_i(z_i,1)].
+$$
+The zonotope determinant formula gives
+$$
+\vol_{d+1}(K_\nu)=\frac{S_d(\nu)}{d+1}.
+$$
+The projection onto $L$ has length
+$$
+\vol_1(P_LK_\nu)=\sum_iq_i=1.
+$$
+For each $j$, the planar determinant formula gives
+$$
+\vol_2(P_{E_j}K_\nu)=\sum_{i<k}q_iq_k|z_i^{(j)}-z_k^{(j)}|=\frac{D_j(\nu)}2.
+$$
+These identities yield the following geometric formulation.
+
+\begin{corollary}[Zonoid projection inequality]
+For every zonoid $K\subset\R^{d+1}$,
+$$
+\vol_{d+1}(K)\vol_1(P_LK)^{d-1}\leq\prod_{j=1}^d\vol_2(P_{E_j}K).
+$$
+For $d=1$, the factor with exponent zero is interpreted as $1$.
+The constant $1$ is optimal.
+\end{corollary}
+
+\begin{proof}
+First suppose $K$ is a zonotope whose nonzero generators have nonzero
+last coordinates. Reversing a generator changes its segment only by
+translation, so we may orient the generators as $g_i=(a_i,b_i)$ with
+$b_i>0$. Put
+$$
+H=\sum_i b_i.
+$$
+Define $q_i=b_i/H$ and $z_i=a_i/b_i$. Up to translation,
+$K=HK_\nu$ for $\nu=\sum_iq_i\delta_{z_i}$.
+
+The preceding identities and Theorem~\ref{thm:main} give
+$$
+\vol_{d+1}(K)\vol_1(P_LK)^{d-1}
+=\frac{H^{2d}}{d+1}S_d(\nu)
+\leq\frac{H^{2d}}{2^d}\prod_{j=1}^dD_j(\nu)
+=\prod_{j=1}^d\vol_2(P_{E_j}K).
+$$
+Horizontal generators are handled by perturbing their last coordinates
+and taking a limit. The zonotope with no nonzero generators satisfies
+the inequality directly.
+
+Every zonoid is a Hausdorff limit of zonotopes. Continuity of volume
+and projected volumes therefore extends the inequality to all zonoids.
+Coordinate boxes with positive side lengths give equality, proving
+optimality.
+\end{proof}
+
+This recovers the projection inequality in~\cite[Eq.~(2)]{AVS},
+written multiplicatively with $n=d+1$. Conversely, applying that
+inequality to $K_\nu$ gives the random-simplex inequality for finite
+laws. Thus the two formulations have exactly matching constants.
+
+
+
+\end{aiblock}
+\section{Sharpness}
+\label{sec:sharpness}
+\begin{aiblock}
+
+
+
+
+\begin{proposition}
+For every fixed $d\geq1$, the constant $(d+1)/2^d$ in
+Theorem~\ref{thm:main} is optimal, even among probability measures
+supported on $\{0,1\}^d$. The constant $(d+1)/(2d)$ in the one-coordinate inequality of Theorem~\ref{thm:onestep} and Corollary~\ref{cor:finite-moment} is also optimal.
+\end{proposition}
+
+\begin{proof}
+
+Let $e_1,\ldots,e_d$ be the coordinate unit vectors. For $0<\varepsilon<1/d$, define
+$$
+\nu_\varepsilon
+=(1-d\varepsilon)\delta_0
++\varepsilon\sum_{j=1}^d\delta_{e_j},
+$$
+where $\delta_x$ denotes the Dirac measure at $x$. The support consists of the vertices of the standard simplex, whose volume is $1/d!$.
+
+
+The sampled simplex has positive volume precisely when all $d+1$
+support points appear. This event has probability
+$(d+1)!(1-d\varepsilon)\varepsilon^d$. Hence
+$$S_d(\nu_\varepsilon)=(d+1)(1-d\varepsilon)\varepsilon^d.$$
+Each coordinate is Bernoulli with parameter $\varepsilon$, and therefore
+$$D_j(\nu_\varepsilon)=2\varepsilon(1-\varepsilon).$$
+It follows that
+$$\frac{S_d(\nu_\varepsilon)}{\prod_{j=1}^dD_j(\nu_\varepsilon)}=\frac{d+1}{2^d}\frac{1-d\varepsilon}{(1-\varepsilon)^d}.$$
+For fixed $d$, this ratio tends to $(d+1)/2^d$ as
+$\varepsilon\downarrow0$. Thus, no smaller constant can hold for all
+such measures.
+
+The same family proves optimality of the one-coordinate constant. Let $\mu_\varepsilon$ be the projection of $\nu_\varepsilon$ onto the first
+$d-1$ coordinates. The mass at $e_d$ merges with the mass at zero, so
+$$
+\mu_\varepsilon=(1-(d-1)\varepsilon)\delta_0+\varepsilon\sum_{j=1}^{d-1}\delta_{e_j}.
+$$
+Consequently,
+$$
+S_{d-1}(\mu_\varepsilon)=d(1-(d-1)\varepsilon)\varepsilon^{d-1}.
+$$
+For $d=1$, this identity uses the convention $S_0(\mu_\varepsilon)=1$. Combining this formula with the preceding expressions for $S_d(\nu_\varepsilon)$ and $D_d(\nu_\varepsilon)$ gives
+$$
+\frac{S_d(\nu_\varepsilon)}{D_d(\nu_\varepsilon)S_{d-1}(\mu_\varepsilon)}
+=\frac{d+1}{2d}\frac{1-d\varepsilon}{(1-\varepsilon)(1-(d-1)\varepsilon)}.
+$$
+As $\varepsilon\downarrow0$, this ratio tends to $(d+1)/(2d)$. Therefore the one-coordinate constant cannot be decreased.
+\end{proof}
+
+
+The proof establishes optimality through an extremizing sequence. Equality holds for every law in dimension one. In dimension two, consider the uniform probability measure on the vertices of the square,
+$$
+\nu=\frac14\left(
+\delta_{(0,0)}+\delta_{(1,0)}
++\delta_{(0,1)}+\delta_{(1,1)}
+\right).
+$$
+The $24$ ordered triples of distinct vertices each form a triangle of area $1/2$. Consequently,
+$$
+S_2(\nu)=\frac{3}{16},
+\qquad
+D_1(\nu)=D_2(\nu)=\frac12.
+$$
+Thus equality holds in Theorem~\ref{thm:main} for this measure.
+
+\end{aiblock}
+
+
+
+
+\section{Projection monotonicity and further questions}
+\label{sec:projection-monotonicity}
+
+\begin{humanblock}
+
+The one-coordinate inequality controls more than the final
+product bound: it compares the normalized simplex volumes
+of all coordinate projections.
+
+Let $\nu$ be a probability measure on $\R^d$ with finite
+coordinate first absolute moments and $D_j(\nu)>0$ for
+every $j$. For a nonempty set
+$I\subseteq\{1,\ldots,d\}$, let $\nu_I$ be the law of the
+coordinates indexed by $I$, listed in increasing order.
+Define
+$$
+\mathcal{R}_I(\nu)=
+\frac{2^{|I|}S_{|I|}(\nu_I)}
+{(|I|+1)\prod_{j\in I}D_j(\nu)}.
+$$
+The main inequality gives $\mathcal{R}_I(\nu)\leq1$.
+
+\begin{proposition}[Monotonicity under coordinate deletion]
+For nonempty coordinate sets $J\subseteq I$,
+$$
+0\leq\mathcal{R}_I(\nu)\leq\mathcal{R}_J(\nu)\leq1.
+$$
+\end{proposition}
+
+\begin{proof}
+It suffices to remove one coordinate.
+Let $m=|I|\geq2$ and let $j\in I$.
+After permuting coordinates, the one-coordinate inequality
+and Corollary~\ref{cor:finite-moment} give
+$$
+S_m(\nu_I)\leq
+\frac{m+1}{2m}D_j(\nu)S_{m-1}(\nu_{I\setminus\{j\}}).
+$$
+Multiplying by
+$2^m/((m+1)\prod_{\ell\in I}D_\ell(\nu))$
+yields
+$$
+\mathcal{R}_I(\nu)\leq
+\mathcal{R}_{I\setminus\{j\}}(\nu).
+$$
+Iteration proves the comparison for $J\subseteq I$.
+For a singleton $J=\{j\}$, the identity
+$S_1(\nu_J)=D_j(\nu)$ gives $\mathcal{R}_J(\nu)=1$.
+Nonnegativity follows from the definition.
+\end{proof}
+
+Thus a relative deficit in any coordinate projection
+persists when additional coordinates are included.
+In particular, if $\mathcal{R}_J(\nu)\leq1-\delta$, then
+$\mathcal{R}_I(\nu)\leq1-\delta$ for every $I\supseteq J$.
+
+This consequence suggests studying equality and near equality
+in the coordinate-deletion step itself.
+When $\mathcal{R}_J(\nu)>0$, which joint laws satisfy
+$\mathcal{R}_I(\nu)=\mathcal{R}_J(\nu)$?
+Under what additional assumptions does a small value of
+$1-\mathcal{R}_I(\nu)/\mathcal{R}_J(\nu)$ force the law
+to be close to an equality case?
+These questions concern the dependence between retained
+and removed coordinates, rather than only the sharp
+constant in the final product bound.
+
+\end{humanblock}
+
+
+
+
+
+\begin{thebibliography}{9}
+
+
+\bibitem{AG}
+D. Alonso-Gutierrez, S. Artstein-Avidan,
+B. Gonzalez Merino, C. H. Jimenez, and R. Villa.
+Rogers-Shephard and local Loomis-Whitney type
+inequalities.
+Mathematische Annalen, 2019.
+\url{https://doi.org/10.1007/s00208-019-01834-3}.
+
+
+\bibitem{AVS}
+G. Averkov, K. von Dichter, and I. Soprunov.
+On the Log-submodularity for zonoids: from Mixed Volume inequalities to the Hypercube.
+arXiv:2608.14909v2, revised October 18, 2026.
+\url{https://arxiv.org/abs/2608.14909v2}.
+
+
+\bibitem{EPOCH}
+B. Guo, A. Mo, R. Li, and X. Deng.
+EPOCH: Reliable Discovery through Evidence-Governed Search.
+arXiv:2610.06986, 2026.
+\url{https://arxiv.org/abs/2610.06986}.
+
+\bibitem{FMMZ}
+M. Fradelizi, M. Madiman, M. Meyer, and A. Zvavitch.
+On the volume of the Minkowski sum of zonoids.
+Journal of Functional Analysis 286, no. 3 (2024), article 110247.
+\url{https://doi.org/10.1016/j.jfa.2023.110247}.
+
+
+
+\end{thebibliography}
+
+
+
+\end{document}

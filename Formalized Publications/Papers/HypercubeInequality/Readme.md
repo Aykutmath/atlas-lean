@@ -59,10 +59,13 @@ all endpoints depend only on the standard axioms (`propext`,
   above. Note: this is a *verification* file with complete proofs
   behind every check, not an Atlas-style `sorry` challenge file;
   see the header of the comparator file.
-- LaTeX: `Papers/Latex/` is **not included yet** — the October 29
-  LaTeX source is not in the source repository (only the PDF).
-  It will be added when the owner supplies it; the PDF here is
-  the authoritative manuscript meanwhile.
+- LaTeX: `Papers/Latex/` contains `main.tex` (the October 29
+  source, supplied by the owner), plus its required
+  `stylelibrary.tex` and `flexart.sty`. The bibliography is
+  inline (`thebibliography`), so no `.bib` file is needed.
+  Verified 2026-11-01: `pdflatex` (three passes, TinyTeX) builds
+  15 pages whose extracted text is word-for-word identical to
+  `Papers/hypercube_inequality.pdf`, including all 12 sections.
 
 ## Authorship
 
