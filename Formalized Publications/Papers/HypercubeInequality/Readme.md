@@ -52,13 +52,28 @@ all endpoints depend only on the standard axioms (`propext`,
   paper's section structure) instead of renaming files to an
   `A_`/`B_` scheme; namespaces are unchanged, so fully-qualified
   theorem names are exactly as checked.
-- `Comparator/` — the verification comparator
+- `Comparator/` — the independent Atlas-style challenge
   ([hypercube_inequality_comparator.lean](Comparator/hypercube_inequality_comparator.lean)
-  with [hypercube_inequality_comparator.json](Comparator/hypercube_inequality_comparator.json)):
-  `#check`/`#print axioms` inspections of the headline endpoints
-  above. Note: this is a *verification* file with complete proofs
-  behind every check, not an Atlas-style `sorry` challenge file;
-  see the header of the comparator file.
+  with [hypercube_inequality_comparator.json](Comparator/hypercube_inequality_comparator.json)
+  and [README.md](Comparator/README.md)): the definitions
+  `HypercubeInequality.S` / `HypercubeInequality.gap` stated
+  independently (Mathlib imports only, nothing imported from
+  `Formalization/`), and `HypercubeInequality.main_full` stated with
+  those definitions and proved with `sorry` — the single authorized
+  placeholder. The config names exactly one theorem and two
+  definitions, on the standard axioms (`propext`,
+  `Classical.choice`, `Quot.sound`). Verified 2026-11-02 with the
+  real `lake comparator` (Linux, Lean `v4.35.0`, default kernels):
+  `Your solution is okay!`, exit 0 — plus negative controls
+  (altered coefficient/definition/sorry-admission are all rejected).
+  Full commands, export hashes, and control results: see
+  [Comparator/README.md](Comparator/README.md).
+- `Verification/` — the previous self-importing endpoint audit,
+  kept as the local helper
+  [EndpointAudit.lean](Verification/EndpointAudit.lean) (`#check` /
+  `#print axioms` over the actual proofs). It imports the solution,
+  so it is not part of the challenge and the challenge never imports
+  it.
 - LaTeX: `Papers/Latex/` contains `main.tex` (the October 29
   source, supplied by the owner), plus its required
   `stylelibrary.tex` and `flexart.sty`. The bibliography is
@@ -86,7 +101,8 @@ all endpoints depend only on the standard axioms (`propext`,
 No per-folder `lakefile.toml` / `lean-toolchain` /
 `lake-manifest.json` is included, per the Atlas top-level pins.
 In the source project, `Formalization/` serves as the Lake source
-root (`lake build` there builds the root module and all sections);
-the comparator is run there with
-`lake env lean Comparator/hypercube_inequality_comparator.lean`
-from the project root.
+root (`lake build` there builds the root module and all sections).
+The challenge compiles standalone with a Mathlib-only search path
+(exit 0 with the single expected `sorry` warning); the endpoint audit
+runs there with `lake env lean Verification/EndpointAudit.lean` from
+the project root.

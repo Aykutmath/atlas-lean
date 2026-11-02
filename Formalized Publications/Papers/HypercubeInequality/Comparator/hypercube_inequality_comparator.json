@@ -1,35 +1,7 @@
 {
   "challenge_module": "hypercube_inequality_comparator",
   "solution_module": "HypercubeInequality",
-  "theorem_names": [
-    "HypercubeInequality.main_full",
-    "HypercubeInequality.weighted_cube",
-    "HypercubeInequality.sharp_optimal",
-    "Cor101.corollary10_1",
-    "Cor101.corollary10_1_with_sharpness",
-    "HypercubeInequality.subset_ratio_mono",
-    "HypercubeInequality.cocycle_alternating_sum",
-    "HypercubeInequality.cocycle_exactly_two_nonzero",
-    "HypercubeInequality.oneStep"
-  ],
-  "definition_names": [
-    "HypercubeInequality.S",
-    "HypercubeInequality.gap",
-    "HypercubeInequality.simDet",
-    "HypercubeInequality.subsetRatio",
-    "Cor101.Space",
-    "Cor101.fullVolume",
-    "Cor101.lineVolume",
-    "Cor101.planeVolume",
-    "Cor101.IsZonotope",
-    "Cor101.IsZonoid",
-    "Cor101.ProjectionInequality",
-    "Cor101.Corollary10_1",
-    "Cor101.SharpProjectionConstant"
-  ],
-  "permitted_axioms": [
-    "propext",
-    "Classical.choice",
-    "Quot.sound"
-  ]
+  "theorem_names": ["HypercubeInequality.main_full"],
+  "definition_names": ["HypercubeInequality.S", "HypercubeInequality.gap"],
+  "permitted_axioms": ["propext", "Classical.choice", "Quot.sound"]
 }
