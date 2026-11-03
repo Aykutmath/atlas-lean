@@ -12,9 +12,10 @@ singleton).
 `alpha_cycle_comparator.lean` is the challenge root; the paper-facing
 definitions are stated **independently in the `Challenge/` excerpt
 modules** — they import only Mathlib and each other, never the solution
-in `Formalization/` — and the root states
+in `Formalization/`. The main-theorem excerpt states
 `AlphaCycle.PaperHypergraph.paper_sharp_classification` with those
-challenge definitions, proved with `sorry`. `sorry` is authorized in
+challenge definitions and `sorry`; the root imports only that challenge.
+`sorry` is authorized in
 this challenge only (exactly one placeholder, in
 `Challenge/Section_6_MainTheorem/PaperMain.lean`); the solution
 contains no `sorry`, `admit`, `native_decide`, or custom axioms.
@@ -23,31 +24,28 @@ Restated definitions (same names, same bodies as the solution;
 byte-identical source excerpts, elaborated file-by-file in dependency
 order exactly like the solution build):
 
-- From `Section_1_Introduction/Geometry.lean` (embedded whole):
-  `blockA`, `blockB`, `blockC`, `IsCycle`, `ofThree`, `distinguishedCycle`
-  and the six projection maps.
-- From `Section_2_Preliminaries/FiniteLaw.lean`: `IsGLaw`, the finite law
-  type and its moments interface.
-- From `Section_2_Preliminaries/MomentInversion.lean`: the six-term
-  inversion identities.
-- From `Section_2_Preliminaries/Polytope.lean`: `IsPolytope`.
-- From `Section_2_Preliminaries/Triangle.lean`: the triangle adjacency
-  relation and `generalizedTriangle`.
-- From `Section_2_Preliminaries/Relaxation.lean`: the distinguished and
-  all-cycles cycle relaxations.
-- From `Section_2_Preliminaries/DefinitionAudit.lean`: `isCycle_iff_alpha`,
-  `two_le_card` (the `Fin 3` distinctness helper).
-- From `Section_2_Preliminaries/PaperCoordinates.lean`: `H`, `multilinearSet`,
-  `polytope`, `momentCoordinate`, `common`, `coordinateSupport`,
-  `coordinateCorners`, `ofThree` (hypergraph completion), `completion`,
-  `cycleCoordinates`, `cycleDistinguishedRelaxation`, `cycleAllRelaxation`.
-- From `Section_2_Preliminaries/GeometryCycle.lean`: `Geometry.IsCycle`,
-  `GeometryCycle`.
-- From `Section_2_Preliminaries/PaperHypergraph.lean`: the hypergraph
-  completion type and `paper_sharp_classification`'s supporting
-  definitions.
-- From `Section_6_MainTheorem/PaperMain.lean`: the main theorem statement
-  with the single authorized `sorry`.
+- `Section_1_Introduction/Geometry.lean`: Venn blocks (`common`,
+  `blockA`, `blockB`, `blockC`), `core`, `IsCycle`, and `Singletons`,
+  together with the complete geometric helper proofs in that short file.
+- `Section_2_Preliminaries/FiniteLaw.lean` and `MomentInversion.lean`:
+  `Law`, `Law.prob`, `BooleanLaw`, and `moment`.
+- `Section_2_Preliminaries/Polytope.lean`: `completedSupport`,
+  `MomentVector`, and `completeEdgeRelaxation`.
+- `Section_2_Preliminaries/Triangle.lean` and `Relaxation.lean`:
+  `GT`, `NoPrivate`, `SupportedCycle`, `switchVector`,
+  `generalizedTriangle`, `distinguishedRelaxation`, and
+  `allCycleRelaxation`.
+- `Section_2_Preliminaries/DefinitionAudit.lean` and
+  `GeometryCycle.lean`: the proved edge-cardinality and reduced-cycle
+  helpers used to construct `distinguishedCycle`.
+- `Section_2_Preliminaries/PaperCoordinates.lean` and
+  `PaperHypergraph.lean`: `paperMonomial`, `PaperHypergraph`,
+  completion, literal coordinates, `multilinearSet`, `polytope`,
+  `coordinateSupport`, `fromPaper`, `ofThree`, `momentCoordinate`,
+  and `cycleCoordinates`, with the helper proofs needed by those definitions.
+- `Section_6_MainTheorem/PaperMain.lean`: independently defined
+  `cycleDistinguishedRelaxation` and `cycleAllRelaxation`, and the
+  exact main theorem statement with the single authorized `sorry`.
 
 `alpha_cycle_comparator.json`:
 
@@ -119,7 +117,8 @@ to be a 4.35 source port, and no 4.34 olean is ever loaded into a
 4.35 process.
 
 Serializer parity was established once for this serializer byte-stream
-in the sibling Gaussian package (`../Verification/parity.md` there):
+in the published Gaussian package's `Verification/parity.md`
+(Gaussian publication commit `b161b3508126e27ac6815bb882a7d4d70ec0f9a4`):
 a Lean-core-only fixture exported by the official 4.35 `leanexport`
 and by this 4.34 serializer matches constant-for-constant. This
 package reuses those serializer bytes unchanged, so no second parity
@@ -135,11 +134,13 @@ for elaboration and both exports; judge: Lean `v4.35.0`
 (`eb6cafb7290e8bd5f2937522d8d804f58f02bafc`) with `bwrap` sandbox
 active and default kernels.
 
-Export bindings (sha256; generated from the compiled sources by the
-4.34 serializer commands below and verified after transfer):
+The source and export bindings are recorded in
+[`Papers/verification.json`](../Papers/verification.json):
 
-- challenge: `CHALLENGE_SHA256` (see `../verification.json`)
-- solution: `SOLUTION_SHA256` (see `../verification.json`)
+- challenge SHA-256:
+  `a80309b887faf2ff59e5bdb2599b5691b898b7efbef342df4b34017c5f31dc32`
+- solution SHA-256:
+  `2ede79f1d90fbae5fb744fdf9e11a6285854237ba0ff655517b0fb0d74067379`
 
 Positive (official judge, Linux, from the exports above):
 
