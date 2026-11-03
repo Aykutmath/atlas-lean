@@ -1,0 +1,147 @@
+{
+ "provenance": "Derived 2026-11-02 from the Nov-1 verified Papers/alpha_cycle_interactive.html (19 checked Lean boxes); each statement below was verified verbatim against Formalization/ at derivation time and is re-checked on every regeneration.",
+ "boxes": [
+  {
+   "box": "box0",
+   "statements": [
+    "\ndef common (e : Fin 3 \u2192 Finset V) : Finset V := e 0 \u2229 e 1 \u2229 e 2",
+    "\ndef blockA (e : Fin 3 \u2192 Finset V) : Finset V := (e 0 \u2229 e 1) \\ e 2",
+    "\ndef blockB (e : Fin 3 \u2192 Finset V) : Finset V := (e 1 \u2229 e 2) \\ e 0",
+    "\ndef blockC (e : Fin 3 \u2192 Finset V) : Finset V := (e 0 \u2229 e 2) \\ e 1",
+    "  (e 0 \u2229 e 1) \u222a (e 1 \u2229 e 2) \u222a (e 0 \u2229 e 2)",
+    "  (blockA e).Nonempty \u2227 (blockB e).Nonempty \u2227 (blockC e).Nonempty",
+    "def privateBlock (e : Fin 3 \u2192 Finset V) : Fin 3 \u2192 Finset V :=\n  ![e 0 \\ (e 1 \u222a e 2), e 1 \\ (e 0 \u222a e 2), e 2 \\ (e 0 \u222a e 1)]",
+    "  ![e 0 \\ (e 1 \u222a e 2), e 1 \\ (e 0 \u222a e 2), e 2 \\ (e 0 \u222a e 1)]"
+   ]
+  },
+  {
+   "box": "box1",
+   "statements": [
+    "    BooleanLaw {v // v \u2208 e} \u2243 {\u03bc : BooleanLaw V // restrictLaw \u03bc e = \u03bc} where\n  toFun \u03bd := \u27e8edgeLawToAmbient e \u03bd, restrictLaw_edgeLawToAmbient e \u03bd\u27e9\n  invFun \u03bc := ambientToEdgeLaw e \u03bc.val\n  left_inv := ambientToEdgeLaw_edgeLawToAmbient e\n  right_inv \u03bc := Subtype.ext ((edgeLawToAmbient_ambientToEdgeLaw e \u03bc.val).trans \u03bc.property)\n\n theorem moment_edgeLawToAmbient (e s : Finset V) (hs : s \u2286 e)\n    (\u03bd : BooleanLaw {v // v \u2208 e}) :\n    moment (edgeLawToAmbient e \u03bd) s = moment \u03bd (edgeProject e s) := by\n  rw [moment, edgeLawToAmbient, Law.prob_map, moment]\n  exact \u03bd.prob_congr (fun x => subset_edgeEmbed_iff e s hs x)\n\n theorem moment_ambientToEdgeLaw (e s : Finset V) (hs : s \u2286 e) (\u03bc : BooleanLaw V) :\n    moment (ambientToEdgeLaw e \u03bc) (edgeProject e s) = moment \u03bc s := by\n  rw [\u2190 moment_edgeLawToAmbient e s hs, edgeLawToAmbient_ambientToEdgeLaw,\n    moment_restrict \u03bc e s hs]",
+    "def completionEdges : Finset (Finset V) :=\n  H.edges.biUnion (fun e => e.powerset.filter (fun f => 2 \u2264 f.card))",
+    "  H.edges.biUnion (fun e => e.powerset.filter (fun f => 2 \u2264 f.card))"
+   ]
+  },
+  {
+   "box": "box2",
+   "statements": [
+    "def multilinearSet : Set H.Vector :=\n  {z | (\u2200 c, z c = 0 \u2228 z c = 1) \u2227\n    \u2200 e, z (Sum.inr e) = paperMonomial e.val (fun v => z (Sum.inl v))}",
+    "  {z | (\u2200 c, z c = 0 \u2228 z c = 1) \u2227\n    \u2200 e, z (Sum.inr e) = paperMonomial e.val (fun v => z (Sum.inl v))}"
+   ]
+  },
+  {
+   "box": "box3",
+   "statements": [
+    "\n@[simp] theorem lift_vertex (x : Finset V) (v : V) : H.lift x (Sum.inl v) = binaryVector x v"
+   ]
+  },
+  {
+   "box": "box4",
+   "statements": [
+    " theorem mass_eq_signed_moments {\u03b1 : Type*} [Fintype \u03b1] [DecidableEq \u03b1]\n    (\u03bc : BooleanLaw \u03b1) (O : Finset \u03b1) :\n    \u03bc.mass O = \u2211 W \u2208 (Finset.univ \\ O).powerset,\n      (-1 : \u211d) ^ W.card * moment \u03bc (O \u222a W)",
+    "theorem exists_law_with_moments_iff (e : Finset V) (z : Finset V \u2192 \u211d) :\n    (\u2203 \u03bc : BooleanLaw V, \u2200 s, s \u2286 e \u2192 moment \u03bc s = z s) \u2194\n      z \u2205 = 1 \u2227 \u2200 O, O \u2286 e \u2192 0 \u2264 inverseCell e z O"
+   ]
+  },
+  {
+   "box": "box5",
+   "statements": [
+    "  if hs : s \u2208 H.coordinateSupport then H.fromPaper z \u27e8s, hs\u27e9 else 0\n\n theorem momentCoordinate_supported (z : H.Vector) (s : Finset V)\n    (hs : s \u2208 H.coordinateSupport) : H.momentCoordinate z s = H.fromPaper z \u27e8s, hs\u27e9 := by\n  simp [momentCoordinate, hs]",
+    "  {z | \u2200 e \u2208 H.maximalEdges, \u2203 \u03bc : BooleanLaw V,\n    \u2200 s, s \u2286 e \u2192 moment \u03bc s = H.momentCoordinate z s}"
+   ]
+  },
+  {
+   "box": "box6",
+   "statements": [
+    "    (i j : Fin 3) (hij : i \u2260 j) : \u00ac e i \u2286 e j := by\n  intro he\n  apply isCycle_iff_core_not_subset e |>.mp h j\n  exact (intersections_subset_two e i j hij).trans\n    (Finset.union_subset he (Finset.Subset.refl _))",
+    "    IsCycle e \u2194\n      (\u2200 i j, i \u2260 j \u2192 \u00ac e i \u2286 e j) \u2227 (\u2200 i, \u00ac core e \u2286 e i) := by\n  constructor\n  \u00b7 intro h\n    exact \u27e8h.incomparable, (isCycle_iff_core_not_subset e).mp h\u27e9\n  \u00b7 intro h\n    exact (isCycle_iff_core_not_subset e).mpr h.2",
+    "  classical\n  exact if AllTrue x s then 1 else 0"
+   ]
+  },
+  {
+   "box": "box7",
+   "statements": [
+    "\n theorem completedSupport_downward (e : Fin 3 \u2192 Finset V)\n    {s t : Finset V} (ht : t \u2208 completedSupport e) (hst : s \u2286 t) :\n    s \u2208 completedSupport e",
+    "  edge : Fin 3 \u2192 Finset V\n  supported : \u2200 i, edge i \u2208 completedSupport e\n  noPrivate : Triangle.NoPrivate (edge 0) (edge 1) (edge 2)\n  incomparable : \u2200 i j, i \u2260 j \u2192 \u00ac edge i \u2286 edge j\n  alpha : \u2200 i, \u00ac ((edge 0 \u2229 edge 1) \u222a (edge 1 \u2229 edge 2) \u222a\n    (edge 0 \u2229 edge 2) \u2286 e i)"
+   ]
+  },
+  {
+   "box": "box8",
+   "statements": [
+    "    allCycleRelaxation e = completeEdgeRelaxation e \u2229\n      \u22c2 f : SupportedCycle e, switchedGeneralizedTriangleSet e f.edge f.supported := by\n  ext z\n  simp only [allCycleRelaxation, switchedGeneralizedTriangleSet,\n    Set.mem_inter_iff, Set.mem_iInter, Set.mem_ofPred_eq]"
+   ]
+  },
+  {
+   "box": "box9",
+   "statements": [
+    "def cycleDistinguishedRelaxation (e : Fin 3 \u2192 Finset V) (hc : Geometry.IsCycle e)\n    (hv : \u2200 v, \u2203 i, v \u2208 e i) : Set (ofThree e hc hv).completion.Vector :=\n  cycleCoordinates e hc hv \u207b\u00b9'\n    AlphaCycle.distinguishedRelaxation e (Geometry.distinguishedCycle e hc)",
+    "    (hv : \u2200 v, \u2203 i, v \u2208 e i) : Set (ofThree e hc hv).completion.Vector :=\n  cycleCoordinates e hc hv \u207b\u00b9'\n    AlphaCycle.distinguishedRelaxation e (Geometry.distinguishedCycle e hc)",
+    "    (hc : Geometry.IsCycle e) (hv : \u2200 v, \u2203 i, v \u2208 e i) :\n    cycleAllRelaxation e hc hv =\n      (ofThree e hc hv).completion.completeEdgeRelaxation \u2229\n      {z | \u2200 f : SupportedCycle e, \u2200 U : Finset V,\n        generalizedTriangle e f.edge f.supported\n          (switchVector e U (cycleCoordinates e hc hv z))} := by\n  ext z\n  exact and_congr (ofThree_mem_completeEdgeRelaxation_iff e hc hv z).symm Iff.rfl"
+   ]
+  },
+  {
+   "box": "box10",
+   "statements": [
+    "    (hc : Geometry.IsCycle e) (hv : \u2200 v, \u2203 i, v \u2208 e i)\n    (hlarge : 2 \u2264 (Geometry.blockA e).card \u2228 2 \u2264 (Geometry.blockB e).card \u2228\n      2 \u2264 (Geometry.blockC e).card) :\n    (cycleAllRelaxation e hc hv \\ (ofThree e hc hv).completion.polytope).Nonempty := by\n  obtain \u27e8z, hz, hn\u27e9 := AlphaCycle.allCycle_gap_nonempty e hc hlarge\n  obtain \u27e8\u03bc, h\u03bc\u27e9 := hz.1 0\n  have h0 : z \u27e8\u2205, mem_completedSupport_of_subset e 0 \u2205 (Finset.empty_subset _)\u27e9 = 1 := by\n    rw [\u2190 h\u03bc \u2205 (Finset.empty_subset _), moment_empty]\n  have hcoord := cycleCoordinates_cycleFromMoment e hc hv z h0\n  refine \u27e8cycleFromMoment e hc hv z, ?_, ?_\u27e9\n  \u00b7 change cycleCoordinates e hc hv (cycleFromMoment e hc hv z) \u2208\n      AlphaCycle.allCycleRelaxation e\n    rwa [hcoord]\n  \u00b7 intro hp\n    apply hn\n    have hh := (ofThree_mem_polytope_iff e hc hv _).mp hp\n    rwa [hcoord] at hh",
+    "    (hc : Geometry.IsCycle e) (hv : \u2200 v, \u2203 i, v \u2208 e i) :\n    (ofThree e hc hv).completion.polytope \u2286 cycleAllRelaxation e hc hv \u2227\n    cycleAllRelaxation e hc hv \u2286 cycleDistinguishedRelaxation e hc hv \u2227\n    cycleDistinguishedRelaxation e hc hv \u2286\n      (ofThree e hc hv).completion.completeEdgeRelaxation := by\n  refine \u27e8?_, ?_, ?_\u27e9\n  \u00b7 intro z hz\n    exact multilinearPolytope_subset_allCycleRelaxation e\n      ((ofThree_mem_polytope_iff e hc hv z).mp hz)\n  \u00b7 intro z hz\n    exact allCycleRelaxation_subset_distinguishedRelaxation e\n      (Geometry.distinguishedCycle e hc) hz\n  \u00b7 intro z hz\n    exact (ofThree_mem_completeEdgeRelaxation_iff e hc hv z).mpr hz.1"
+   ]
+  },
+  {
+   "box": "box11",
+   "statements": [
+    "theorem parity_marginals_force_equality\n    (q : Bool \u2192 Bool \u2192 Bool \u2192 Bool \u2192 \u211d)\n    (hn : \u2200 a b c d, 0 \u2264 q a b c d)\n    (h\u2081 : \u2200 a b c, (\u2211 d : Bool, q a b c d) = odd a b c)\n    (h\u2082 : \u2200 a b d, (\u2211 c : Bool, q a b c d) = odd a b d) :\n    \u2200 a b c d, c \u2260 d \u2192 q a b c d = 0",
+    "    fourVector \u2208 allCycleRelaxation parityFour \u2227\n    fourVector \u2209 multilinearPolytope (completedSupport parityFour) :=\n  NegativeVertex.selected_witness_gap parityFour 0 1 3 2\n    (by decide) (by decide) (by decide) (by decide) (by decide)"
+   ]
+  },
+  {
+   "box": "box12",
+   "statements": [
+    "    (hu : u \u2209 s) (hv : v \u2209 s) (hc : c \u2209 s) :\n    restrictLaw (oddLaw u v b) s = restrictLaw (fairLaw b c) s := by\n  have he := congrArg (Law.map (fun x => encodeOne b x \u2229 s)) parityFamily_consistent.2.1\n  simpa only [parityFamily, restrictLaw, oddLaw, fairLaw, Law.map_map, Function.comp_def,\n    encodeThree_restrict_one u v b s hu hv, encodeTwo_restrict_left b c s hc] using he",
+    "    (hu : u \u2209 e 2) (hv : v \u2209 e 2) (hb : b \u2209 e 0) (hc : c \u2209 e 1) :\n    \u2200 i j, restrictLaw (locals u v b c i) (e i \u2229 e j) =\n      restrictLaw (locals u v b c j) (e i \u2229 e j) := by\n  intro i j\n  fin_cases i <;> fin_cases j\n  \u00b7 rfl\n  \u00b7 exact local_overlap01 u v b c _ (by simp [hb]) (by simp [hc])\n  \u00b7 exact local_overlap02 u v b c _ (by simp [hu]) (by simp [hv]) (by simp [hb])\n  \u00b7 exact (local_overlap01 u v b c _ (by simp [hb]) (by simp [hc])).symm\n  \u00b7 rfl\n  \u00b7 exact local_overlap12 u v b c _ (by simp [hu]) (by simp [hv]) (by simp [hc])\n  \u00b7 exact (local_overlap02 u v b c _ (by simp [hu]) (by simp [hv]) (by simp [hb])).symm\n  \u00b7 exact (local_overlap12 u v b c _ (by simp [hu]) (by simp [hv]) (by simp [hc])).symm\n  \u00b7 rfl",
+    "theorem selected_witness_gap (e : Fin 3 \u2192 Finset V) (u v b c : V)\n    (hu : u \u2208 Geometry.blockA e) (hv : v \u2208 Geometry.blockA e)\n    (hb : b \u2208 Geometry.blockB e) (hc : c \u2208 Geometry.blockC e) (huv : u \u2260 v) :\n    witness e u v b c \u2208 allCycleRelaxation e \u2227\n    witness e u v b c \u2209 multilinearPolytope (completedSupport e)"
+   ]
+  },
+  {
+   "box": "box13",
+   "statements": [
+    "theorem reduced_subcycle_structure (e : Fin 3 \u2192 Finset V) (f : SupportedCycle e) :\n    \u2203 \u03c3 : Equiv.Perm (Fin 3),\n      let g := fun i => f.edge (\u03c3 i)\n      (\u2200 i, g i \u2286 e i) \u2227\n      Pairwise (fun i j => Disjoint (subcycleBlock g i) (subcycleBlock g j)) \u2227\n      (g 0 = blockA g \u222a blockC g \u222a common g \u2227\n       g 1 = blockA g \u222a blockB g \u222a common g \u2227\n       g 2 = blockB g \u222a blockC g \u222a common g) \u2227\n      blockA g \u2286 blockA e \u222a common e \u2227\n      blockB g \u2286 blockB e \u222a common e \u2227\n      blockC g \u2286 blockC e \u222a common e \u2227 common g \u2286 common e"
+   ]
+  },
+  {
+   "box": "box14",
+   "statements": [
+    " theorem witness_in_allCycleRelaxation (e : Fin 3 \u2192 Finset V) (u v b c : V)\n    (huv : u \u2260 v) (hu : u \u2209 e 2) (hv : v \u2209 e 2) (hb : b \u2209 e 0) (hc : c \u2209 e 1) :\n    witness e u v b c \u2208 allCycleRelaxation e"
+   ]
+  },
+  {
+   "box": "box15",
+   "statements": [
+    "theorem singleton_private_block_reduction (e : Fin 3 \u2192 Finset V)\n    (a b c : V) (ha : blockA e = {a}) (hb : blockB e = {b}) (hc : blockC e = {c})\n    (\u03bc : Fin 3 \u2192 BooleanLaw V) :\n    (\u2203 \u03c1 : BooleanLaw V, \u2200 i, restrictLaw \u03c1 (e i) = restrictLaw (\u03bc i) (e i)) \u2194\n    (\u2203 \u03bd : BooleanLaw V, restrictLaw \u03bd (common e \u222a {a, b, c}) = \u03bd \u2227\n      \u2200 i, restrictLaw \u03bd (e i \\ privateBlock e i) =\n        restrictLaw (\u03bc i) (e i \\ privateBlock e i))",
+    "theorem restore_private_blocks\n    {K E\u2081 E\u2082 E\u2083 D\u2081 D\u2082 D\u2083 : Type*}\n    [Fintype K] [Fintype E\u2081] [Fintype E\u2082] [Fintype E\u2083]\n    [Fintype D\u2081] [Fintype D\u2082] [Fintype D\u2083]\n    (\u03bc : Law K) (\u03bd\u2081 : Law (E\u2081 \u00d7 D\u2081)) (\u03bd\u2082 : Law (E\u2082 \u00d7 D\u2082)) (\u03bd\u2083 : Law (E\u2083 \u00d7 D\u2083))\n    (f\u2081 : K \u2192 E\u2081) (f\u2082 : K \u2192 E\u2082) (f\u2083 : K \u2192 E\u2083)\n    (h\u2081 : \u03bc.map f\u2081 = \u03bd\u2081.map Prod.fst)\n    (h\u2082 : \u03bc.map f\u2082 = \u03bd\u2082.map Prod.fst)\n    (h\u2083 : \u03bc.map f\u2083 = \u03bd\u2083.map Prod.fst) :\n    \u2203 glued : Law (((K \u00d7 D\u2081) \u00d7 D\u2082) \u00d7 D\u2083),\n      glued.map (fun x => x.1.1.1) = \u03bc \u2227\n      glued.map (fun x => (f\u2081 x.1.1.1, x.1.1.2)) = \u03bd\u2081 \u2227\n      glued.map (fun x => (f\u2082 x.1.1.1, x.1.2)) = \u03bd\u2082 \u2227\n      glued.map (fun x => (f\u2083 x.1.1.1, x.2)) = \u03bd\u2083"
+   ]
+  },
+  {
+   "box": "box16",
+   "statements": [
+    "structure Moments where\n  mass : \u211d\n  a : \u211d\n  b : \u211d\n  c : \u211d\n  ab : \u211d\n  ac : \u211d\n  bc : \u211d",
+    "  0 \u2264 pq \u2227 pq \u2264 p \u2227 pq \u2264 q \u2227 0 \u2264 m - p - q + pq",
+    "  pair_ab : PairBounds s.mass s.a s.b s.ab\n  pair_ac : PairBounds s.mass s.a s.c s.ac\n  pair_bc : PairBounds s.mass s.b s.c s.bc\n  triangle_a : s.ab + s.ac \u2264 s.a + s.bc\n  triangle_b : s.ab + s.bc \u2264 s.b + s.ac\n  triangle_c : s.ac + s.bc \u2264 s.c + s.ab\n  triangle_sum : s.a + s.b + s.c \u2264 s.mass + s.ab + s.ac + s.bc",
+    "  max (max 0 (s.ab + s.ac - s.a))\n    (max (s.ab + s.bc - s.b) (s.ac + s.bc - s.c))",
+    "  | true, true => pq\n  | true, false => p - pq\n  | false, true => q - pq\n  | false, false => m - p - q + pq"
+   ]
+  },
+  {
+   "box": "box17",
+   "statements": [
+    "  min (min s.ab s.ac)\n    (min s.bc (s.mass - s.a - s.b - s.c + s.ab + s.ac + s.bc))",
+    "    IsExtension s (fun _ _ _ => 0) := by\n  obtain \u27e8ha, hb, hc, hab, hac, hbc\u27e9 :=\n    zero_mass_moments s hm h.pair_ab h.pair_ac h.pair_bc\n  simp [IsExtension, hm, ha, hb, hc, hab, hac, hbc, pairAtom,\n    Bool.forall_bool]"
+   ]
+  },
+  {
+   "box": "box18",
+   "statements": [
+    "theorem distinguished_exact_of_singletons (e : Fin 3 \u2192 Finset V)\n    (hcycle : Geometry.IsCycle e) (hs : Geometry.Singletons e) :\n    distinguishedRelaxation e (Geometry.distinguishedCycle e hcycle) =\n      multilinearPolytope (completedSupport e)",
+    "    (hcycle : Geometry.IsCycle e) (hs : Geometry.Singletons e) :\n    distinguishedRelaxation e (Geometry.distinguishedCycle e hcycle) =\n      multilinearPolytope (completedSupport e) := by\n  apply Set.Subset.antisymm\n  \u00b7 intro z hz\n    obtain \u27e8\u03bc, h\u03bc, hcons\u27e9 := (mem_completeEdgeRelaxation_iff_consistent e z).1 hz.1\n    obtain \u27e8a, b, c, hA, hB, hC, hab, hac, hbc, ha, hb, hc\u27e9 :=\n      Geometry.singleton_vertices e hs\n    have h\u2080 : (Geometry.distinguishedCycle e hcycle).edge 0 =\n        Geometry.common e \u222a {a, c} := by\n      simp only [Geometry.distinguishedCycle, Geometry.reduced, Geometry.reduced0,\n        hA, hC, Finset.union_assoc, Finset.singleton_union]\n    have h\u2081 : (Geometry.distinguishedCycle e hcycle).edge 1 =\n        Geometry.common e \u222a {a, b} := by\n      simp only [Geometry.distinguishedCycle, Geometry.reduced, Geometry.reduced1,\n        hA, hB, Finset.union_assoc, Finset.singleton_union]\n    have h\u2082 : (Geometry.distinguishedCycle e hcycle).edge 2 =\n        Geometry.common e \u222a {b, c} := by\n      simp only [Geometry.distinguishedCycle, Geometry.reduced, Geometry.reduced2,\n        hB, hC, Finset.union_assoc, Finset.singleton_union]\n    have hparent : \u2200 i, (Geometry.distinguishedCycle e hcycle).edge i \u2286 e i :=\n      fun _ => Finset.inter_subset_right\n    have hcore := singleton_core_consistent e a b c hA hB hC \u03bc hcons\n    have htri := SliceBridge.triangleConditions_of_distinguished e\n      (Geometry.distinguishedCycle e hcycle) z hz \u03bc h\u03bc (Geometry.common e) a b c\n      ha hb hc hab hac hbc h\u2080 h\u2081 h\u2082 hparent hcore\n    apply (mem_multilinearPolytope_iff_realizes e z \u03bc h\u03bc).2\n    exact singleton_realization_of_slices e a b c hA hB hC ha hb hc hab hac hbc \u03bc hcons htri\n  \u00b7 exact (multilinearPolytope_subset_allCycleRelaxation e).trans\n      (allCycleRelaxation_subset_distinguishedRelaxation e (Geometry.distinguishedCycle e hcycle))"
+   ]
+  }
+ ]
+}

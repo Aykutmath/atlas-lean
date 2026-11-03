@@ -1,0 +1,7 @@
+{
+  "challenge_module": "alpha_cycle_comparator",
+  "solution_module": "AlphaCycle",
+  "theorem_names": ["AlphaCycle.PaperHypergraph.paper_sharp_classification"],
+  "definition_names": [],
+  "permitted_axioms": ["propext", "Classical.choice", "Quot.sound"]
+}

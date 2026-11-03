@@ -1,0 +1,818 @@
+\documentclass[11pt]{article}
+
+% \usepackage[T1]{fontenc}
+% \usepackage{lmodern}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{booktabs}
+\usepackage{microtype}
+\usepackage[hidelinks]{hyperref}
+
+%% ---------------
+%% Custom packages
+%% ---------------
+\usepackage{flexart}
+\input{stylelibrary}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+
+\newcommand{\proj}{\operatorname{proj}}
+\newcommand{\cl}{\operatorname{cl}}
+\newcommand{\MP}{\operatorname{MP}}
+\newcommand{\CER}{\operatorname{CER}}
+\newcommand{\CBR}{\operatorname{CBR}}
+\newcommand{\GT}{\operatorname{GT}}
+\newcommand{\Rdist}{\mathcal{R}_{0}}
+\newcommand{\Rall}{\mathcal{R}}
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\Prob}{\mathbb{P}}
+\newcommand{\MS}{\operatorname{MS}}
+
+
+
+
+%% short title (plain article's \title takes no optional argument)
+\title[Cycle-based relaxations for alpha-cycles]
+{Tightness of the Cycle-Based Relaxation for Completed Length-Three
+Alpha-Cycles}
+% \subtitle{Every key group exercised in one document}
+%% Declare each note once, then mark as many authors as you like with it.
+
+\newfanote{orch}{Orchestrating author}
+\newfanote{rev}{Reviewing author} % Uncomment to add the 'reviewing author' category
+
+\primaryauthors{
+\MakeUppercase{Aykut Arslan}\fanote{orch}
+\and
+\MakeUppercase{Meta AI}
+}
+\secondaryauthors{
+\MakeUppercase{Kien Le}\fanote{rev}
+%\and
+%\MakeUppercase{Second Second}\fanote{rev} % Uncomment to make this a reviewing author
+}
+\subjclass[2020]{90C23, 52B12, 05C65}
+% \affiliation{Department of Typographic Engineering, Example University}
+% \keywords{LaTeX, front matter, sectioning, regression test}
+\flexabstract{%
+Del Pia and Khajavirad \cite{delpia2026cer} introduced the complete edge relaxation for binary polynomial optimization and generalized triangle inequalities for length-three $\alpha$-cycles. We study the relaxation obtained by adding all switchings of these inequalities to the complete edge relaxation on the completed support of a single length-three $\alpha$-cycle. If
+\[
+H=\cl(\{e_1,e_2,e_3\})
+\]
+and
+\[
+A=(e_1\cap e_2)\setminus e_3,\qquad
+B=(e_2\cap e_3)\setminus e_1,\qquad
+C=(e_1\cap e_3)\setminus e_2,
+\]
+then the cycle-based relaxation is equal to the multilinear polytope if and only if
+\[
+|A|=|B|=|C|=1.
+\]
+The same characterization remains true for the stronger relaxation obtained by imposing the switched generalized triangle inequalities for every no-private length-three $\alpha$-cycle contained in $H$. No restriction is needed on the common intersection or on the private vertices of the three maximal edges. The positive direction is proved by a slice-wise gluing argument, while the negative direction lifts a four-variable parity obstruction and shows that it survives every applicable switched triangle inequality.
+}
+
+
+
+\begin{document}
+
+\maketitle
+
+\section{Introduction}
+
+\begin{editedaiblock}
+
+For a hypergraph $H=(V,E)$, the multilinear polytope is the convex hull of the binary vectors satisfying the monomial identities
+\[
+z_e=\prod_{v\in e}z_v,\qquad e\in E.
+\]
+Del Pia and Khajavirad \cite{delpia2017polyhedral,delpia2018acyclic,delpia2026cer} and Khajavirad \cite{khajavirad2023strength} studied various relaxations of the multilinear polytope, including the complete edge relaxation $\CER(H)$, obtained by enforcing the exact multilinear polytope separately on each maximal edge. See also \cite{boros2002pseudo, crama1993concave,padberg1989boolean,sherali1990hierarchy} for earlier related works.  They proved that this relaxation is tight exactly for $\alpha$-acyclic hypergraphs and, for $\alpha$-cycles of length three, introduced generalized triangle inequalities extending the classical triangle inequalities for the Boolean quadric polytope. The graph case goes back to Padberg \cite{padberg1989boolean}, who showed that the Boolean quadratic polytope coincides with the McCormick relaxation if and only if the underlying graph is acyclic.  In 1962, Vorob'ev \cite{vorobev1962consistent} studied more generally the conditions when pairwise consistent marginals on a set system yield a global extension.  
+
+The purpose of this paper is to determine exactly when the generalized triangle inequalities close the remaining gap on the completed support of a single length-three $\alpha$-cycle. The corresponding characterization question is stated at the end of \cite[Section 5.2]{delpia2026cer}. We consider two relaxations. The first adds all switchings of the generalized triangle inequalities for the distinguished private-free reduction of the three maximal edges. The second is stronger: it adds the same inequalities for every no-private length-three $\alpha$-cycle contained in the completed support.
+
+For an $\alpha$-cycle of length three, $(e_1,e_2,e_3)$, in a hypergraph $H=(V,E)$, write
+\[
+T=e_1\cap e_2\cap e_3,
+\]
+
+\[
+A=(e_1\cap e_2)\setminus e_3,\qquad
+B=(e_2\cap e_3)\setminus e_1,\qquad
+C=(e_1\cap e_3)\setminus e_2,
+\]
+
+\[
+D_i=e_i\setminus(e_j\cup e_k),\qquad \{i,j,k\}=\{1,2,3\}.
+\]
+Thus
+\[
+e_1=T\sqcup A\sqcup C\sqcup D_1,\qquad
+e_2=T\sqcup A\sqcup B\sqcup D_2,\qquad
+e_3=T\sqcup B\sqcup C\sqcup D_3.
+\]
+For a length-three $\alpha$-cycle, the three pair-only blocks $A,B,C$ are nonempty, while $T$ and the private blocks $D_i$ may be arbitrary.
+
+Our main theorem is a sharp classification: both cycle-based relaxations are exact if and only if the three pair-only blocks are singletons. The common block and private blocks play no role in the answer. When $T=D_1=D_2=D_3=\emptyset$, the positive case is the ordinary graph triangle.
+
+The proof has two complementary parts, both relying on a probabilistic interpretation of the multilinear polytope originally developed by Pitowsky \cite{pitowsky1991correlation}, wherein a point of the multilinear polytope corresponds to a probability distribution on $\{0,1\}^V$. If one pair-only block contains two vertices, we embed a four-variable parity construction into the three maximal edges. It gives mutually consistent local laws with no global realization. We then show that the resulting point survives every switched generalized triangle inequality coming from every no-private length-three $\alpha$-cycle in the completed support. Conversely, when $A,B,C$ are singletons, we condition on each state of the common block $T$. In every slice, the three pairwise marginals on the remaining three variables admit a common extension precisely because the switched generalized triangle inequalities make a natural interval of feasible triple masses nonempty. The slice laws are then glued and the private blocks are restored by conditional sampling.
+
+\end{editedaiblock}
+
+
+
+
+\section*{Statement on AI Use}
+
+\begin{humanblock}
+Meta AI played a substantial role in the research process that led to this manuscript. The work developed through repeated human-directed interaction rather than through a single autonomous run. Meta AI helped explore the question raised by Del Pia and Khajavirad, suggested probabilistic reformulations, identified the four-variable obstruction, and proposed versions of the lifting and gluing arguments used in the final proof.
+
+The mathematical arguments were not accepted on the basis of AI output alone. During the course of the project, several proposed statements and proof steps were found to be incomplete, imprecise, or incorrect. The human authors checked the arguments, corrected gaps, compared the notation and definitions with the source paper, verified citations, and rewrote substantial parts of the proof. In particular, the probabilistic interpretation of the multilinear polytope, the lifting argument for arbitrary reduced subcycles, and the singleton slice-gluing argument were all subjected to further human review and revision.
+
+Meta AI also assisted with drafting and organizing parts of the exposition. To make this contribution visible, the manuscript uses provenance labels distinguishing material primarily generated by AI, AI-generated material that was subsequently edited or substantially revised by the authors, and material primarily written by the authors. These labels describe the origin and editing history of the text; they are not claims about the mathematical reliability of any particular passage.
+
+The authors determined the research direction, decided which arguments to retain or discard, and took responsibility for resolving mathematical objections that arose during the project. AI-generated claims of correctness were treated as research suggestions rather than as mathematical verification. The final theorem statements, proofs, references, and presentation were reviewed by the human authors, who take responsibility for the contents of the manuscript.
+
+For reproducibility and transparency, links to representative Meta AI conversations used during the development of this work are provided in Appendix A.
+\end{humanblock}
+
+
+
+\section{Preliminaries}
+
+\begin{editedaiblock}
+
+\subsection{Hypergraphs, completion, and the multilinear polytope}
+
+All hypergraphs considered here are finite and have no isolated vertices. For the support of the generating cycle, we take $V=e_1\cup e_2\cup e_3$. We identify $z_{\{v\}}$ with the singleton coordinate $z_v$.
+
+A hypergraph is a pair $H=(V,E)$, where every edge has cardinality at least two. Its completion is
+\[
+\cl(H)=(V,\cl(E)),\qquad
+\cl(E)=\bigcup_{e\in E}\{f\subseteq e:|f|\ge 2\}.
+\]
+Throughout the main theorem we work with completed hypergraphs.
+
+For a hypergraph $H=(V,E)$, define
+\[
+\MS(H)=\left\{z\in\{0,1\}^{V\cup E}:z_e=\prod_{v\in e}z_v\ \text{for every }e\in E\right\}
+\]
+and
+\[
+\MP(H)=\operatorname{conv}(\MS(H)).
+\]
+We also use $z_\emptyset:=1$ as a bookkeeping convention.
+
+For $F\subseteq V$ and $x\in\{0,1\}^V$, write
+\[
+m_F(x)=\prod_{v\in F}x_v,
+\]
+with $m_\emptyset(x)=1$.
+
+Now we develop a probabilistic framework, analogous to that of Pitowsky \cite{pitowsky1991correlation} in the case of graphs.
+
+\begin{lemma}[Probabilistic representation]\label{lem:prob}
+A point $z$ belongs to $\MP(H)$ if and only if there is a probability distribution $\mu$ on $\{0,1\}^V$ such that
+\[
+z_v=\E_\mu[X_v]\quad(v\in V),\qquad
+z_e=\E_\mu[m_e(X)]\quad(e\in E).
+\]
+\end{lemma}
+
+\begin{proof}
+By definition, $z\in\MP(H)$ if and only if there are coefficients $\lambda_x\ge 0$, $x\in\{0,1\}^V$, with $\sum_x\lambda_x=1$ and
+\[
+z=\sum_{x\in\{0,1\}^V}\lambda_x L(x),
+\]
+where $L(x)$ is the binary monomial vector associated with $x$. Defining $\mu(x)=\lambda_x$ gives the required distribution. Conversely, any probability distribution $\mu$ yields the convex combination
+\[
+\sum_{x\in\{0,1\}^V}\mu(x)L(x)\in\MP(H).
+\]
+\end{proof}
+
+\begin{lemma}[Moment inversion]\label{lem:edge-law}
+Let $e\subseteq V$. A probability distribution on $\{0,1\}^e$ is uniquely determined by the moments
+\[
+z_F=\E\left[\prod_{v\in F}X_v\right],\qquad F\subseteq e,
+\]
+where $z_\emptyset=1$. More precisely, if $x\in\{0,1\}^e$, $O=\{v:x_v=1\}$, and $Z=e\setminus O$, then
+\[
+\Prob(X=x)=\sum_{W\subseteq Z}(-1)^{|W|}z_{O\cup W}.
+\]
+\end{lemma}
+
+\begin{proof}
+We have
+\[
+\Prob(X=x)=\E\left[\prod_{v\in O}X_v\prod_{v\in Z}(1-X_v)\right].
+\]
+
+
+Expanding the second product gives the displayed formula. Hence every atom probability is uniquely determined by the subset moments.
+
+Conversely, suppose numbers $(z_F)_{F\subseteq e}$ with $z_\emptyset=1$ are given, and for each $O\subseteq e$ define
+\[
+p_O=\sum_{F:O\subseteq F\subseteq e}
+(-1)^{|F\setminus O|}z_F.
+\]
+For every $A\subseteq e$,
+\[
+\begin{aligned}
+\sum_{O:A\subseteq O\subseteq e}p_O
+&=
+\sum_{F:A\subseteq F\subseteq e}
+z_F
+\sum_{O:A\subseteq O\subseteq F}
+(-1)^{|F\setminus O|}\\
+&=z_A,
+\end{aligned}
+\]
+because the inner sum is zero unless $F=A$, when it equals one.
+Taking $A=\emptyset$ shows that $\sum_O p_O=z_\emptyset=1$. Therefore, if all $p_O$ are nonnegative, they define a probability distribution on $\{0,1\}^e$ whose moments are exactly $(z_F)_{F\subseteq e}$.
+
+\end{proof}
+
+\subsection{The complete edge relaxation and local laws}
+
+Let $H=(V,E)$ be completed and let $E_{\max}$ be its inclusion-wise maximal edges. We define $\CER(H)$ as the set of vectors $z\in\mathbb{R}^{V\cup E}$ such that for every $e\in E_{\max}$ there is a probability law $\mu_e$ on $\{0,1\}^e$ with
+\[
+z_F=\E_{\mu_e}\left[\prod_{v\in F}X_v\right]
+\]
+for every nonempty $F\subseteq e$, using the singleton coordinates when $|F|=1$. By Lemma \ref{lem:edge-law}, this is equivalent to the usual complete-edge inequalities of Del Pia and Khajavirad \cite{delpia2017polyhedral,delpia2026cer}.
+
+We call $\mu_e$ the local law on $e$. Since the same moment coordinate is used on overlaps, Lemma \ref{lem:edge-law} implies that the local laws associated with a point of $\CER(H)$ are automatically consistent on pairwise intersections.
+
+Combining Lemmas \ref{lem:prob} and \ref{lem:edge-law} gives the dictionary used throughout the paper:
+\begin{itemize}
+\item $z\in\CER(H)$ if and only if $z$ determines a consistent family of local laws on the maximal edges;
+\item $z\in\MP(H)$ if and only if those local laws admit a common global realization on $\{0,1\}^V$.
+\end{itemize}
+
+\subsection{Length-three \texorpdfstring{$\alpha$}{alpha}-cycles}
+
+We use the definition of $\alpha$-cycle from Del Pia and Khajavirad \cite[Definition 2]{delpia2026cer}. For a length-three cycle $C=(e_1,e_2,e_3)$, let
+\[
+S(C)=(e_1\cap e_2)\cup(e_2\cap e_3)\cup(e_1\cap e_3).
+\]
+The defining conditions reduce to
+\[
+e_i\setminus e_j\neq\emptyset\quad(i\neq j)
+\]
+and
+\[
+S(C)\not\subseteq e\qquad\text{for every edge }e\text{ of }H.
+\]
+For the completed support $H=\cl(\{e_1,e_2,e_3\})$, these conditions are equivalent to
+\[
+A\neq\emptyset,\qquad B\neq\emptyset,\qquad C\neq\emptyset.
+\]
+In particular the private blocks $D_i$ are allowed to be nonempty.
+
+A triple $F=(f_1,f_2,f_3)$ has no private vertices if
+\[
+f_i\subseteq f_j\cup f_k,\qquad \{i,j,k\}=\{1,2,3\}.
+\]
+For such a triple, the generalized triangle inequalities are
+\begin{align}
+ z_{f_1}+z_{f_2}&\le z_{f_1\cap f_2}+z_{f_3},\label{eq:gt1}\\
+ z_{f_1}+z_{f_3}&\le z_{f_1\cap f_3}+z_{f_2},\label{eq:gt2}\\
+ z_{f_2}+z_{f_3}&\le z_{f_2\cap f_3}+z_{f_1},\label{eq:gt3}\\
+ z_{f_1\cap f_2}+z_{f_1\cap f_3}+z_{f_2\cap f_3}
+ &\le z_{f_1\cap f_2\cap f_3}+z_{f_1}+z_{f_2}+z_{f_3}.
+ \label{eq:gt4}
+\end{align}
+These are the length-three generalized triangle inequalities of \cite[Proposition 7]{delpia2026cer}.
+
+For $U\subseteq V$, define the switching map on moment coordinates by
+\[
+\phi_U(z_F)=\sum_{W\subseteq F\cap U}(-1)^{|W|}z_{(F\setminus U)\cup W},
+\]
+with $z_\emptyset=1$. On a deterministic binary point this is precisely the moment obtained after replacing $X_v$ by $1-X_v$ for $v\in U$. Thus switching preserves $\MP(H)$.  This is due to Buchheim and Rinaldi \cite{buchheim2008efficient}.
+
+\begin{lemma}\label{lem:gt-valid}
+For every no-private triple $F=(f_1,f_2,f_3)$, inequalities \eqref{eq:gt1}--\eqref{eq:gt4} and all of their switchings are valid for $\MP(H)$.
+\end{lemma}
+
+\begin{proof}
+It is enough to check deterministic binary points. The first three inequalities are immediate: for example, if both $m_{f_1}$ and $m_{f_2}$ equal one, then every variable in $f_1\cup f_2$ equals one, and $f_3\subseteq f_1\cup f_2$ because the triple has no private vertices. Hence both terms on the right of \eqref{eq:gt1} equal one. If exactly one of $m_{f_1},m_{f_2}$ equals one, then $m_{f_1\cap f_2}=1$, so the right-hand side is at least one. If both are zero, the inequality is immediate. The other two inequalities are symmetric.
+
+For the fourth inequality, decompose the vertices into the common part and the three pair-only parts of the triple. If a common variable is zero, every term in \eqref{eq:gt4} is zero. Otherwise the inequality reduces, for $x,y,z\in\{0,1\}$, to
+\[
+x+y+z\le 1+xy+xz+yz,
+\]
+which is immediate. Finally, switching maps deterministic moment vectors to deterministic moment vectors, so every switched inequality is also valid.
+\end{proof}
+
+For a no-private triple $F$, let $\GT(F)$ denote the set of points satisfying all switchings of \eqref{eq:gt1}--\eqref{eq:gt4}.
+
+For the distinguished three maximal edges, put
+\[
+\bar e_i=e_i\setminus D_i=e_i\cap(e_j\cup e_k),
+\qquad \{i,j,k\}=\{1,2,3\},
+\]
+and write
+\[
+\bar C=(\bar e_1,\bar e_2,\bar e_3).
+\]
+Because $A,B,C$ are nonempty, $\bar C$ is a no-private length-three $\alpha$-cycle.
+
+We define the distinguished-cycle relaxation
+\[
+\Rdist(H)=\CER(H)\cap\GT(\bar C)
+\]
+and the all-cycle relaxation
+\[
+\Rall(H)=\CER(H)\cap\bigcap_{F\in\mathcal C_0(H)}\GT(F),
+\]
+where $\mathcal C_0(H)$ is the set of all no-private length-three $\alpha$-cycles contained in $H$. By Lemma \ref{lem:gt-valid},
+\[
+\MP(H)\subseteq\Rall(H)\subseteq\Rdist(H)\subseteq\CER(H).
+\]
+
+\subsection{Main result}
+
+\begin{theorem}[Sharp classification]\label{thm:main}
+Let $H=\cl(\{e_1,e_2,e_3\})$ be the completed support of a length-three $\alpha$-cycle, and define $A,B,C,T,D_i$ as above. Then the following are equivalent:
+\begin{enumerate}
+\item $|A|=|B|=|C|=1$;
+\item $\Rdist(H)=\MP(H)$;
+\item $\Rall(H)=\MP(H)$.
+\end{enumerate}
+There is no restriction on $|T|$ or on the private blocks $D_i$. Moreover, if one of $A,B,C$ has size at least two, then
+\[
+\Rall(H)\setminus\MP(H)\neq\emptyset.
+\]
+\end{theorem}
+
+The remainder of the paper proves Theorem \ref{thm:main}.
+
+\end{editedaiblock}
+
+\section{The four-variable obstruction}\label{sec:H4}
+\begin{editedaiblock}
+
+The support considered here appears in the second part of
+\cite[Example 1]{delpia2026cer}. We use it to construct the obstruction
+and then prove that the obstruction persists in the larger supports
+covered by our classification.
+
+The basic obstruction already appears on four variables. Let
+\[
+H_4=\cl(\{123,124,34\}).
+\]
+We label
+\[
+e_1=123,\qquad e_2=124,\qquad e_3=34.
+\]
+On $e_1$, choose $(X_1,X_2,X_3)$ uniformly from
+\[
+111,\quad100,\quad010,\quad001.
+\]
+On $e_2$, choose $(X_1,X_2,X_4)$ with the same law. On $e_3$, let $X_3,X_4$ be independent fair bits.
+
+\begin{proposition}\label{prop:H4}
+These three local laws are pairwise consistent but have no global realization.
+\end{proposition}
+
+\begin{proof}
+The first two laws induce the uniform distribution on $(X_1,X_2)$. The first law makes $X_3$ fair, the second makes $X_4$ fair, and these one-dimensional marginals agree with the corresponding marginals of the independent law on $(X_3,X_4)$. Thus the three local laws are pairwise consistent.
+
+The odd-parity law on $e_1$ implies
+\[
+X_3=1\quad\Longleftrightarrow\quad X_1=X_2,
+\]
+and the law on $e_2$ implies
+\[
+X_4=1\quad\Longleftrightarrow\quad X_1=X_2.
+\]
+Any global realization would therefore satisfy $X_3=X_4$ almost surely. This contradicts the local law on $e_3$, under which $X_3$ and $X_4$ are independent fair bits.
+\end{proof}
+
+By Lemmas \ref{lem:prob} and \ref{lem:edge-law}, the common local moment vector belongs to $\CER(H_4)$ but not to $\MP(H_4)$.
+
+\section{Negative direction: lifting the obstruction}\label{sec:negative}
+
+Assume first that $|A|\ge 2$. Choose distinct vertices $u,v\in A$, together with $b\in B$ and $c\in C$. Fix every vertex outside $\{u,v,b,c\}$ equal to one. On $e_1$ choose $(u,v,c)$ uniformly from
+\[
+111,\quad100,\quad010,\quad001,
+\]
+on $e_2$ use the same distribution on $(u,v,b)$, and on $e_3$ let $b,c$ be independent fair bits. Denote these three local laws by $\mu_1,\mu_2,\mu_3$, respectively. Denote by $z$ the common moment vector induced by these three local laws.
+
+\begin{proposition}\label{prop:lift-local}
+The three local laws are pairwise consistent, but they do not admit a global realization. Consequently
+\[
+z\in\CER(H)\setminus\MP(H).
+\]
+\end{proposition}
+
+\begin{proof}
+The first two laws induce the same uniform distribution on $(u,v)$. Moreover, $b$ and $c$ are fair in the corresponding parity laws, so the three laws agree on every pairwise intersection; all remaining variables are fixed equal to one.
+
+Suppose that a global realization existed. 
+
+The law $\mu_1$ on $e_1$ implies
+\[
+X_c=1\quad\Longleftrightarrow\quad X_u=X_v,
+\]
+while the law $\mu_2$ on $e_2$ implies
+\[
+X_b=1\quad\Longleftrightarrow\quad X_u=X_v.
+\]
+Thus $X_b=X_c$ almost surely, contradicting the independent fair law on $e_3$.
+
+Pairwise consistency makes the common moment vector $z$ well defined, and the local-law definition of $\CER(H)$ gives $z\in\CER(H)$. If $z\in\MP(H)$, Lemma \ref{lem:prob} would give a global probability distribution with these supported moments. Its marginal on each $e_i$ has the same full collection of subset moments as the prescribed local law, hence is equal to that law by Lemma \ref{lem:edge-law}. This would be a global realization, a contradiction. Therefore $z\notin\MP(H)$.
+\end{proof}
+
+We next show that this same point survives every switched generalized triangle inequality coming from every no-private length-three $\alpha$-cycle in $H$.
+
+\begin{lemma}[Structure of a reduced subcycle]\label{lem:subcycle}
+Let $F=(f_1,f_2,f_3)$ be a no-private length-three $\alpha$-cycle in $H$. After permuting the three edges, we may assume $f_i\subseteq e_i$ for $i=1,2,3$. Put
+\[
+P=(f_1\cap f_2)\setminus f_3,\quad
+Q=(f_2\cap f_3)\setminus f_1,\quad
+R=(f_1\cap f_3)\setminus f_2,\quad
+S=f_1\cap f_2\cap f_3.
+\]
+Then
+\[
+f_1=P\sqcup R\sqcup S,\qquad
+f_2=P\sqcup Q\sqcup S,\qquad
+f_3=Q\sqcup R\sqcup S,
+\]
+and
+\[
+P\subseteq A\cup T,\qquad Q\subseteq B\cup T,\qquad
+R\subseteq C\cup T,\qquad S\subseteq T.
+\]
+
+Moreover,
+\[
+P\cap A\neq\emptyset,\qquad
+Q\cap B\neq\emptyset,\qquad
+R\cap C\neq\emptyset.
+\]
+\end{lemma}
+
+\begin{proof}
+Every edge of $H$ is contained in one of $e_1,e_2,e_3$. Two of the $f_i$ cannot be contained in the same $e_j$, because then the union of the three pairwise intersections of $F$ would be contained in $e_j$, contradicting the $\alpha$-cycle condition. After relabeling, therefore, $f_i\subseteq e_i$.
+
+Since $F$ has no private vertices, every vertex of $f_1\cup f_2\cup f_3$ lies in at least two of the three edges, giving the displayed disjoint decomposition. The containments follow from
+\[
+e_1\cap e_2=T\cup A,\qquad e_2\cap e_3=T\cup B,\qquad e_1\cap e_3=T\cup C.
+\]
+
+Finally, suppose for example that $P\cap A=\emptyset$. Then $P\subseteq T$, and hence the union of the three pairwise intersections of $F$ satisfies
+\[
+(f_1\cap f_2)\cup(f_2\cap f_3)\cup(f_1\cap f_3)
+=P\cup Q\cup R\cup S
+\subseteq T\cup B\cup C
+\subseteq e_3,
+\]
+contradicting the $\alpha$-cycle condition. Thus $P\cap A\neq\emptyset$, and the other two claims follow symmetrically.
+\end{proof}
+
+\begin{proposition}\label{prop:all-cycles}
+The point $z$ from Proposition \ref{prop:lift-local} belongs to $\Rall(H)$.
+\end{proposition}
+
+\begin{proof}
+Fix $F=(f_1,f_2,f_3)\in\mathcal C_0(H)$, use the decomposition in Lemma \ref{lem:subcycle}, and fix a switching set $U$. Let
+\[
+X=\prod_{w\in P}\ell_w,\qquad
+Y=\prod_{w\in Q}\ell_w,\qquad
+Z=\prod_{w\in R}\ell_w,
+\]
+where $\ell_w=X_w$ for $w\notin U$ and $\ell_w=1-X_w$ for $w\in U$. The common block $S$ consists of vertices fixed equal to one. If some vertex of $S$ is switched, then its switched literal is zero, so every term in the four switched generalized triangle inequalities vanishes. We may therefore assume that the product of the switched literals on $S$ equals one.
+
+
+In this case the switched moments appearing in \eqref{eq:gt1}--\eqref{eq:gt4} are
+\[
+\phi_U(z_{f_1})=\E_{\mu_1}[XZ],\qquad
+\phi_U(z_{f_2})=\E_{\mu_2}[XY],\qquad
+\phi_U(z_{f_3})=\E_{\mu_3}[YZ],
+\]
+and
+\[
+\phi_U(z_{f_1\cap f_2})=\E[X],\qquad
+\phi_U(z_{f_1\cap f_3})=\E[Z],\qquad
+\phi_U(z_{f_2\cap f_3})=\E[Y],
+\]
+while
+\[
+\phi_U(z_{f_1\cap f_2\cap f_3})=1.
+\]
+The single-factor expectations may be computed in either incident local law because the local laws agree on overlaps.
+
+Every vertex outside $\{u,v,b,c\}$ is deterministic one. Hence $X$ is either constant, one literal of $u$ or $v$, or a product of one literal of $u$ and one literal of $v$. Similarly, $Y$ is constant or one literal of $b$, and $Z$ is constant or one literal of $c$.
+
+If one of $X,Y,Z$ is constant, the four inequalities reduce to the Fr\'echet inequalities for the remaining two variables. For example, if $X=0$, they reduce to
+\[
+0\le \E_{\mu_3}[YZ],\qquad
+\E_{\mu_3}[YZ]\le \E_{\mu_3}[Y],\qquad
+\E_{\mu_3}[YZ]\le \E_{\mu_3}[Z],
+\]
+\[
+\E_{\mu_3}[Y]+\E_{\mu_3}[Z]-\E_{\mu_3}[YZ]\le1.
+\]
+which hold because $(Y,Z)$ has a genuine joint distribution on $e_3$. The cases $X=1$ and the corresponding cases for $Y$ or $Z$ are the same after relabeling.
+
+It remains to consider the case when none of $X,Y,Z$ is constant. We compute
+\[
+p=\E_{\mu_1}[X],\qquad
+a=\E_{\mu_2}[XY],\qquad
+d=\E_{\mu_1}[XZ].
+\]
+The expectations involving only $Y$ and $Z$ are computed under $\mu_3$.
+Consistency of the local laws makes the single-factor expectations agree on overlaps; no joint law of $X,Y,Z$ is assumed.  
+
+Since $X_b$ and $X_c$ are independent fair bits under $\mu_3$,
+\[
+\E_{\mu_3}[Y]=\E_{\mu_3}[Z]=\frac12,\qquad
+\E_{\mu_3}[YZ]=\frac14.
+\]
+
+
+
+
+The four switched generalized triangle inequalities become
+\[
+a+d\le p+\frac14,\qquad
+|a-d|\le\frac14,\qquad
+p-a-d\le\frac14.
+\]
+If $X$ contains one literal, then $p=1/2$ and $a=d=1/4$. If $X$ contains two literals, then $X$ is the indicator of one of the four equally likely values of $(u,v)$, so $p=1/4$ and $a,d\in\{0,1/4\}$. In either case the displayed inequalities hold.
+
+Thus $z$ satisfies every switching for every $F\in\mathcal C_0(H)$. Together with $z\in\CER(H)$, this proves $z\in\Rall(H)$.
+\end{proof}
+
+By symmetry, the same construction works if $|B|\ge2$ or $|C|\ge2$. Hence if any pair-only block has size at least two, then
+\[
+\Rall(H)\setminus\MP(H)\neq\emptyset.
+\]
+\end{editedaiblock}
+
+
+
+\section{Positive direction: the singleton case}\label{sec:positive}
+
+\begin{editedaiblock}
+Assume now that
+\[
+A=\{a\},\qquad B=\{b\},\qquad C=\{c\}.
+\]
+For $i=1,2,3$, let
+\[
+\bar e_i=e_i\setminus D_i.
+\]
+Then
+\[
+\bar e_1=T\cup\{a,c\},\qquad
+\bar e_2=T\cup\{a,b\},\qquad
+\bar e_3=T\cup\{b,c\}.
+\]
+
+\begin{lemma}[Private-block reduction]\label{lem:private}
+Let $\mu_i$ be local laws on $e_i$ and let $\bar\mu_i$ be their marginals on $\bar e_i$. The three laws $\mu_1,\mu_2,\mu_3$ have a global realization if and only if $\bar\mu_1,\bar\mu_2,\bar\mu_3$ have a global realization on $T\cup\{a,b,c\}$.
+\end{lemma}
+
+\begin{proof}
+One direction is immediate by taking a marginal.
+
+Conversely, suppose $\nu$ is a global realization of the three reduced laws. For each $i$, take from $\mu_i$ a conditional distribution of the private block $D_i$ given $\bar e_i$; on a zero-probability state of $\bar e_i$, choose the conditional law arbitrarily. First sample the core variables $T\cup\{a,b,c\}$ according to $\nu$. Then, conditionally on the core, sample the three private blocks independently using these kernels. The resulting law has marginal $\mu_i$ on each $e_i$.
+\end{proof}
+
+Let $z\in\Rdist(H)$ and let $\bar\mu_i$ be the reduced local laws supplied by $\CER(H)$. Fix a state $t\in\{0,1\}^T$. All masses below are unnormalized slice masses; their total mass in the
+slice $X_T=t$ is $m$. Let
+\[
+m=\Prob(X_T=t),
+\]
+and define the unnormalized slice moments
+\[
+p_a=\Prob(X_T=t,X_a=1),\quad
+p_b=\Prob(X_T=t,X_b=1),\quad
+p_c=\Prob(X_T=t,X_c=1),
+\]
+\begin{align*}
+p_{ab}&=\Prob(X_T=t,X_a=X_b=1),\\
+p_{ac}&=\Prob(X_T=t,X_a=X_c=1),\\
+p_{bc}&=\Prob(X_T=t,X_b=X_c=1).
+\end{align*}
+Each quantity is computed in any reduced local law containing the indicated variables; consistency makes it well defined.
+
+By the Fr\'{e}chet inequalities \cite{frechet1935generalisation}, for $ij\in\{ab,ac,bc\}$,
+\begin{equation}\label{eq:pair-frechet}
+p_{ij}\ge0,\qquad p_{ij}\le p_i,\qquad p_{ij}\le p_j,\qquad m-p_i-p_j+p_{ij}\ge0.
+\end{equation}
+
+Let
+\[
+Z_t=\{v\in T:t_v=0\}.
+\]
+Switch the generalized triangle inequalities for $(\bar e_1,\bar e_2,\bar e_3)$ exactly on $Z_t$. For every supported $F\subseteq\{a,b,c\}$ occurring in one of the reduced edges,
+\[
+\phi_{Z_t}(z_{T\cup F})
+=
+\E\left[\mathbf 1_{\{X_T=t\}}\prod_{v\in F}X_v\right].
+\]
+Therefore the four switched generalized triangle inequalities become
+\begin{align}
+p_{ab}+p_{ac}&\le p_a+p_{bc},\label{eq:slice1}\\
+p_{ab}+p_{bc}&\le p_b+p_{ac},\label{eq:slice2}\\
+p_{ac}+p_{bc}&\le p_c+p_{ab},\label{eq:slice3}\\
+p_a+p_b+p_c&\le m+p_{ab}+p_{ac}+p_{bc}.\label{eq:slice4}
+\end{align}
+
+We now extend the three pairwise marginals in this slice to a joint law on $(a,b,c)$. If $m=0$, then all six quantities $p_a,p_b,p_c,p_{ab},p_{ac},p_{bc}$ are zero, and we take the zero measure in this slice. Thus we may proceed with the same formulas for every $t$. Let $r$ denote a candidate mass assigned to the cell
+\[
+X_T=t,\qquad X_a=X_b=X_c=1.
+\]
+Once $r$ is chosen, the eight slice cell masses are forced:
+\[
+\begin{array}{c|c}
+(a,b,c) & \text{mass}\\
+\hline
+111 & r\\
+110 & p_{ab}-r\\
+101 & p_{ac}-r\\
+011 & p_{bc}-r\\
+100 & p_a-p_{ab}-p_{ac}+r\\
+010 & p_b-p_{ab}-p_{bc}+r\\
+001 & p_c-p_{ac}-p_{bc}+r\\
+000 & m-p_a-p_b-p_c+p_{ab}+p_{ac}+p_{bc}-r.
+\end{array}
+\]
+Thus all cell masses are nonnegative if and only if
+\[
+L_t\le r\le U_t,
+\]
+where
+\[
+L_t=\max\{0,\ p_{ab}+p_{ac}-p_a,\ p_{ab}+p_{bc}-p_b,\ p_{ac}+p_{bc}-p_c\}
+\]
+and
+\[
+U_t=\min\{p_{ab},p_{ac},p_{bc},\ m-p_a-p_b-p_c+p_{ab}+p_{ac}+p_{bc}\}.
+\]
+
+\begin{lemma}[Slice feasibility]\label{lem:slice}
+For every $t\in\{0,1\}^T$, the interval $[L_t,U_t]$ is nonempty.
+\end{lemma}
+
+\begin{proof}
+The lower bound $0$ is at most $p_{ab},p_{ac},p_{bc}$ by \eqref{eq:pair-frechet}, and it is at most the final upper bound by \eqref{eq:slice4}.
+
+Consider
+\[
+\ell_a=p_{ab}+p_{ac}-p_a.
+\]
+Since $p_{ab}\le p_a$ and $p_{ac}\le p_a$,
+\[
+\ell_a\le p_{ac},\qquad \ell_a\le p_{ab}.
+\]
+Inequality \eqref{eq:slice1} gives $\ell_a\le p_{bc}$. Finally,
+\[
+\begin{aligned}
+&m-p_a-p_b-p_c+p_{ab}+p_{ac}+p_{bc}-\ell_a\\
+&\qquad =m-p_b-p_c+p_{bc}\ge0
+\end{aligned}
+\]
+by \eqref{eq:pair-frechet} for the pair $(b,c)$. The same argument after cyclically permuting $a,b,c$ handles the other two nonzero lower bounds. Hence every lower bound defining $L_t$ is at most every upper bound defining $U_t$.
+\end{proof}
+
+For each $t$, choose $r_t\in[L_t,U_t]$ and use the table above to define a nonnegative measure in the slice $X_T=t$. Its total mass is $m$. Summing over all $t$ therefore gives a probability distribution $\nu$ on $T\cup\{a,b,c\}$. By construction, its marginals on
+\[
+T\cup\{a,c\},\qquad T\cup\{a,b\},\qquad T\cup\{b,c\}
+\]
+are exactly $\bar\mu_1,\bar\mu_2,\bar\mu_3$.
+
+\begin{proposition}\label{prop:positive}
+If $|A|=|B|=|C|=1$, then
+\[
+\Rdist(H)=\MP(H).
+\]
+Consequently $\Rall(H)=\MP(H)$ as well.
+\end{proposition}
+
+\begin{proof}
+Let $z\in\Rdist(H)$. The construction above gives a global realization of the reduced local laws. Lemma \ref{lem:private} restores the private blocks and yields a global distribution whose supported moment vector is $z$. Lemma \ref{lem:prob} therefore gives $z\in\MP(H)$. Thus $\Rdist(H)\subseteq\MP(H)$. The reverse inclusion follows from Lemma \ref{lem:gt-valid} and the validity of the complete edge relaxation. Since
+\[
+\MP(H)\subseteq\Rall(H)\subseteq\Rdist(H),
+\]
+the equality $\Rall(H)=\MP(H)$ follows as well.
+\end{proof}
+\end{editedaiblock}
+
+\section{Proof of the main theorem}
+\begin{editedaiblock}
+\begin{proof}[Proof of Theorem \ref{thm:main}]
+If $|A|=|B|=|C|=1$, Proposition \ref{prop:positive} gives
+\[
+\Rdist(H)=\Rall(H)=\MP(H).
+\]
+
+Conversely, suppose one of $A,B,C$ has size at least two. By symmetry assume $|A|\ge2$. Proposition \ref{prop:lift-local} constructs a point $z\in\CER(H)\setminus\MP(H)$, and Proposition \ref{prop:all-cycles} shows that the same point belongs to $\Rall(H)$. Hence
+\[
+\Rall(H)\setminus\MP(H)\neq\emptyset.
+\]
+Since $\Rall(H)\subseteq\Rdist(H)$, neither cycle-based relaxation is equal to $\MP(H)$. This proves all equivalences.
+\end{proof}
+\end{editedaiblock}
+\section{Conclusion}
+\begin{humanblock}
+For the completed support of a length-three $\alpha$-cycle, the exactness of generalized triangle inequalities is controlled entirely by the three pair-only intersections. The complete edge relaxation together with all switchings of the distinguished generalized triangle inequalities is exact precisely when each pair-only block consists of a single vertex. Adding the corresponding inequalities from every other no-private length-three $\alpha$-cycle in the completion does not enlarge the class of exact instances.
+
+The proof separates the roles of the different parts of the Venn decomposition. Private blocks can be removed and restored by conditional kernels, and the common block can be handled slice by slice. The obstruction appears only when a pair-only block contains two vertices, where a four-variable parity construction creates locally compatible edge laws that cannot be globally realized while remaining invisible to all of the switched generalized triangle inequalities considered here.
+
+A natural next question is whether analogous sharp classifications can be obtained for longer $\alpha$-cycles or for stronger families of inequalities beyond the length-three generalized triangle inequalities.
+\end{humanblock}
+
+\appendix
+
+\section{AI Chats}
+
+The following Meta AI conversations document representative stages
+of the research process leading to this manuscript.
+
+\begin{itemize}
+
+\item \url{https://meta.ai/share/c/xrb8TU157j}:
+Research conversation used during the development and checking of the alpha-cycle proof.
+
+\item \url{https://meta.ai/share/c/8DSNlAr2E3}:
+Reorganization of the manuscript into an expert-reader format, including proof ordering, exposition, and AI/human attribution conventions.
+
+\end{itemize}
+
+%==================== Bibliography ====================
+
+\bibliographystyle{alpha}
+\bibliography{refs}
+
+
+% \begin{thebibliography}{99}
+
+% \bibitem{Beeri1983}
+% C. Beeri and R. Fagin and D. Maier and M. Yannakakis,
+% On the desirability of acyclic database schemes,
+% \emph{Journal of the ACM} 30 (1983), 479--513.
+
+% \bibitem{BuchheimRinaldi}
+% C. Buchheim and G. Rinaldi,
+% Efficient reduction of polynomial zero-one optimization to the quadratic
+% case,
+% \emph{SIAM Journal on Optimization} 18 (2008), 1398--1413.
+
+% \bibitem{DPK-Polyhedral}
+% A. Del Pia and A. Khajavirad,
+% A polyhedral study of binary polynomial programs,
+% \emph{Mathematics of Operations Research} 42 (2017), 389--410.
+
+% \bibitem{DPK-Multilinear}
+% A. Del Pia and A. Khajavirad,
+% The multilinear polytope for acyclic hypergraphs,
+% \emph{SIAM Journal on Optimization} 28 (2018), 1049--1076.
+
+% \bibitem{DPK-CER}
+% A. Del Pia and A. Khajavirad,
+% The complete edge relaxation for binary polynomial optimization,
+% arXiv:2507.12831v2, 2026.
+
+% \bibitem{Fagin1983}
+% R. Fagin,
+% Degrees of acyclicity for hypergraphs and relational database schemes,
+% \emph{Journal of the ACM} 30(3) (1983), 514--550.
+
+% \bibitem{Frechet}
+% M. Frechet,
+% Generalisations du theoreme des probabilites totales,
+% \emph{Fundamenta Mathematicae} 25 (1935), 379--387.
+
+% \bibitem{Kellerer}
+% H. G. Kellerer,
+% Verteilungsfunktionen mit gegebenen Marginalverteilungen,
+% \emph{Zeitschrift fuer Wahrscheinlichkeitstheorie und Verwandte Gebiete}
+% 3 (1964), 247--270.
+
+% \bibitem{Padberg1989}
+% M. Padberg,
+% The Boolean quadric polytope: some characteristics, facets and relatives,
+% \emph{Mathematical Programming} 45 (1989), 139--172.
+
+% \bibitem{Strassen}
+% V. Strassen,
+% The existence of probability measures with given marginals,
+% \emph{Annals of Mathematical Statistics} 36 (1965), 423--439.
+
+% \bibitem{Vorobev}
+% N. N. Vorob'ev,
+% Consistent families of measures and their extensions,
+% \emph{Theory of Probability and Its Applications} 7 (1962), 147--163.
+
+% \end{thebibliography}
+
+\end{document}

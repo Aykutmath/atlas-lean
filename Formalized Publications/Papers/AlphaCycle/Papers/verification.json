@@ -1,0 +1,43 @@
+{
+  "paper": "Supplied draft formalized as Papers/alpha_cycle.pdf (md5 7560e5f6d6feaed1e3ff7153057132c2, identical copy of the source project's paper). References (bibliography) are the last section of Papers/Latex/main.tex; the interactive HTML carries no audit/coverage section or status banner.",
+  "lean": "leanprover/lean4:v4.34.0-rc2 (commit 6a10ac8c22beadecabdbb0919c2b50214762f91d), autoImplicit false",
+  "mathlib": "85e3a25e006c35636f0e53b0e9296caca2685bc0, plus pinned companions plausible d9598f07, LeanSearchClient ba67e212, importGraph d8823026, proofwidgets a8acbfd8, aesop 18889deb, Qq 507746ab, batteries d54dddc5, Cli ab3a82db (see package Readme for the externals assembly recipe)",
+  "build": "Direct-Lean topological rebuild PASS (2026-11-02, Verification/build_solution.sh from package sources): all 44 section modules plus the root elaborate with no errors and zero sorry; the pinned 4.34.0-rc2 toolchain identity and commit hash are enforced by Comparator/reproduce.sh before use.",
+  "axioms": "Only propext, Classical.choice and Quot.sound occur as transitive axioms: CheckAxioms PASS, exit 0 (2026-11-02, against the fresh package build: 1267 declarations in 44 project modules); no project-defined axioms, nothing unsafe.",
+  "coverage": "CheckCoverage PASS, exit 0 (2026-11-02, against the fresh package build); all 19 HTML Lean boxes verified verbatim against the Formalization sources and all 47 source links resolve to real file and line ranges.",
+  "challenge": "Comparator/alpha_cycle_comparator.lean (root) plus 11 independent Comparator/Challenge excerpt modules: Mathlib-only imports, never the solution; byte-identical definition/helper bodies for everything the main theorem's closure reaches (Section_1_Introduction/Geometry.lean embedded whole so simplifier equation-cache state reproduces solution numbering exactly); exactly one authorized sorry (the main-theorem placeholder in Challenge/Section_6_MainTheorem/PaperMain.lean); exactly one main-theorem statement. Strict config Comparator/alpha_cycle_comparator.json: challenge_module alpha_cycle_comparator, solution_module AlphaCycle, theorem_names [AlphaCycle.PaperHypergraph.paper_sharp_classification], definition_names [] (fixed definitions compared by full body equality, not signature-only holes), permitted_axioms [propext, Classical.choice, Quot.sound].",
+  "exports": {
+    "serializer": "Verification/export34.lean, byte-identical to the verified Gaussian serializer (md5 cf2df3dde56ac598cdf6d21ba76961a2); original-4.34 elaborations serialized to NDJSON as untrusted data, never a 4.35 source port; no 4.34 olean loaded into 4.35.",
+    "roots": "Quot Quot.mk Quot.lift Quot.ind AlphaCycle.PaperHypergraph.paper_sharp_classification propext Classical.choice Quot.sound Nat.add Nat.sub Nat.mul Nat.pow Nat.gcd Nat.div Nat.mod Nat.beq Nat.ble Nat.land Nat.lor Nat.xor Nat.shiftLeft Nat.shiftRight String.ofList Char.ofNat List eagerReduce Nat String String.mk Char optParam autoParam semiOutParam outParam (exactly the comparator's builtin+theorem+axiom+primitive roots; definition_names empty by design)",
+    "challenge_sha256": "a80309b887faf2ff59e5bdb2599b5691b898b7efbef342df4b34017c5f31dc32",
+    "solution_sha256": "2ede79f1d90fbae5fb744fdf9e11a6285854237ba0ff655517b0fb0d74067379",
+    "completeness": "both exports non-empty, all 34 roots resolve (Verification/check_exports.py), no serializer refusal, challenge export byte-identical across two runs (determinism); the package pipeline reproduces the mirror-verified challenge export byte-for-byte"
+  },
+  "judge": {
+    "toolchain": "official Lean 4.35.0 (commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc) via lake comparator with bwrap sandbox, default Lean kernel, on Linux",
+    "positive": "exit 0 (2026-11-02): 'Running Lean default kernel on solution / Lean default kernel accepts the solution / Your solution is okay!' for the fixed strict config",
+    "negatives": {
+      "N1_incorrect_polytope": "rejected, exit 1: Const does not match 'AlphaCycle.PaperHypergraph.polytope'",
+      "N2_wrong_cycle_relaxation": "rejected, exit 1: Const does not match 'AlphaCycle.PaperHypergraph.cycleDistinguishedRelaxation'",
+      "N3_identity_relaxation": "rejected, exit 1: Const does not match 'AlphaCycle.PaperHypergraph.cycleAllRelaxation'",
+      "N4_sorry_solution": "rejected, exit 1: Illegal axiom detected: 'sorryAx'",
+      "N5_threshold_tamper": "rejected, exit 1: theorem statement does not match 'AlphaCycle.PaperHypergraph.paper_sharp_classification'"
+    },
+    "note": "each negative variant was rebuilt with the pinned 4.34 toolchain, re-exported, asserted non-identical to the good export, and judged against the fixed good counterpart; N1-N3/N5 tamper the challenge side (symmetric constant-equality check), N4 the solution side"
+  },
+  "driver": "Comparator/reproduce.sh (full pipeline: toolchain pin guards, challenge/source/path guards, both builds, completeness-checked exports, official judge on Linux; exit 2 off-Linux, never a passing verdict without the judge) plus Comparator/negative_controls.sh (Linux) and Comparator/test_reproduce.py (26 stub-tool cases covering pins, failing version commands, externals hygiene, guards, build/export failures, determinism, judge propagation, wrong platform; driver only, no theorem checked by stubs).",
+  "html_rendering": {
+    "checked_on": "2026-11-02",
+    "generator_check": "python3 Papers/generate_html.py --check: OK",
+    "static_tests": "python3 Papers/test_html_rendering.py: pass (389 equations, 19 boxes, 47 source links, self-contained vendored shell, no external assets)",
+    "browser": "Chromium 156.0.8078.4, offline (2026-11-01 baseline, unchanged generator output apart from audit-section/banner/nav-link removals)",
+    "viewports": [1280, 390],
+    "rendered_equations": 389,
+    "math_errors": 0,
+    "javascript_errors": 0,
+    "embedded_font_faces_loaded": 20,
+    "lean_boxes": 19,
+    "source_links": 47,
+    "page_overflow": false
+  }
+}
